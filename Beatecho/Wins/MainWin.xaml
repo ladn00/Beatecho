@@ -1,0 +1,120 @@
+﻿<Window x:Class="Beatecho.Wins.MainWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Beatecho.Wins"
+        mc:Ignorable="d"
+        Title="MainWin" Height="600" Width="1000" Background="Transparent">
+    <Window.Resources>
+        
+        <Style x:Key="NavButtonStyle" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="10,5"/>
+        </Style>
+
+        <Style x:Key="ControlButtonStyle" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Padding" Value="10"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <MediaElement x:Name="mediaElement" LoadedBehavior="Manual" UnloadedBehavior="Stop" />
+        <!-- Основной контейнер -->
+        <Border Background="#191414" CornerRadius="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <!-- Боковая панель -->
+                <Border Width="200" Background="#000000" CornerRadius="10,0,0,10" Grid.RowSpan="2">
+                    <StackPanel VerticalAlignment="Top" Margin="10">
+                        <!-- Логотип Spotify -->
+                        <Image Source="D:\проекты вс\Beatecho\Beatecho\Wins\1.jpg" Height="40" Margin="0,10,0,20"/>
+
+                        <!-- Навигация -->
+                        <Button Style="{StaticResource NavButtonStyle}" Content="Главная"/>
+                        <Button Style="{StaticResource NavButtonStyle}" Content="Поиск"/>
+                        <Button Style="{StaticResource NavButtonStyle}" Content="Моя медиатека"/>
+
+                        <!-- Плейлисты -->
+                        <TextBlock Text="ПЛЕЙЛИСТЫ" Foreground="Gray" Margin="0,20,0,10"/>
+                        <Button Style="{StaticResource NavButtonStyle}" Content="Любимые треки"/>
+                        <Button Style="{StaticResource NavButtonStyle}" Content="Недавно прослушанные"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Верхняя панель навигации -->
+                <Border Grid.Column="1" Height="60" Background="#191414" CornerRadius="0,10,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Кнопки навигации -->
+                        <StackPanel Orientation="Horizontal" Margin="10">
+                            <Button Style="{StaticResource NavButtonStyle}" Content="Назад"/>
+                            <Button Style="{StaticResource NavButtonStyle}" Content="Вперед"/>
+                        </StackPanel>
+
+                        <!-- Профиль пользователя -->
+                        <Button Grid.Column="1" Style="{StaticResource NavButtonStyle}" Content="Профиль" Margin="10"/>
+                    </Grid>
+                </Border>
+
+                <!-- Область контента -->
+                <!-- Область контента -->
+                <Frame x:Name="ContentFrame" Grid.Column="1" Grid.Row="1" Source="ContentPage.xaml" NavigationUIVisibility="Hidden"/>
+
+                <!-- Нижняя панель управления -->
+                <Border Grid.Row="2" Grid.ColumnSpan="2" Height="80" Background="#000000" CornerRadius="0,0,10,10" VerticalAlignment="Bottom">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Информация о треке -->
+                        <StackPanel Orientation="Horizontal" Margin="10">
+                            <Image Source="D:\проекты вс\Beatecho\Beatecho\Wins\1.jpg" Width="50" Height="50"/>
+                            <StackPanel Margin="10,0,0,0">
+                                <TextBlock Text="Название трека" Foreground="White"/>
+                                <TextBlock Text="Исполнитель" Foreground="Gray"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!-- Элементы управления воспроизведением -->
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Button Style="{StaticResource ControlButtonStyle}" Content="Предыдущий"/>
+                            <Button Style="{StaticResource ControlButtonStyle}" Content="Воспроизвести"/>
+                            <Button Style="{StaticResource ControlButtonStyle}" Content="Следующий"/>
+                        </StackPanel>
+
+                        <!-- Громкость и другие элементы -->
+                        <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="10">
+                            <Button Style="{StaticResource ControlButtonStyle}" Content="Громкость"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

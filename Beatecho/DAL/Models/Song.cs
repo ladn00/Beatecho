@@ -13,5 +13,19 @@ namespace Beatecho.DAL.Models
         public int Duration { get; set; }
         public TimeSpan CreatedAt { get; set; }
         public string? Link { get; set; }
+        public string Photo
+        {
+            get
+            {
+                var songImgFromAlb = AlbumSongs.FirstOrDefault();
+                if (songImgFromAlb != null)
+                {
+                    return songImgFromAlb.Album.Photo;
+                }
+                return "D:\\проекты вс\\Beatecho\\Beatecho\\Wins\\1.jpg";
+            }
+        }
+        public virtual ICollection<AlbumSongs> AlbumSongs { get; set; } = new List<AlbumSongs>();
+        public virtual ICollection<SongGenre> SongGenres { get; set; } = new List<SongGenre>();
     }
 }

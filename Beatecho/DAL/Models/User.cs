@@ -14,5 +14,7 @@ namespace Beatecho.DAL.Models
         public string? Password { get; set; }
         public string? Salt { get; set; }
         public int? UserTypeId { get; set; }
+
+        public virtual UserType UserType { get; set; }
     }
 }

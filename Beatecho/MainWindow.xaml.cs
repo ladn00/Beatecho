@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿using Beatecho.DAL;
+using Beatecho.DAL.Models;
+using Beatecho.Wins;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -19,6 +22,10 @@ namespace Beatecho
         public MainWindow()
         {
             InitializeComponent();
+
+            MainWin win = new MainWin();
+            win.Show();
+            this.Close();
         }
     }
 }

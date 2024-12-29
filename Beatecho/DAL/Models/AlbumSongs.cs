@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace Beatecho.DAL.Models
 {
-    public class SongGenre
+    public class AlbumSongs
     {
         public int SongId { get; set; }
         public virtual Song Song { get; set; }
 
-        public int GenreId { get; set; }
-        public virtual Genre Genre { get; set; }
+        public int AlbumId { get; set; }
+        public virtual Album Album { get; set; }
+
+        public int TrackNum { get; set; }
     }
 }
