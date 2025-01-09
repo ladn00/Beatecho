@@ -26,7 +26,7 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <MediaElement x:Name="mediaElement" LoadedBehavior="Manual" UnloadedBehavior="Stop" />
+        <MediaElement x:Name="mediaElement" LoadedBehavior="Manual" UnloadedBehavior="Stop" MediaOpened="MediaOpened" MediaEnded="MediaEnded"/>
         <!-- Основной контейнер -->
         <Border Background="#191414" CornerRadius="10">
             <Grid>
@@ -93,19 +93,24 @@
                         </Grid.ColumnDefinitions>
 
                         <!-- Информация о треке -->
-                        <StackPanel Orientation="Horizontal" Margin="10">
-                            <Image Source="D:\проекты вс\Beatecho\Beatecho\Wins\1.jpg" Width="50" Height="50"/>
+                        <StackPanel Orientation="Horizontal" Margin="10" Name="CurrentSongBar">
+                            <Image Source="{Binding Photo}" Width="50" Height="50"/>
                             <StackPanel Margin="10,0,0,0">
-                                <TextBlock Text="Название трека" Foreground="White"/>
-                                <TextBlock Text="Исполнитель" Foreground="Gray"/>
+                                <TextBlock Text="{Binding Title}" Foreground="White"/>
+                                <TextBlock Text="Artist" Foreground="Gray"/>
                             </StackPanel>
                         </StackPanel>
 
                         <!-- Элементы управления воспроизведением -->
-                        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <Button Style="{StaticResource ControlButtonStyle}" Content="Предыдущий"/>
-                            <Button Style="{StaticResource ControlButtonStyle}" Content="Воспроизвести"/>
-                            <Button Style="{StaticResource ControlButtonStyle}" Content="Следующий"/>
+                        <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Button Style="{StaticResource ControlButtonStyle}" Content="Предыдущий" Click="Previous"/>
+                            <Button Style="{StaticResource ControlButtonStyle}" Content="Воспроизвести" Click="Play"/>
+                            <Button Style="{StaticResource ControlButtonStyle}" Content="Следующий" Click="Next"/>
+                            </StackPanel>
+                            <Slider x:Name="TrackSlider" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10"
+                Minimum="0" Maximum="100" ValueChanged="TrackSlider_ValueChanged"
+                Thumb.DragStarted="TrackSlider_DragStarted" Thumb.DragCompleted="TrackSlider_DragCompleted" PreviewMouseDown="Slider_MouseDown"/>
                         </StackPanel>
 
                         <!-- Громкость и другие элементы -->

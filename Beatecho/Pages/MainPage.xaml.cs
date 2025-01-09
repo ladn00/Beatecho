@@ -46,6 +46,9 @@ namespace Beatecho.Pages
             var album = editButton?.DataContext as Album;
             List<Song> songs = new List<Song>();
 
+            if (player.CurrentSong != null && player.TypeOf == typeof(Album) && player.AlbumPlaylist == album)
+                player.Pause();
+
             using (ApplicationContext db = new ApplicationContext())
             {
                 if (album != null)
@@ -62,6 +65,8 @@ namespace Beatecho.Pages
                 }
             }
 
+            player.AlbumPlaylist = album;
+            player.TypeOf = typeof(Album);
             player.SetQueue(songs);
             player.SetSong();
             player.Play();

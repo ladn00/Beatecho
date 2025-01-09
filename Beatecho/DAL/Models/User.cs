@@ -16,5 +16,6 @@ namespace Beatecho.DAL.Models
         public int? UserTypeId { get; set; }
 
         public virtual UserType UserType { get; set; }
+        public virtual ICollection<PlaylistUsers> PlaylistUsers { get; set; } = new List<PlaylistUsers>();
     }
 }

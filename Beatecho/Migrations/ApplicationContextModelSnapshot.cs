@@ -18,6 +18,9 @@ namespace Beatecho.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "9.0.0")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -29,6 +32,10 @@ namespace Beatecho.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Photo")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("ReleaseYear")
                         .HasColumnType("integer");
@@ -108,6 +115,58 @@ namespace Beatecho.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Genres");
+                });
+
+            modelBuilder.Entity("Beatecho.DAL.Models.Playlist", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool?>("IsPublic")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Photo")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Playlists");
+                });
+
+            modelBuilder.Entity("Beatecho.DAL.Models.PlaylistSongs", b =>
+                {
+                    b.Property<int>("PlaylistId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SongId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("PlaylistId", "SongId");
+
+                    b.HasIndex("SongId");
+
+                    b.ToTable("PlaylistSongs");
+                });
+
+            modelBuilder.Entity("Beatecho.DAL.Models.PlaylistUsers", b =>
+                {
+                    b.Property<int>("PlaylistId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("PlaylistId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PlaylistUsers");
                 });
 
             modelBuilder.Entity("Beatecho.DAL.Models.Song", b =>
@@ -234,6 +293,44 @@ namespace Beatecho.Migrations
                     b.Navigation("Artist");
                 });
 
+            modelBuilder.Entity("Beatecho.DAL.Models.PlaylistSongs", b =>
+                {
+                    b.HasOne("Beatecho.DAL.Models.Playlist", "Playlist")
+                        .WithMany("PlaylistSongs")
+                        .HasForeignKey("PlaylistId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Beatecho.DAL.Models.Song", "Song")
+                        .WithMany("PlaylistSongs")
+                        .HasForeignKey("SongId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Playlist");
+
+                    b.Navigation("Song");
+                });
+
+            modelBuilder.Entity("Beatecho.DAL.Models.PlaylistUsers", b =>
+                {
+                    b.HasOne("Beatecho.DAL.Models.Playlist", "Playlist")
+                        .WithMany("PlaylistUsers")
+                        .HasForeignKey("PlaylistId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Beatecho.DAL.Models.User", "User")
+                        .WithMany("PlaylistUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Playlist");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Beatecho.DAL.Models.SongGenre", b =>
                 {
                     b.HasOne("Beatecho.DAL.Models.Genre", "Genre")
@@ -279,11 +376,25 @@ namespace Beatecho.Migrations
                     b.Navigation("SongGenres");
                 });
 
+            modelBuilder.Entity("Beatecho.DAL.Models.Playlist", b =>
+                {
+                    b.Navigation("PlaylistSongs");
+
+                    b.Navigation("PlaylistUsers");
+                });
+
             modelBuilder.Entity("Beatecho.DAL.Models.Song", b =>
                 {
                     b.Navigation("AlbumSongs");
 
+                    b.Navigation("PlaylistSongs");
+
                     b.Navigation("SongGenres");
+                });
+
+            modelBuilder.Entity("Beatecho.DAL.Models.User", b =>
+                {
+                    b.Navigation("PlaylistUsers");
                 });
 
             modelBuilder.Entity("Beatecho.DAL.Models.UserType", b =>

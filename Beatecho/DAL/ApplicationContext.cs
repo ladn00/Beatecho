@@ -19,6 +19,10 @@ namespace Beatecho.DAL
         public DbSet<UserType> UserTypes => Set<UserType>();
         public DbSet<SongGenre> SongGenres => Set<SongGenre>();
         public DbSet<AlbumSongs> AlbumSongs => Set<AlbumSongs>();
+        public DbSet<Playlist> Playlists => Set<Playlist>();
+        public DbSet<PlaylistSongs> PlaylistSongs => Set<PlaylistSongs>();
+        public DbSet<PlaylistUsers> PlaylistUsers => Set<PlaylistUsers>();
+        public DbSet<ArtistAlbums> ArtistAlbums => Set<ArtistAlbums>();
 
         public ApplicationContext() => Database.EnsureCreated();
 
@@ -84,6 +88,35 @@ namespace Beatecho.DAL
                 .HasOne(u => u.UserType)
                 .WithMany(ut => ut.Users)
                 .HasForeignKey(u => u.UserTypeId);
+
+            modelBuilder.Entity<PlaylistSongs>()
+            .HasKey(ps => new { ps.PlaylistId, ps.SongId });
+
+            // Настройка связей
+            modelBuilder.Entity<PlaylistSongs>()
+                .HasOne(ps => ps.Playlist)
+                .WithMany(p => p.PlaylistSongs)
+                .HasForeignKey(ps => ps.PlaylistId);
+
+            modelBuilder.Entity<PlaylistSongs>()
+                .HasOne(ps => ps.Song)
+                .WithMany(s => s.PlaylistSongs)
+                .HasForeignKey(ps => ps.SongId);
+
+            modelBuilder.Entity<PlaylistUsers>()
+            .HasKey(ps => new { ps.PlaylistId, ps.UserId });
+
+            // Настройка связей
+            modelBuilder.Entity<PlaylistUsers>()
+                .HasOne(ps => ps.Playlist)
+                .WithMany(p => p.PlaylistUsers)
+                .HasForeignKey(ps => ps.PlaylistId);
+
+            modelBuilder.Entity<PlaylistUsers>()
+                .HasOne(ps => ps.User)
+                .WithMany(s => s.PlaylistUsers)
+                .HasForeignKey(ps => ps.UserId);
+
         }
     }
 }

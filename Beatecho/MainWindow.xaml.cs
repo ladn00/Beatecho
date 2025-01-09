@@ -18,7 +18,7 @@ namespace Beatecho
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {
+    { 
         public MainWindow()
         {
             InitializeComponent();
@@ -26,6 +26,11 @@ namespace Beatecho
             MainWin win = new MainWin();
             win.Show();
             this.Close();
+
+            /*using (ApplicationContext db = new ApplicationContext())
+            {
+
+            }*/
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,15 +18,50 @@ namespace Beatecho.DAL.Models
         {
             get
             {
-                var songImgFromAlb = AlbumSongs.FirstOrDefault();
-                if (songImgFromAlb != null)
+                using (ApplicationContext db = new ApplicationContext())
                 {
-                    return songImgFromAlb.Album.Photo;
+                    var songWithAlbumSongs = db.Songs
+                        .Include(s => s.AlbumSongs)
+                        .FirstOrDefault(s => s.Id == Id);
+
+                    var songImgFromAlb = songWithAlbumSongs?.AlbumSongs.FirstOrDefault();
+
+
+                    if (songImgFromAlb != null)
+                    {
+                        return songImgFromAlb.Album.Photo;
+                    }
+                    return "D:\\проекты вс\\Beatecho\\Beatecho\\Wins\\1.jpg";
                 }
-                return "D:\\проекты вс\\Beatecho\\Beatecho\\Wins\\1.jpg";
             }
         }
+
+        public string Artist
+        {
+            get
+            {
+                using (ApplicationContext db = new ApplicationContext())
+                {
+                    /*var artistFromAlb = db.Artists
+                        .Include(s => s.ArtistAlbums)
+                        .FirstOrDefault(s => s.Id == Id);
+
+                    if (artistFromAlb != null)
+                    {
+                        var artistAlbums = artistFromAlb.ArtistAlbums.FirstOrDefault();
+
+                        if (artistAlbums != null)
+                        {
+                            return artistAlbums.Artist.Name;
+                        }
+                    }*/
+                    return "n/a";
+                }
+            }
+        }
+
         public virtual ICollection<AlbumSongs> AlbumSongs { get; set; } = new List<AlbumSongs>();
         public virtual ICollection<SongGenre> SongGenres { get; set; } = new List<SongGenre>();
+        public virtual ICollection<PlaylistSongs> PlaylistSongs { get; set; } = new List<PlaylistSongs>();
     }
 }
