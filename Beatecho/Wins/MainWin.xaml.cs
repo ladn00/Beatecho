@@ -90,6 +90,17 @@ namespace Beatecho.Wins
             TrackSlider.Value = newValue;
             player.ValueOfBarChanged();
         }
+
+        private void Volume_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            mediaElement.Volume = volumeSlider.Value;
+        }
+
+        private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            mediaElement.Volume = volumeSlider.Value;
+        }
+
         /*private void Play(object sender, RoutedEventArgs e)
 {
 var editButton = sender as Button;
