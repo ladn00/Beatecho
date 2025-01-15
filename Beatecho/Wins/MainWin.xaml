@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Beatecho.Wins"
+        xmlns:local="clr-namespace:Beatecho.Wins" xmlns:vm="clr-namespace:Beatecho.ViewModels"
         mc:Ignorable="d"
         Title="MainWin" Height="600" Width="1000" Background="Transparent">
     <Window.Resources>
@@ -418,6 +418,9 @@
         </Style>
 
     </Window.Resources>
+    <Window.DataContext>
+        <vm:PlayerViewModel />
+    </Window.DataContext>
     <Grid>
         <MediaElement x:Name="mediaElement" LoadedBehavior="Manual" UnloadedBehavior="Stop" MediaOpened="MediaOpened" MediaEnded="MediaEnded"/>
         <!-- Основной контейнер -->
@@ -489,15 +492,15 @@
                             <Image Source="{Binding Photo}" Width="50" Height="50"/>
                             <StackPanel Margin="10,0,0,0">
                                 <TextBlock Text="{Binding Title}" Foreground="White"/>
-                                <TextBlock Text="Artist" Foreground="Gray"/>
+                                <TextBlock Text="{Binding Artist}" Foreground="Gray"/>
                             </StackPanel>
                         </StackPanel>
 
-                        <!-- Элементы управления воспроизведением -->
+                        <!-- Prev, Pause, Next -->
                         <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Button Style="{StaticResource ControlButtonStyle}" Content="Предыдущий" Click="Previous"/>
-                            <Button Style="{StaticResource ControlButtonStyle}" Content="Воспроизвести" Click="Play"/>
+                                <Button Style="{StaticResource ControlButtonStyle}" Content="Воспроизвести" Click="Play"/>
                             <Button Style="{StaticResource ControlButtonStyle}" Content="Следующий" Click="Next"/>
                             </StackPanel>
                             <Slider x:Name="TrackSlider" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10"
@@ -505,7 +508,7 @@
                 Thumb.DragStarted="TrackSlider_DragStarted" Thumb.DragCompleted="TrackSlider_DragCompleted" PreviewMouseDown="Slider_MouseDown"/>
                         </StackPanel>
 
-                        <!-- Громкость и другие элементы -->
+                        <!-- Громкость -->
                         <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="10" VerticalAlignment="Center">
                             <Image Source="../imgs/volume.png" Width="15" Margin="0, 0, 5, 0"/>
                             <Slider x:Name="volumeSlider" Minimum="0" Maximum="1" Value="0.5" ValueChanged="VolumeSlider_ValueChanged" PreviewMouseDown="Volume_MouseDown" Width="100" />

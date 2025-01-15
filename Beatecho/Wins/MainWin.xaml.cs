@@ -28,8 +28,8 @@ namespace Beatecho.Wins
         {
             InitializeComponent();
             player = new Player(mediaElement, CurrentSongBar, TrackSlider);
+            ViewModels.PlayerViewModel._player = player;
             ContentFrame.NavigationService.Navigate(new Pages.MainPage(player));
-            /*lw1.ItemsSource = songs;*/
         }
 
         private void Next(object sender, RoutedEventArgs e)
@@ -100,50 +100,5 @@ namespace Beatecho.Wins
         {
             mediaElement.Volume = volumeSlider.Value;
         }
-
-        /*private void Play(object sender, RoutedEventArgs e)
-{
-var editButton = sender as Button;
-var selected = editButton.DataContext as Song;
-
-try
-{
-mediaElement.Source = new Uri(selected.Link);
-mediaElement.Play();
-}
-catch (Exception ex)
-{
-MessageBox.Show(ex.Message);
-}
-}
-
-private void Pause(object sender, RoutedEventArgs e)
-{
-try
-{
-mediaElement.Pause();
-}
-catch (Exception ex)
-{
-MessageBox.Show(ex.Message);
-}
-}
-
-private void Stop(object sender, RoutedEventArgs e)
-{
-try
-{
-mediaElement.Stop();
-}
-catch (Exception ex)
-{
-MessageBox.Show(ex.Message);
-}
-}
-
-private void mediaElement_MediaFailed(object sender, ExceptionRoutedEventArgs e)
-{
-MessageBox.Show(e.ErrorException.Message);
-}*/
     }
 }

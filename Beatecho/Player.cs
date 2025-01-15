@@ -2,6 +2,7 @@
 using Beatecho.DAL.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Media;
 using System.Security.Policy;
@@ -46,10 +47,8 @@ namespace Beatecho
             }
             else if (!MediaElement.NaturalDuration.HasTimeSpan)
             {    
-                // Если длительность недоступна, обновляем слайдер в процентах
                 if (MediaElement.NaturalDuration.HasTimeSpan == false && MediaElement.Position.TotalSeconds > 0)
                 {
-                    // Предполагаем, что максимальная длительность равна 100
                     TrackSlider.Value = (MediaElement.Position.TotalSeconds / 100) * TrackSlider.Maximum;
                 }
             }
@@ -183,6 +182,13 @@ namespace Beatecho
 
             if (Queue[Index + 1] != null)
                 PlayNext();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

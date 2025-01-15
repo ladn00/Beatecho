@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Animation;
 
 namespace Beatecho.DAL.Models
 {
@@ -14,6 +15,7 @@ namespace Beatecho.DAL.Models
         public int Duration { get; set; }
         public TimeSpan CreatedAt { get; set; }
         public string? Link { get; set; }
+
         public string Photo
         {
             get
@@ -40,23 +42,27 @@ namespace Beatecho.DAL.Models
         {
             get
             {
+                string result = "n/a";
                 using (ApplicationContext db = new ApplicationContext())
                 {
-                    /*var artistFromAlb = db.Artists
-                        .Include(s => s.ArtistAlbums)
+                    var songWithAlbumSongs = db.Songs
+                        .Include(s => s.AlbumSongs)
                         .FirstOrDefault(s => s.Id == Id);
 
-                    if (artistFromAlb != null)
+                    var songImgFromAlb = songWithAlbumSongs?.AlbumSongs.FirstOrDefault();
+                    ArtistAlbums artistAlbums;
+
+                    if (songImgFromAlb != null)
                     {
-                        var artistAlbums = artistFromAlb.ArtistAlbums.FirstOrDefault();
+                        artistAlbums = songImgFromAlb.Album.ArtistAlbums?.FirstOrDefault();
 
                         if (artistAlbums != null)
                         {
-                            return artistAlbums.Artist.Name;
+                            result = artistAlbums.Artist.Name;
                         }
-                    }*/
-                    return "n/a";
+                    }
                 }
+                return result;
             }
         }
 
