@@ -22,7 +22,6 @@ namespace Beatecho
         public Song CurrentSong { get; set; }
         public int Index { get; set; } = 0;
         public bool IsPlaying { get; set; } = false;
-        public object TypeOf { get; set; }
         public object AlbumPlaylist { get; set; }
         public StackPanel CurrentSongBar { get; set; }
         public Slider TrackSlider { get; set; }
@@ -37,21 +36,6 @@ namespace Beatecho
             Timer = new DispatcherTimer();
             Timer.Interval = TimeSpan.FromMilliseconds(500);
             Timer.Tick += Timer_Tick;
-        }
-
-        private void Timer_Tick(object sender, EventArgs e)
-        {
-            if (MediaElement.NaturalDuration.HasTimeSpan && !isDragging)
-            {
-                TrackSlider.Value = MediaElement.Position.TotalSeconds;
-            }
-            else if (!MediaElement.NaturalDuration.HasTimeSpan)
-            {    
-                if (MediaElement.NaturalDuration.HasTimeSpan == false && MediaElement.Position.TotalSeconds > 0)
-                {
-                    TrackSlider.Value = (MediaElement.Position.TotalSeconds / 100) * TrackSlider.Maximum;
-                }
-            }
         }
 
         public void SetQueue(List<Song> newQueue)
@@ -182,6 +166,26 @@ namespace Beatecho
 
             if (Queue[Index + 1] != null)
                 PlayNext();
+        }
+
+        public void VolumeChanged(double volume)
+        {
+            MediaElement.Volume = volume;
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            if (MediaElement.NaturalDuration.HasTimeSpan && !isDragging)
+            {
+                TrackSlider.Value = MediaElement.Position.TotalSeconds;
+            }
+            else if (!MediaElement.NaturalDuration.HasTimeSpan)
+            {
+                if (MediaElement.NaturalDuration.HasTimeSpan == false && MediaElement.Position.TotalSeconds > 0)
+                {
+                    TrackSlider.Value = (MediaElement.Position.TotalSeconds / 100) * TrackSlider.Maximum;
+                }
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

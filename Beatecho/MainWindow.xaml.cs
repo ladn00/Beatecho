@@ -1,6 +1,7 @@
 ﻿using Beatecho.DAL;
 using Beatecho.DAL.Models;
 using Beatecho.Wins;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,7 +24,7 @@ namespace Beatecho
         {
             InitializeComponent();
 
-            MainWin win = new MainWin();
+            Views.Wins.UserWindow win = new Views.Wins.UserWindow();
             win.Show();
             this.Close();
 

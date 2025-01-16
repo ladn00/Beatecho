@@ -14,56 +14,22 @@ using System.Windows.Shapes;
 using Beatecho.DAL;
 using Beatecho.DAL.Models;
 
-namespace Beatecho.Wins
+namespace Beatecho.Views.Wins
 {
     /// <summary>
     /// Логика взаимодействия для MainWin.xaml
     /// </summary>
-    public partial class MainWin : Window
+    public partial class UserWindow : Window
     {
         List<Song> songs;
         Player player;
 
-        public MainWin()
+        public UserWindow()
         {
             InitializeComponent();
             player = new Player(mediaElement, CurrentSongBar, TrackSlider);
             ViewModels.PlayerViewModel.player = player;
-            ContentFrame.NavigationService.Navigate(new Views.Pages.MainPage(player));
-        }
-
-        private void Next(object sender, RoutedEventArgs e)
-        {
-            player.PlayNext();
-        }
-
-        private void Previous(object sender, RoutedEventArgs e)
-        {
-            player.PlayPrev();
-        }
-
-        private void Play(object sender, RoutedEventArgs e)
-        {
-            if (player.IsPlaying)
-                player.Pause();
-            else
-                if (player.CurrentSong != null)
-                player.Play();
-        }
-
-        private void TrackSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            player.ValueOfBarChanged();
-        }
-
-        private void TrackSlider_DragStarted(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e)
-        {
-            player.DragStarted();
-        }
-
-        private void TrackSlider_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
-        {
-            player.DragCompleted();
+            ContentFrame.NavigationService.Navigate(new Pages.MainPage(player));
         }
 
         private void MediaOpened(object sender, RoutedEventArgs e)
