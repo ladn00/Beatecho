@@ -21,7 +21,6 @@ namespace Beatecho.Views.Wins
     /// </summary>
     public partial class UserWindow : Window
     {
-        List<Song> songs;
         Player player;
 
         public UserWindow()
@@ -30,41 +29,6 @@ namespace Beatecho.Views.Wins
             player = new Player(mediaElement, CurrentSongBar, TrackSlider);
             ViewModels.PlayerViewModel.player = player;
             ContentFrame.NavigationService.Navigate(new Pages.MainPage(player));
-        }
-
-        private void MediaOpened(object sender, RoutedEventArgs e)
-        {
-            if (mediaElement.NaturalDuration.HasTimeSpan)
-            {
-                TrackSlider.Maximum = mediaElement.NaturalDuration.TimeSpan.TotalSeconds;
-            }
-            else
-            {
-                TrackSlider.Maximum = 100;
-            }
-        }
-
-        private void MediaEnded(object sender, RoutedEventArgs e)
-        {
-            player.MediaEnded();
-        }
-
-        private void Slider_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            var position = e.GetPosition(TrackSlider);
-            double newValue = (position.X / TrackSlider.ActualWidth) * TrackSlider.Maximum;
-            TrackSlider.Value = newValue;
-            player.ValueOfBarChanged();
-        }
-
-        private void Volume_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            mediaElement.Volume = volumeSlider.Value;
-        }
-
-        private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            mediaElement.Volume = volumeSlider.Value;
         }
     }
 }

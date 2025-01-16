@@ -423,7 +423,16 @@
         <vm:PlayerViewModel />
     </Window.DataContext>
     <Grid>
-        <MediaElement x:Name="mediaElement" LoadedBehavior="Manual" UnloadedBehavior="Stop" MediaOpened="MediaOpened" MediaEnded="MediaEnded"/>
+        <MediaElement x:Name="mediaElement" LoadedBehavior="Manual" UnloadedBehavior="Stop">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MediaOpened">
+                    <i:InvokeCommandAction Command="{Binding MediaOpenedCommand}" />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="MediaEnded">
+                    <i:InvokeCommandAction Command="{Binding MediaEndedCommand}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </MediaElement>
         <!-- Основной контейнер -->
         <Border Background="#191414" CornerRadius="10">
             <Grid>
@@ -520,6 +529,9 @@
                                     <i:EventTrigger EventName="Thumb.DragCompleted">
                                         <i:InvokeCommandAction Command="{Binding SliderDragCompletedCommand}" />
                                     </i:EventTrigger>
+                                    <i:EventTrigger EventName="PreviewMouseDown">
+                                        <i:InvokeCommandAction Command="{Binding TrackPreviewMouseDownCommand}" CommandParameter="{Binding ElementName=TrackSlider}" />
+                                    </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </Slider>
                         </StackPanel>
@@ -527,7 +539,16 @@
                         <!-- Громкость -->
                         <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="10" VerticalAlignment="Center">
                             <Image Source="../../imgs/volume.png" Width="15" Margin="0, 0, 5, 0"/>
-                            <Slider x:Name="volumeSlider" Minimum="0" Maximum="1" Value="0.5" ValueChanged="VolumeSlider_ValueChanged" PreviewMouseDown="Volume_MouseDown" Width="100" />
+                            <Slider x:Name="volumeSlider" Minimum="0" Maximum="100" Value="50" Width="100">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="ValueChanged">
+                                        <i:InvokeCommandAction Command="{Binding VolumeChangedCommand}" CommandParameter="{Binding Value, ElementName=volumeSlider}"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="PreviewMouseDown">
+                                        <i:InvokeCommandAction Command="{Binding VolumeMouseDownCommand}" CommandParameter="{Binding ElementName=volumeSlider}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Slider>
                         </StackPanel>
                     </Grid>
                 </Border>
