@@ -10,6 +10,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Navigation;
 
 namespace Beatecho.ViewModels
 {
@@ -21,11 +22,13 @@ namespace Beatecho.ViewModels
         public MainPageViewModel()
         {
             PlayPauseAlbumCommand = new RelayCommand<Album>(PlayPauseAlbum);
+            OpenAlbumCommand = new RelayCommand<object>(OpenAlbum);
             player = PlayerViewModel.player;
             Albums = new ObservableCollection<Album>(LoadAlbums());
         }
 
         public ICommand PlayPauseAlbumCommand { get; }
+        public ICommand OpenAlbumCommand { get; }
 
         private IEnumerable<Album> LoadAlbums()
         {
@@ -34,6 +37,19 @@ namespace Beatecho.ViewModels
                 return db.Albums.ToList();
             }
         }
+
+        private void OpenAlbum(object parameter)
+        {
+            if (parameter is Album selectedAlbum)
+            {
+                var albumPageViewModel = new AlbumPageViewModel(selectedAlbum);
+
+                var albumPage = new AlbumPage(selectedAlbum);
+
+                Views.Wins.UserWindow.frame.NavigationService.Navigate(albumPage);
+            }
+        }
+
         private void PlayPauseAlbum(Album album)
         {
             if (player == null || album == null)
@@ -82,7 +98,6 @@ namespace Beatecho.ViewModels
                     }
                 }
             }
-
             return songs;
         }
 

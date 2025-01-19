@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ using System.Windows.Media.Animation;
 
 namespace Beatecho.DAL.Models
 {
-    public class Song
+    public class Song : INotifyPropertyChanged
     {
         public int Id { get; set; }
         public string? Title { get; set; }
@@ -66,8 +67,34 @@ namespace Beatecho.DAL.Models
             }
         }
 
+        public int TrackNumber
+        {
+            get
+            {
+                using (ApplicationContext db = new ApplicationContext())
+                {
+                    var songWithAlbumSongs = db.Songs
+                        .Include(s => s.AlbumSongs)
+                        .FirstOrDefault(s => s.Id == Id);
+
+                    var songImgFromAlb = songWithAlbumSongs?.AlbumSongs.FirstOrDefault();
+
+
+                    if (songImgFromAlb != null)
+                    {
+                        return songImgFromAlb.TrackNum;
+                    }
+                    return 0;
+                }
+            }
+        }
+
         public virtual ICollection<AlbumSongs> AlbumSongs { get; set; } = new List<AlbumSongs>();
         public virtual ICollection<SongGenre> SongGenres { get; set; } = new List<SongGenre>();
         public virtual ICollection<PlaylistSongs> PlaylistSongs { get; set; } = new List<PlaylistSongs>();
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string propertyName) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

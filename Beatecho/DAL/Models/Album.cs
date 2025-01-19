@@ -17,5 +17,27 @@ namespace Beatecho.DAL.Models
 
         public virtual ICollection<AlbumSongs> AlbumSongs { get; set; } = new List<AlbumSongs>();
         public virtual ICollection<ArtistAlbums> ArtistAlbums { get; set; } = new List<ArtistAlbums>();
+
+        public virtual string Artist
+        {
+            get
+            {
+                using (ApplicationContext db = new ApplicationContext())
+                {
+                    var AlbumWithArtists = db.Albums
+                        .Include(s => s.ArtistAlbums)
+                        .FirstOrDefault(s => s.Id == Id);
+
+                    var OneAlbumArtist = AlbumWithArtists?.ArtistAlbums.FirstOrDefault();
+
+
+                    if (OneAlbumArtist != null)
+                    {
+                        return OneAlbumArtist.Artist.Name;
+                    }
+                    return "D:\\проекты вс\\Beatecho\\Beatecho\\Wins\\1.jpg";
+                }
+            }
+        }
     }
 }

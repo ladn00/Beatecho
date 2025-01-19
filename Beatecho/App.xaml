@@ -2,8 +2,14 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Beatecho"
-             StartupUri="MainWindow.xaml">
+             StartupUri="Views/Wins/UserWindow.xaml">
     <Application.Resources>
+        <SolidColorBrush x:Key="MainBackground" Color="#000000"/>
+        <SolidColorBrush x:Key="ScndBackground" Color="#191414"/>
+        <SolidColorBrush x:Key="CellsBackground" Color="#333333"/>
+        <SolidColorBrush x:Key="MainFontColor" Color="White"/>
+        <SolidColorBrush x:Key="ScndFontColor" Color="Gray"/>
+        
         <Style TargetType="ScrollBar">
             <Setter Property="Background" Value="LightGray"/>
             <Setter Property="Foreground" Value="DarkBlue"/>

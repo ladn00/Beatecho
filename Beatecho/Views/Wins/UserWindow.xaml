@@ -10,7 +10,7 @@
     <Window.Resources>
         
         <Style x:Key="NavButtonStyle" TargetType="Button">
-            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Foreground" Value="{StaticResource MainFontColor}"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
             <Setter Property="FontSize" Value="14"/>
@@ -19,15 +19,12 @@
         </Style>
 
         <Style x:Key="ControlButtonStyle" TargetType="Button">
-            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Foreground" Value="{StaticResource MainFontColor}"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="Padding" Value="10"/>
         </Style>
-
-
-
 
         <!--Control colors.-->
         <Color x:Key="WindowColor">#FFE8EDF9</Color>
@@ -449,7 +446,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <!-- Боковая панель -->
-                <Border Width="200" Background="#000000" CornerRadius="10,0,0,10" Grid.RowSpan="2">
+                <Border Width="200" Background="{StaticResource MainBackground}" CornerRadius="10,0,0,10" Grid.RowSpan="2">
                     <StackPanel VerticalAlignment="Top" Margin="10">
                         <Image Source="D:\проекты вс\Beatecho\Beatecho\Wins\1.jpg" Height="40" Margin="0,10,0,20"/>
 
@@ -466,7 +463,7 @@
                 </Border>
 
                 <!-- Верхняя панель навигации -->
-                <Border Grid.Column="1" Height="60" Background="#191414" CornerRadius="0,10,0,0">
+                <Border Grid.Column="1" Height="60" Background="{StaticResource ScndBackground}" CornerRadius="0,10,0,0">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -488,7 +485,7 @@
                 <Frame x:Name="ContentFrame" Grid.Column="1" Grid.Row="1" Source="ContentPage.xaml" NavigationUIVisibility="Hidden"/>
 
                 <!-- Нижняя панель управления -->
-                <Border Grid.Row="2" Grid.ColumnSpan="2" Height="80" Background="#000000" CornerRadius="0,0,10,10" VerticalAlignment="Bottom">
+                <Border Grid.Row="2" Grid.ColumnSpan="2" Height="80" Background="{StaticResource MainBackground}" CornerRadius="0,0,10,10" VerticalAlignment="Bottom">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -500,8 +497,8 @@
                         <StackPanel Orientation="Horizontal" Margin="10" Name="CurrentSongBar">
                             <Image Source="{Binding Photo}" Width="50" Height="50"/>
                             <StackPanel Margin="10,0,0,0">
-                                <TextBlock Text="{Binding Title}" Foreground="White"/>
-                                <TextBlock Text="{Binding Artist}" Foreground="Gray"/>
+                                <TextBlock Text="{Binding Title}" Foreground="{StaticResource MainFontColor}"/>
+                                <TextBlock Text="{Binding Artist}" Foreground="{StaticResource ScndFontColor}"/>
                             </StackPanel>
                         </StackPanel>
 

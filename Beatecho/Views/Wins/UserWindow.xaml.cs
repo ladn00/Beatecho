@@ -22,12 +22,14 @@ namespace Beatecho.Views.Wins
     public partial class UserWindow : Window
     {
         Player player;
+        public static Frame frame;
 
         public UserWindow()
         {
             InitializeComponent();
             player = new Player(mediaElement, CurrentSongBar, TrackSlider);
             ViewModels.PlayerViewModel.player = player;
+            frame = ContentFrame;
             ContentFrame.NavigationService.Navigate(new Pages.MainPage(player));
         }
     }
