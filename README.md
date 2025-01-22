@@ -3,6 +3,6 @@
 Музыкальний сервис. PostgreSQL, WPF, MVVM. 
 В разработке
 
-![image](https://github.com/user-attachments/assets/39a9d250-5d06-410a-86b7-4b7ec2ebd8fb)
+![image](https://github.com/user-attachments/assets/7a4dcd7a-6aa9-45fb-8aa9-d61d48ac9f7d)
 
-![image](https://github.com/user-attachments/assets/8116750b-17dc-4b06-a510-136b554bcacf)
+![image](https://github.com/user-attachments/assets/69159e5e-0692-41ee-b2c8-382c35f1e208)
