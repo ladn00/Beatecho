@@ -91,6 +91,7 @@
                     <GridViewColumn Header="Длительность" 
                             DisplayMemberBinding="{Binding Duration}" 
                             Width="100"/>
+
                 </GridView>
             </ListView.View>
         </ListView>

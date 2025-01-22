@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using System.Windows.Media;
-using Beatecho.DAL;
+﻿using Beatecho.DAL;
 using Beatecho.DAL.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Windows.Input;
 
 namespace Beatecho.ViewModels
 {
@@ -54,19 +48,19 @@ namespace Beatecho.ViewModels
             if (parameter is not Song song)
                 return;
 
-            List<Song> Queue = new List<Song>();
-            Queue.Add(parameter as Song);
-
             if (!player.IsPlaying && player.CurrentSong == parameter)
             {
                 player.Play();
+                return;
             }
-            else if(player.IsPlaying && player.CurrentSong == parameter)
+            else if (player.IsPlaying && player.CurrentSong == parameter)
             {
                 player.Pause();
+                return;
             }
-            //
-            player.SetQueue(Queue);
+
+            player.SetQueue(Songs.ToList());
+            player.Index = song.TrackNumber - 1;
             player.SetSong();
             player.Play();
         }
