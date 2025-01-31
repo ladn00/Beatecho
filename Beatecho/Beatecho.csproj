@@ -9,6 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="imgs\next.png" />
+    <None Remove="imgs\play.png" />
+    <None Remove="imgs\prev.png" />
     <None Remove="imgs\volume.png" />
   </ItemGroup>
 
@@ -25,9 +28,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="imgs\volume.png" />
+    <Content Include="imgs\next.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="imgs\play.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="imgs\prev.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="imgs\volume.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
-
+  
   <ItemGroup>
     <Compile Update="Views\Pages\MainPage.xaml.cs">
       <SubType>Code</SubType>
