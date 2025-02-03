@@ -27,5 +27,13 @@ namespace Beatecho.Views.Pages
             InitializeComponent();
             DataContext = new AlbumPageViewModel(album);
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button)sender;
+            button.ContextMenu.PlacementTarget = button;
+            button.ContextMenu.IsOpen = true;
+            e.Handled = true;
+        }
     }
 }

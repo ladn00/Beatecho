@@ -42,8 +42,6 @@ namespace Beatecho.ViewModels
         {
             if (parameter is Album selectedAlbum)
             {
-                var albumPageViewModel = new AlbumPageViewModel(selectedAlbum);
-
                 var albumPage = new AlbumPage(selectedAlbum);
 
                 Views.Wins.UserWindow.frame.NavigationService.Navigate(albumPage);

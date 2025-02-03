@@ -30,6 +30,7 @@ namespace Beatecho.Wins
             player = new Player(mediaElement, CurrentSongBar, TrackSlider);
             ViewModels.PlayerViewModel.player = player;
             ContentFrame.NavigationService.Navigate(new Views.Pages.MainPage(player));
+            
         }
 
         private void Next(object sender, RoutedEventArgs e)

@@ -1,9 +1,11 @@
 ﻿using Beatecho.DAL;
 using Beatecho.DAL.Models;
+using Beatecho.Views.Pages;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
+using System.Windows.Navigation;
 
 namespace Beatecho.ViewModels
 {
@@ -11,6 +13,7 @@ namespace Beatecho.ViewModels
     {
 
         public ICommand PlaySongCommand { get; }
+        public ICommand NavigateToArtistCommand { get; }
 
         private Player player;
         private ObservableCollection<Song> _songs;
@@ -41,6 +44,29 @@ namespace Beatecho.ViewModels
             Songs = GetSongsFromAlbum(album);
             player = PlayerViewModel.player;
             PlaySongCommand = new RelayCommand<object>(PlaySong);
+            NavigateToArtistCommand = new RelayCommand<Album>(NavigateToArtist);
+        }
+
+        private void NavigateToArtist(Album album)
+        {
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                var artist = db.Albums
+                .Include(a => a.ArtistAlbums)
+                .ThenInclude(aa => aa.Artist)
+                .FirstOrDefault(a => a.Id == album.Id)
+                ?.ArtistAlbums
+                .FirstOrDefault()
+                ?.Artist;
+
+                if (artist != null)
+                {
+                    var artistPage = new ArtistPage(artist);
+
+                    Views.Wins.UserWindow.frame.NavigationService.Navigate(artistPage);
+                }
+            }
+            
         }
 
         private void PlaySong(object parameter)

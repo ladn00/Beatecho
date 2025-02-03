@@ -25,6 +25,8 @@ namespace Beatecho
             InitializeComponent();
 
             Views.Wins.UserWindow win = new Views.Wins.UserWindow();
+
+            
             win.Show();
             this.Close();
 
