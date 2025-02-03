@@ -27,6 +27,7 @@ namespace Beatecho
         public Slider TrackSlider { get; set; }
         private bool isDragging = false;
         private DispatcherTimer Timer { get; set; }
+        private bool IsCurrentlyPlaying { get; set; }
 
         public Player(MediaElement mediaElement, StackPanel currentSongBar, Slider trackSlider)
         {

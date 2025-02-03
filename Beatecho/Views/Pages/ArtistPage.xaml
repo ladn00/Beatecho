@@ -81,6 +81,9 @@
                     <Trigger Property="IsMouseOver" Value="True">
                         <Setter Property="Background" Value="#33FFFFFF"/>
                     </Trigger>
+                    <DataTrigger Binding="{Binding IsCurrentlyPlaying}" Value="True">
+                        <Setter Property="Background" Value="#1DB954"/>
+                    </DataTrigger>
                 </Style.Triggers>
             </Style>
         </ListView.ItemContainerStyle>

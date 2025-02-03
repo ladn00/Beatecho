@@ -32,5 +32,52 @@ namespace Beatecho.Views.Wins
             frame = ContentFrame;
             ContentFrame.NavigationService.Navigate(new Pages.MainPage(player));
         }
+
+        private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2)
+            {
+                if (WindowState == WindowState.Maximized)
+                    WindowState = WindowState.Normal;
+                else
+                    WindowState = WindowState.Maximized;
+            }
+            else
+            {
+                if (WindowState == WindowState.Maximized)
+                {
+                    // Получаем позицию курсора относительно окна
+                    var point = PointToScreen(e.GetPosition(this));
+                    
+                    // Восстанавливаем нормальное состояние окна
+                    WindowState = WindowState.Normal;
+
+                    // Вычисляем новую позицию окна так, чтобы курсор оказался в точке захвата
+                    var ratio = ActualWidth / SystemParameters.WorkArea.Width;
+                    Left = point.X - (ActualWidth * (point.X / SystemParameters.WorkArea.Width));
+                    Top = point.Y - (e.GetPosition(this).Y * ratio);
+                }
+                
+                DragMove();
+            }
+        }
+
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void MaximizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (WindowState == WindowState.Maximized)
+                WindowState = WindowState.Normal;
+            else
+                WindowState = WindowState.Maximized;
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }
