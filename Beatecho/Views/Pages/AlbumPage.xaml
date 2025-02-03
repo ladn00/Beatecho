@@ -8,134 +8,205 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="AlbumPage">
-    <Page.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" 
+                  HorizontalScrollBarVisibility="Disabled">
+        <Grid Background="#121212">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-    </Page.Resources>
-    <Grid Background="#121212">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Margin="20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-        <Grid Grid.Row="0" Margin="20">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+                <Image Source="{Binding Album.Photo}" 
+                       Width="200" 
+                       Height="200" 
+                       VerticalAlignment="Top"
+                       Grid.Column="0"/>
 
-            <Image Source="{Binding Album.Photo}" 
-                   Width="200" 
-                   Height="200" 
-                   VerticalAlignment="Top"
-                   Grid.Column="0"/>
+                <StackPanel Grid.Column="1" 
+                            VerticalAlignment="Center" 
+                            Margin="20,0,0,0">
+                    <TextBlock Text="{Binding Album.Title}" 
+                               FontSize="24" 
+                               FontWeight="Bold" 
+                               Foreground="White"/>
+                    <TextBlock Text="{Binding Album.Artist}" 
+                               FontSize="18" 
+                               Foreground="LightGray" 
+                               Margin="0,5,0,0"
+                               Cursor="Hand">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="TextDecorations" Value="Underline"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                        <TextBlock.InputBindings>
+                            <MouseBinding MouseAction="LeftClick" 
+                                        Command="{Binding NavigateToArtistCommand}"
+                                        CommandParameter="{Binding Album}"/>
+                        </TextBlock.InputBindings>
+                    </TextBlock>
+                    <TextBlock Text="{Binding Album.ReleaseYear}" 
+                                FontSize="18" 
+                                Foreground="LightGray" 
+                                Margin="0,5,0,0"/>
+                </StackPanel>
+            </Grid>
 
-            <StackPanel Grid.Column="1" 
-                        VerticalAlignment="Center" 
-                        Margin="20,0,0,0">
-                <TextBlock Text="{Binding Album.Title}" 
-                           FontSize="24" 
-                           FontWeight="Bold" 
-                           Foreground="White"/>
-                <TextBlock Text="{Binding Album.Artist}" 
-                           FontSize="18" 
-                           Foreground="LightGray" 
-                           Margin="0,5,0,0"
-                           Cursor="Hand">
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="TextDecorations" Value="Underline"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                    <TextBlock.InputBindings>
-                        <MouseBinding MouseAction="LeftClick" 
-                                    Command="{Binding NavigateToArtistCommand}"
-                                    CommandParameter="{Binding Album}"/>
-                    </TextBlock.InputBindings>
-                </TextBlock>
-                <TextBlock Text="{Binding Album.ReleaseYear}" 
-                            FontSize="18" 
-                            Foreground="LightGray" 
-                            Margin="0,5,0,0"/>
-            </StackPanel>
-        </Grid>
-
-        <ListView Grid.Row="1" 
-          Margin="20,0,20,20" 
-          Background="Transparent" 
-          BorderThickness="0"
-          Foreground="White"
-          ScrollViewer.VerticalScrollBarVisibility="Auto"
-          ItemsSource="{Binding Songs}">
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="Foreground" Value="White"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="ListViewItem">
-                                <Border Background="{TemplateBinding Background}"
-                                        BorderThickness="0"
-                                        Padding="5">
-                                    <GridViewRowPresenter />
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#33FFFFFF"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </ListView.ItemContainerStyle>
-
-            <ListView.Resources>
-                <Style TargetType="GridViewColumnHeader">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="Foreground" Value="White"/>
-                    <Setter Property="BorderThickness" Value="0"/>
-                    <Setter Property="Padding" Value="5"/>
-                </Style>
-            </ListView.Resources>
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="#" Width="30">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <TextBlock Text="{Binding TrackNumber}" 
-                                             VerticalAlignment="Center" 
-                                             HorizontalAlignment="Center">
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListViewItem}}" Value="True">
-                                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-
-                                    <Button Background="Transparent"
+            <ListView Grid.Row="1" 
+              Margin="20,0,-10,20"
+              Background="Transparent" 
+              BorderThickness="0"
+              Foreground="White"
+              ScrollViewer.VerticalScrollBarVisibility="Disabled"
+              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+              ScrollViewer.CanContentScroll="False"
+              ItemsSource="{Binding Songs}">
+                <ListView.Template>
+                    <ControlTemplate>
+                        <ItemsPresenter />
+                    </ControlTemplate>
+                </ListView.Template>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="Height" Value="45"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListViewItem">
+                                    <Border Background="{TemplateBinding Background}"
                                             BorderThickness="0"
-                                            Padding="0"
-                                            Command="{Binding DataContext.PlaySongCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+                                            Padding="5">
+                                        <GridViewRowPresenter />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#33FFFFFF"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListView.ItemContainerStyle>
+
+                <ListView.Resources>
+                    <Style TargetType="GridViewColumnHeader">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Padding" Value="5"/>
+                    </Style>
+                </ListView.Resources>
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="#" Width="30">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <TextBlock Text="{Binding TrackNumber}" 
+                                                 VerticalAlignment="Center" 
+                                                 HorizontalAlignment="Center">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListViewItem}}" Value="True">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+
+                                        <Button Background="Transparent"
+                                                BorderThickness="0"
+                                                Padding="0"
+                                                Command="{Binding DataContext.PlaySongCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+                                                CommandParameter="{Binding}">
+                                            <Button.Style>
+                                                <Style TargetType="Button">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="Button">
+                                                                <ContentPresenter/>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListViewItem}}" Value="True">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                            <Image Source="/imgs/play-button.png" 
+                                                   Width="12"/>
+                                        </Button>
+                                    </Grid>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Название" 
+                                      DisplayMemberBinding="{Binding Title}" 
+                                      Width="500"/>
+
+                        <GridViewColumn Header="Длительность" 
+                                      DisplayMemberBinding="{Binding Duration}" 
+                                      Width="100"/>
+
+                        <GridViewColumn Width="40">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="❤️" 
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            Foreground="White"
+                                            Padding="5,0"
+                                            Command="{Binding DataContext.AddToFavoritesCommand, 
+                                                      RelativeSource={RelativeSource AncestorType=ListView}}"
                                             CommandParameter="{Binding}">
                                         <Button.Style>
                                             <Style TargetType="Button">
+                                                <Setter Property="Opacity" Value="0.6"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsMouseOver, 
+                                                                 RelativeSource={RelativeSource AncestorType=ListViewItem}}" 
+                                                                 Value="True">
+                                                        <Setter Property="Opacity" Value="1"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Width="70">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="..." 
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            Foreground="White"
+                                            Padding="5,0"
+                                            HorizontalAlignment="Right"
+                                            Click="Button_Click">
+                                        <Button.Style>
+                                            <Style TargetType="Button">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
-                                                <Setter Property="Template">
-                                                    <Setter.Value>
-                                                        <ControlTemplate TargetType="Button">
-                                                            <ContentPresenter/>
-                                                        </ControlTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListViewItem}}" Value="True">
                                                         <Setter Property="Visibility" Value="Visible"/>
@@ -143,63 +214,29 @@
                                                 </Style.Triggers>
                                             </Style>
                                         </Button.Style>
-                                        <Image Source="/imgs/play-button.png" 
-                                               Width="12"/>
+                                        <Button.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Header="Добавить в любимые" 
+                                                          Command="{Binding DataContext.AddToFavoritesCommand, 
+                                                          RelativeSource={RelativeSource AncestorType=ListView}}"
+                                                          CommandParameter="{Binding}"/>
+                                                <MenuItem Header="Перейти к исполнителю"
+                                                          Command="{Binding DataContext.GoToArtistCommand,
+                                                          RelativeSource={RelativeSource AncestorType=ListView}}"
+                                                          CommandParameter="{Binding}"/>
+                                                <MenuItem Header="Добавить в плейлист"
+                                                          Command="{Binding DataContext.AddToPlaylistCommand,
+                                                          RelativeSource={RelativeSource AncestorType=ListView}}"
+                                                          CommandParameter="{Binding}"/>
+                                            </ContextMenu>
+                                        </Button.ContextMenu>
                                     </Button>
-                                </Grid>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-
-                    <GridViewColumn Header="Название" 
-                                  DisplayMemberBinding="{Binding Title}" 
-                                  Width="Auto"/>
-
-                    <GridViewColumn Header="Длительность" 
-                                  DisplayMemberBinding="{Binding Duration}" 
-                                  Width="100"/>
-
-                    <GridViewColumn Width="40">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Content="..." 
-                                        Background="Transparent"
-                                        BorderThickness="0"
-                                        Foreground="White"
-                                        Padding="5,0"
-                                        Click="Button_Click">
-                                    <Button.Style>
-                                        <Style TargetType="Button">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListViewItem}}" Value="True">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Button.Style>
-                                    <Button.ContextMenu>
-                                        <ContextMenu>
-                                            <MenuItem Header="Добавить в любимые" 
-                                                      Command="{Binding DataContext.AddToFavoritesCommand, 
-                                                      RelativeSource={RelativeSource AncestorType=ListView}}"
-                                                      CommandParameter="{Binding}"/>
-                                            <MenuItem Header="Перейти к исполнителю"
-                                                      Command="{Binding DataContext.GoToArtistCommand,
-                                                      RelativeSource={RelativeSource AncestorType=ListView}}"
-                                                      CommandParameter="{Binding}"/>
-                                            <MenuItem Header="Добавить в плейлист"
-                                                      Command="{Binding DataContext.AddToPlaylistCommand,
-                                                      RelativeSource={RelativeSource AncestorType=ListView}}"
-                                                      CommandParameter="{Binding}"/>
-                                        </ContextMenu>
-                                    </Button.ContextMenu>
-                                </Button>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                </GridView>
-            </ListView.View>
-        </ListView>
-    </Grid>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+    </ScrollViewer>
 </Page>

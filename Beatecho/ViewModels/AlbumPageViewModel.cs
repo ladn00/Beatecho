@@ -14,6 +14,7 @@ namespace Beatecho.ViewModels
 
         public ICommand PlaySongCommand { get; }
         public ICommand NavigateToArtistCommand { get; }
+        public ICommand AddToFavoritesCommand { get; }
 
         private Player player;
         private ObservableCollection<Song> _songs;
@@ -45,6 +46,12 @@ namespace Beatecho.ViewModels
             player = PlayerViewModel.player;
             PlaySongCommand = new RelayCommand<object>(PlaySong);
             NavigateToArtistCommand = new RelayCommand<Album>(NavigateToArtist);
+            AddToFavoritesCommand = new RelayCommand<Song>(AddSongToFavorites);
+        }
+
+        public void AddSongToFavorites(Song song)
+        {
+
         }
 
         private void NavigateToArtist(Album album)
