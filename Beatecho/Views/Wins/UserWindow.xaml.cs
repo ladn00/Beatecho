@@ -13,7 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Beatecho.DAL;
 using Beatecho.DAL.Models;
-
+using Beatecho.ViewModels;
+using Beatecho.Views.Pages;
 namespace Beatecho.Views.Wins
 {
     /// <summary>
@@ -30,7 +31,7 @@ namespace Beatecho.Views.Wins
             player = new Player(mediaElement, CurrentSongBar, TrackSlider);
             ViewModels.PlayerViewModel.player = player;
             frame = ContentFrame;
-            ContentFrame.NavigationService.Navigate(new Pages.MainPage(player));
+            ContentFrame.NavigationService.Navigate(new MainPage());
         }
 
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -46,13 +47,10 @@ namespace Beatecho.Views.Wins
             {
                 if (WindowState == WindowState.Maximized)
                 {
-                    // Получаем позицию курсора относительно окна
                     var point = PointToScreen(e.GetPosition(this));
                     
-                    // Восстанавливаем нормальное состояние окна
                     WindowState = WindowState.Normal;
 
-                    // Вычисляем новую позицию окна так, чтобы курсор оказался в точке захвата
                     var ratio = ActualWidth / SystemParameters.WorkArea.Width;
                     Left = point.X - (ActualWidth * (point.X / SystemParameters.WorkArea.Width));
                     Top = point.Y - (e.GetPosition(this).Y * ratio);
@@ -78,6 +76,11 @@ namespace Beatecho.Views.Wins
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void GoToMainPage(object sender, RoutedEventArgs e)
+        {
+            frame.NavigationService.Navigate(new MainPage());
         }
     }
 }

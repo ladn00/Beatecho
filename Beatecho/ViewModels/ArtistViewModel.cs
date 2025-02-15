@@ -112,12 +112,6 @@ namespace Beatecho.ViewModels
             LoadArtistData();
         }
 
-        private void ExecuteOpenAlbum(Album album)
-        {
-            // Здесь логика открытия альбома
-            // Например: NavigationService.Navigate(new AlbumPage(album));
-        }
-
         private void PlaySong(object parameter)
         {
             if (parameter is not Song song)

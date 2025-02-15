@@ -4,6 +4,7 @@ using Beatecho.Views.Pages;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
 
@@ -19,6 +20,9 @@ namespace Beatecho.ViewModels
         private Player player;
         private ObservableCollection<Song> _songs;
         private Album _album;
+        private Dictionary<int, bool> _favoritesState;
+        private User _currentUser;
+
 
         public ObservableCollection<Song> Songs
         {
@@ -39,19 +43,90 @@ namespace Beatecho.ViewModels
             }
         }
 
+        public string FavoriteIcon
+        {
+            get
+            {
+                if (Songs == null || !Songs.Any()) return "🤍";
+                var currentSong = Songs.FirstOrDefault();
+                return currentSong != null ? GetFavoriteIcon(currentSong.Id) : "🤍";
+            }
+        }
+
+        public string GetFavoriteIcon(int songId)
+        {
+            return _favoritesState.ContainsKey(songId) && _favoritesState[songId] ? "❤️" : "🤍";
+        }
+
+        public bool IsSongFavorite(int songId)
+        {
+            return _favoritesState.ContainsKey(songId) && _favoritesState[songId];
+        }
+
+        private void LoadFavoritesState()
+        {
+            if (_currentUser == null) return;
+
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                var favorites = db.FavoriteTracks
+                    .Where(ft => ft.UserId == _currentUser.Id)
+                    .ToList();
+
+                foreach (var song in Songs)
+                {
+                    _favoritesState[song.Id] = favorites.Any(f => f.SongId == song.Id);
+                }
+            }
+        }
+
         public AlbumPageViewModel(Album album)
         {
             Album = album;
             Songs = GetSongsFromAlbum(album);
             player = PlayerViewModel.player;
+
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                _currentUser = db.Users.FirstOrDefault(u => u.Id == 1);
+            }
+            _favoritesState = new Dictionary<int, bool>();
             PlaySongCommand = new RelayCommand<object>(PlaySong);
             NavigateToArtistCommand = new RelayCommand<Album>(NavigateToArtist);
             AddToFavoritesCommand = new RelayCommand<Song>(AddSongToFavorites);
+
+            LoadFavoritesState();
         }
 
         public void AddSongToFavorites(Song song)
         {
+            if (_currentUser == null || song == null)
+                return;
 
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                var existingFavorite = db.FavoriteTracks
+                    .FirstOrDefault(ft => ft.UserId == _currentUser.Id && ft.SongId == song.Id);
+
+                if (existingFavorite == null)
+                {
+                    var favoriteTrack = new FavoriteTracks
+                    {
+                        UserId = _currentUser.Id,
+                        SongId = song.Id
+                    };
+
+                    db.FavoriteTracks.Add(favoriteTrack);
+                    _favoritesState[song.Id] = true;
+                }
+                else
+                {
+                    db.FavoriteTracks.Remove(existingFavorite);
+                    _favoritesState[song.Id] = false;
+                }
+                db.SaveChanges();
+            }
+            OnPropertyChanged(nameof(Songs));
         }
 
         private void NavigateToArtist(Album album)

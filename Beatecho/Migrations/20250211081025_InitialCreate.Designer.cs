@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Beatecho.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20241229182811_AddPlaylistUsers")]
-    partial class AddPlaylistUsers
+    [Migration("20250211081025_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

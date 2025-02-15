@@ -4,12 +4,15 @@ using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Input;
+using Beatecho.DAL;
+using Beatecho.Views.Pages;
 
 namespace Beatecho.ViewModels
 {
     public class PlayerViewModel : INotifyPropertyChanged
     {
         public static Player player;
+        private User user;
 
         public PlayerViewModel()
         {
@@ -24,6 +27,11 @@ namespace Beatecho.ViewModels
             VolumeChangedCommand = new RelayCommand<double>(OnVolumeChanged);
             VolumeMouseDownCommand = new RelayCommand<Slider>(OnVolumeMouseDown);
             TrackPreviewMouseDownCommand = new RelayCommand<Slider>(TrackMouseDown);
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                user = db.Users.FirstOrDefault(u => u.Id == 1);
+            }
+            OpenFavoritesCommand = new RelayCommand(OpenFavorites);
         }
 
         public ICommand PlayPauseCommand { get; }
@@ -38,6 +46,7 @@ namespace Beatecho.ViewModels
         public ICommand VolumeChangedCommand { get; }
         public ICommand VolumeMouseDownCommand { get; }
         public ICommand TrackPreviewMouseDownCommand { get; }
+        public ICommand OpenFavoritesCommand { get; }
 
         private void PlayPause()
         {
@@ -113,6 +122,13 @@ namespace Beatecho.ViewModels
             double newValue = slider.Minimum + (slider.Maximum - slider.Minimum) * normalizedPosition;
             slider.Value = newValue;
             player.MediaElement.Volume = newValue;
+        }
+
+        private void OpenFavorites()
+        {
+            var favoritePage = new FavoritesPage(user);
+
+            Views.Wins.UserWindow.frame.NavigationService.Navigate(favoritePage);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

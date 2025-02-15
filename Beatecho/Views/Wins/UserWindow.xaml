@@ -472,16 +472,18 @@
                 <!-- Боковая панель -->
                 <Border Width="200" Background="{StaticResource MainBackground}" CornerRadius="10,0,0,10" Grid.RowSpan="2">
                     <StackPanel VerticalAlignment="Top" Margin="10">
-                        <Image Source="D:\проекты вс\Beatecho\Beatecho\Wins\1.jpg" Height="40" Margin="0,10,0,20"/>
+                        <Image Source="1.jpg" Height="40" Margin="0,10,0,20"/>
 
                         <!-- Навигация -->
-                        <Button Style="{StaticResource NavButtonStyle}" Content="Главная"/>
+                        <Button Style="{StaticResource NavButtonStyle}" Content="Главная" Click="GoToMainPage"/>
                         <Button Style="{StaticResource NavButtonStyle}" Content="Поиск"/>
-                        <Button Style="{StaticResource NavButtonStyle}" Content="Моя медиатека"/>
+                        <Button Style="{StaticResource NavButtonStyle}" Content="Моя медиатека" />
 
                         <!-- Плейлисты -->
                         <TextBlock Text="ПЛЕЙЛИСТЫ" Foreground="Gray" Margin="0,20,0,10"/>
-                        <Button Style="{StaticResource NavButtonStyle}" Content="Любимые треки"/>
+                        <Button Style="{StaticResource NavButtonStyle}" 
+                Content="Любимые треки"
+                Command="{Binding OpenFavoritesCommand}"/>
                         <Button Style="{StaticResource NavButtonStyle}" Content="Недавно прослушанные"/>
                     </StackPanel>
                 </Border>

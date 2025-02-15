@@ -1,5 +1,4 @@
 ﻿using Beatecho.DAL;
-using Beatecho.Wins;
 using Beatecho.DAL.Models;
 using System;
 using System.Collections.Generic;
@@ -27,13 +26,9 @@ namespace Beatecho.Views.Pages
     /// </summary>
     public partial class MainPage : Page
     {
-        List<Album> albums;
-        Player player;
-
-        public MainPage(Player player)
+        public MainPage()
         {
             InitializeComponent();
-            this.player = player;
         }
     }
 }

@@ -23,6 +23,7 @@ namespace Beatecho.DAL
         public DbSet<PlaylistSongs> PlaylistSongs => Set<PlaylistSongs>();
         public DbSet<PlaylistUsers> PlaylistUsers => Set<PlaylistUsers>();
         public DbSet<ArtistAlbums> ArtistAlbums => Set<ArtistAlbums>();
+        public DbSet<FavoriteTracks> FavoriteTracks { get; set; }
 
         public ApplicationContext() => Database.EnsureCreated();
 
@@ -116,6 +117,19 @@ namespace Beatecho.DAL
                 .HasOne(ps => ps.User)
                 .WithMany(s => s.PlaylistUsers)
                 .HasForeignKey(ps => ps.UserId);
+
+            modelBuilder.Entity<FavoriteTracks>()
+            .HasKey(ft => new { ft.UserId, ft.SongId });
+
+            modelBuilder.Entity<FavoriteTracks>()
+                .HasOne(ft => ft.User)
+                .WithMany(u => u.FavoriteTracks)
+                .HasForeignKey(ft => ft.UserId);
+
+            modelBuilder.Entity<FavoriteTracks>()
+                .HasOne(ft => ft.Song)
+                .WithMany(s => s.FavoriteTracks)
+                .HasForeignKey(ft => ft.SongId);
 
         }
     }

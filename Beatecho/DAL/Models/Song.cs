@@ -92,6 +92,7 @@ namespace Beatecho.DAL.Models
         public virtual ICollection<AlbumSongs> AlbumSongs { get; set; } = new List<AlbumSongs>();
         public virtual ICollection<SongGenre> SongGenres { get; set; } = new List<SongGenre>();
         public virtual ICollection<PlaylistSongs> PlaylistSongs { get; set; } = new List<PlaylistSongs>();
+        public virtual ICollection<FavoriteTracks> FavoriteTracks { get; set; } = new List<FavoriteTracks>();
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName) =>

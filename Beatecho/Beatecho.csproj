@@ -13,7 +13,9 @@
     <None Remove="imgs\play-button.png" />
     <None Remove="imgs\play.png" />
     <None Remove="imgs\prev.png" />
+    <None Remove="imgs\unliked.png" />
     <None Remove="imgs\volume.png" />
+    <None Remove="Views\Wins\1.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,7 +35,11 @@
     <Resource Include="imgs\play-button.png" />
     <Resource Include="imgs\play.png" />
     <Resource Include="imgs\prev.png" />
+    <Resource Include="imgs\unliked.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="imgs\volume.png" />
+    <Resource Include="Views\Wins\1.jpg" />
   </ItemGroup>
 
 
@@ -44,6 +50,11 @@
     <Compile Update="Views\Wins\UserWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

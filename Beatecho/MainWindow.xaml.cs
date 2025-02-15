@@ -1,6 +1,5 @@
 ﻿using Beatecho.DAL;
 using Beatecho.DAL.Models;
-using Beatecho.Wins;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Text;
 using System.Windows;
