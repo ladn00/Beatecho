@@ -35,6 +35,7 @@ namespace Beatecho.Views.Pages
             button.ContextMenu.IsOpen = true;
             e.Handled = true;
         }
+
         private void ListView_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
             if (!e.Handled)

@@ -33,6 +33,7 @@ namespace Beatecho.ViewModels
                 OnPropertyChanged(nameof(Songs));
             }
         }
+
         public Album Album
         {
             get => _album;
@@ -188,7 +189,7 @@ namespace Beatecho.ViewModels
 
                     if (albumWithSongs != null)
                     {
-                        foreach (AlbumSongs s in albumWithSongs.AlbumSongs)
+                        for (AlbumSongs s in albumWithSongs.AlbumSongs)
                         {
                             if (s.Song != null)
                             {
