@@ -42,7 +42,7 @@ namespace Beatecho.ViewModels
         }
 
         public string Name => Artist?.Name;
-        public string ArtistImage => @"C:\Users\USER\Desktop\poppy-suffocate.png";
+        public string Photo => $"pack://application:,,,/imgs/Artists/{Artist?.Photo}";
         public string MonthlyListeners => "1,234,567 ежемесячных слушателей"; // Заглушка
 
         public ObservableCollection<Song> PopularTracks

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ using Beatecho.DAL;
 using Beatecho.DAL.Models;
 using Beatecho.ViewModels;
 using Beatecho.Views.Pages;
+using Microsoft.EntityFrameworkCore;
 namespace Beatecho.Views.Wins
 {
     /// <summary>
@@ -32,6 +34,11 @@ namespace Beatecho.Views.Wins
             ViewModels.PlayerViewModel.player = player;
             frame = ContentFrame;
             ContentFrame.NavigationService.Navigate(new MainPage());
+
+            using(ApplicationContext db = new ApplicationContext())
+            {
+                PlaylistListView.ItemsSource = new ObservableCollection<Playlist>(db.PlaylistUsers.Where(ft => ft.UserId == 1).Include(ft => ft.Playlist).Select(ft => ft.Playlist));
+            }
         }
 
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

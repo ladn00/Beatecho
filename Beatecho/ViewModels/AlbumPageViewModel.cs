@@ -189,7 +189,7 @@ namespace Beatecho.ViewModels
 
                     if (albumWithSongs != null)
                     {
-                        for (AlbumSongs s in albumWithSongs.AlbumSongs)
+                        foreach (AlbumSongs s in albumWithSongs.AlbumSongs)
                         {
                             if (s.Song != null)
                             {

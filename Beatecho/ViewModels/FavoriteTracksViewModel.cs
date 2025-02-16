@@ -29,15 +29,15 @@ namespace Beatecho.ViewModels
         }
 
         public ICommand PlaySongCommand { get; }
-        public ICommand AddToFavoritesCommand { get; }
         public ICommand GoToArtistCommand { get; }
         public ICommand AddToPlaylistCommand { get; }
+        public ICommand RemoveFromFavoritesCommand { get; }
 
         public FavoriteTracksViewModel(User user)
         {
             player = PlayerViewModel.player;
             PlaySongCommand = new RelayCommand<object>(PlaySong);
-            AddToFavoritesCommand = new RelayCommand<Song>(RemoveFromFavorites);
+            RemoveFromFavoritesCommand = new RelayCommand<Song>(RemoveFromFavorites);
             LoadFavoriteSongs();
             this.user = user;
         }

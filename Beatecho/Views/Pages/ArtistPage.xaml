@@ -7,7 +7,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ArtistPage"
-      Background="#191414">
+      Background="#121212">
     
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto" 
@@ -25,7 +25,7 @@
 
                 <!-- Шапка с информацией об артисте -->
                 <Grid Grid.Row="0" HorizontalAlignment="Stretch">
-                    <Image Source="{Binding ArtistImage}" Stretch="UniformToFill"/>
+                    <Image Source="{Binding Photo}" Stretch="UniformToFill"/>
                     <Grid Background="#80000000">
                         <StackPanel VerticalAlignment="Bottom" Margin="30">
                             <TextBlock Text="{Binding Name}" 

@@ -9,9 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="imgs\Artists\arca.png" />
+    <None Remove="imgs\Artists\fiona Apple.jpg" />
     <None Remove="imgs\next.png" />
     <None Remove="imgs\play-button.png" />
     <None Remove="imgs\play.png" />
+    <None Remove="imgs\playbut.png" />
+    <None Remove="imgs\Playlists\arca.png" />
     <None Remove="imgs\prev.png" />
     <None Remove="imgs\unliked.png" />
     <None Remove="imgs\volume.png" />
@@ -31,9 +35,21 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="imgs\Artists\arca.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="imgs\Artists\fiona Apple.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="imgs\next.png" />
     <Resource Include="imgs\play-button.png" />
     <Resource Include="imgs\play.png" />
+    <Resource Include="imgs\playbut.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="imgs\Playlists\arca.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="imgs\prev.png" />
     <Resource Include="imgs\unliked.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

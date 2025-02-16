@@ -8,7 +8,25 @@
         mc:Ignorable="d"
         Title="MainWin" Height="600" Width="1000" Background="Transparent" WindowStyle="None" AllowsTransparency="True" ResizeMode="CanResize">
     <Window.Resources>
-        
+
+        <Style x:Key="PlaylistButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
         <Style x:Key="NavButtonStyle" TargetType="Button">
             <Setter Property="Foreground" Value="{StaticResource MainFontColor}"/>
             <Setter Property="Background" Value="Transparent"/>
@@ -441,7 +459,7 @@
 
     </Window.Resources>
     <Window.DataContext>
-        <vm:PlayerViewModel />
+        <vm:PlayerViewModel/>
     </Window.DataContext>
     <Grid>
         <MediaElement x:Name="mediaElement" LoadedBehavior="Manual" UnloadedBehavior="Stop">
@@ -455,7 +473,7 @@
             </i:Interaction.Triggers>
         </MediaElement>
         <!-- Основной контейнер -->
-        <Border Background="#191414" CornerRadius="10">
+        <Border Background="#121212" CornerRadius="10">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -476,15 +494,24 @@
 
                         <!-- Навигация -->
                         <Button Style="{StaticResource NavButtonStyle}" Content="Главная" Click="GoToMainPage"/>
+                        <Button Style="{StaticResource NavButtonStyle}" Content="Любимые треки" Command="{Binding OpenFavoritesCommand}"/>
                         <Button Style="{StaticResource NavButtonStyle}" Content="Поиск"/>
                         <Button Style="{StaticResource NavButtonStyle}" Content="Моя медиатека" />
-
                         <!-- Плейлисты -->
                         <TextBlock Text="ПЛЕЙЛИСТЫ" Foreground="Gray" Margin="0,20,0,10"/>
-                        <Button Style="{StaticResource NavButtonStyle}" 
-                Content="Любимые треки"
-                Command="{Binding OpenFavoritesCommand}"/>
-                        <Button Style="{StaticResource NavButtonStyle}" Content="Недавно прослушанные"/>
+                        <ListView Name="PlaylistListView" SelectionMode="Single" Background="Transparent">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Command="{Binding OpenPlaylistCommand}" Style="{StaticResource PlaylistButtonStyle}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Source="{Binding PlaylistPhoto}" Width="50" Height="50" Stretch="UniformToFill" Margin="10"/>
+                                            <TextBlock Text="{Binding Title}" VerticalAlignment="Center" FontSize="16" Margin="10" Foreground="White"/>
+                                        </StackPanel>
+                                    </Button>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+
                     </StackPanel>
                 </Border>
 
@@ -528,17 +555,20 @@
                 <Border Grid.Row="2" Grid.ColumnSpan="2" Height="80" Background="{StaticResource MainBackground}" CornerRadius="0,0,10,10" VerticalAlignment="Bottom">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="200"/>
+                            <!-- Фиксированная ширина для информации о треке -->
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
+                            <!-- Центральная часть для кнопок управления -->
+                            <ColumnDefinition Width="150"/>
+                            <!-- Фиксированная ширина для управления громкостью -->
                         </Grid.ColumnDefinitions>
 
                         <!-- Информация о треке -->
-                        <StackPanel Orientation="Horizontal" Margin="10" Name="CurrentSongBar">
+                        <StackPanel Orientation="Horizontal" Margin="10" Name="CurrentSongBar" Grid.Column="0">
                             <Image Source="{Binding Photo}" Width="50" Height="50"/>
                             <StackPanel Margin="10,0,0,0">
-                                <TextBlock Text="{Binding Title}" Foreground="{StaticResource MainFontColor}"/>
-                                <TextBlock Text="{Binding Artist}" Foreground="{StaticResource ScndFontColor}"/>
+                                <TextBlock Text="{Binding Title}" Foreground="{StaticResource MainFontColor}" TextTrimming="CharacterEllipsis" MaxWidth="130"/>
+                                <TextBlock Text="{Binding Artist}" Foreground="{StaticResource ScndFontColor}" TextTrimming="CharacterEllipsis" MaxWidth="130"/>
                             </StackPanel>
                         </StackPanel>
 
@@ -546,22 +576,23 @@
                         <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <Button Style="{StaticResource ControlButtonStyle}" Command="{Binding PreviousCommand}">
-                                    <Image Source="/imgs/prev.png" Width="16"/>
+                                    <Image Source="/imgs/prev.png" Width="15"/>
                                 </Button>
                                 <Button Style="{StaticResource ControlButtonStyle}" Command="{Binding PlayPauseCommand}">
-                                    <Image Source="/imgs/play.png" Width="25"/>
+                                    <Image Source="/imgs/playbut.png" Width="30"/>
                                 </Button>
                                 <Button Style="{StaticResource ControlButtonStyle}" Command="{Binding NextCommand}">
-                                    <Image Source="/imgs/next.png" Width="16"/>
+                                    <Image Source="/imgs/next.png" Width="15"/>
                                 </Button>
                             </StackPanel>
                             <Slider x:Name="TrackSlider"
-        HorizontalAlignment="Stretch"
-        VerticalAlignment="Top"
-        Margin="10"
-        Minimum="0"
-        Maximum="100" Width="400"
-        Value="{Binding SliderValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Top"
+                    Margin="10"
+                    Minimum="0"
+                    Maximum="100"
+                    Width="400"
+                    Value="{Binding SliderValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="ValueChanged">
                                         <i:InvokeCommandAction Command="{Binding SliderValueChangedCommand}" />
