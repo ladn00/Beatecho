@@ -2,24 +2,25 @@
 using Beatecho.DAL.Models;
 using Beatecho.Views.Pages;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Windows;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Windows.Navigation;
 
 namespace Beatecho.ViewModels
 {
-    public class AlbumPageViewModel : INotifyPropertyChanged
+    class PlaylistPageViewModel : INotifyPropertyChanged
     {
-
         public ICommand PlaySongCommand { get; }
-        public ICommand NavigateToArtistCommand { get; }
         public ICommand AddToFavoritesCommand { get; }
 
         private Player player;
         private ObservableCollection<Song> _songs;
-        private Album _album;
+        private Playlist _playlist;
         private Dictionary<int, bool> _favoritesState;
         private User _currentUser;
 
@@ -34,14 +35,25 @@ namespace Beatecho.ViewModels
             }
         }
 
-        public Album Album
+        public Playlist Playlist
         {
-            get => _album;
+            get => _playlist;
             set
             {
-                _album = value;
-                OnPropertyChanged(nameof(Album));
+                _playlist = value;
+                OnPropertyChanged(nameof(Playlist));
             }
+        }
+
+
+        public string GetFavoriteIcon(int songId)
+        {
+            return _favoritesState.ContainsKey(songId) && _favoritesState[songId] ? "❤️" : "🤍";
+        }
+
+        public bool IsSongFavorite(int songId)
+        {
+            return _favoritesState.ContainsKey(songId) && _favoritesState[songId];
         }
 
         private void LoadFavoritesState()
@@ -61,10 +73,10 @@ namespace Beatecho.ViewModels
             }
         }
 
-        public AlbumPageViewModel(Album album)
+        public PlaylistPageViewModel(Playlist playlist)
         {
-            Album = album;
-            Songs = GetSongsFromAlbum(album);
+            Playlist = playlist;
+            Songs = GetSongsFromPlaylist(playlist);
             player = PlayerViewModel.player;
 
             using (ApplicationContext db = new ApplicationContext())
@@ -73,7 +85,6 @@ namespace Beatecho.ViewModels
             }
             _favoritesState = new Dictionary<int, bool>();
             PlaySongCommand = new RelayCommand<object>(PlaySong);
-            NavigateToArtistCommand = new RelayCommand<Album>(NavigateToArtist);
             AddToFavoritesCommand = new RelayCommand<Song>(AddSongToFavorites);
 
             LoadFavoritesState();
@@ -110,27 +121,6 @@ namespace Beatecho.ViewModels
             OnPropertyChanged(nameof(Songs));
         }
 
-        private void NavigateToArtist(Album album)
-        {
-            using (ApplicationContext db = new ApplicationContext())
-            {
-                var artist = db.Albums
-                .Include(a => a.ArtistAlbums)
-                .ThenInclude(aa => aa.Artist)
-                .FirstOrDefault(a => a.Id == album.Id)
-                ?.ArtistAlbums
-                .FirstOrDefault()
-                ?.Artist;
-
-                if (artist != null)
-                {
-                    var artistPage = new ArtistPage(artist);
-
-                    Views.Wins.UserWindow.frame.NavigationService.Navigate(artistPage);
-                }
-            }
-            
-        }
 
         private void PlaySong(object parameter)
         {
@@ -149,27 +139,27 @@ namespace Beatecho.ViewModels
             }
 
             player.SetQueue(Songs.ToList());
-            player.Index = song.TrackNumber - 1;
+            player.Index = Songs.IndexOf(song);
             player.SetSong();
             player.Play();
         }
 
-        public ObservableCollection<Song> GetSongsFromAlbum(Album album)
+        public ObservableCollection<Song> GetSongsFromPlaylist(Playlist playlist)
         {
             List<Song> songs = new List<Song>();
 
             using (ApplicationContext db = new ApplicationContext())
             {
-                if (album != null)
+                if (playlist != null)
                 {
-                    var albumWithSongs = db.Albums
-                .Include(a => a.AlbumSongs)
+                    var playlistWithSongs = db.Playlists
+                .Include(a => a.PlaylistSongs)
                 .ThenInclude(als => als.Song)
-                .FirstOrDefault(a => a.Id == album.Id);
+                .FirstOrDefault(a => a.Id == playlist.Id);
 
-                    if (albumWithSongs != null)
+                    if (playlistWithSongs != null)
                     {
-                        foreach (AlbumSongs s in albumWithSongs.AlbumSongs)
+                        foreach (PlaylistSongs s in playlistWithSongs.PlaylistSongs)
                         {
                             if (s.Song != null)
                             {

@@ -7,8 +7,227 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="PlaylistPage">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" 
+              HorizontalScrollBarVisibility="Disabled">
+        <Grid Background="#121212">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-    <Grid>
-        
-    </Grid>
+            <Grid Grid.Row="0" Margin="20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Image Source="{Binding Playlist.PlaylistPhoto}" Stretch="UniformToFill"
+                   Width="200" 
+                   Height="200" 
+                   VerticalAlignment="Top"
+                   Grid.Column="0"/>
+
+                <StackPanel Grid.Column="1" 
+                        VerticalAlignment="Center" 
+                        Margin="20,0,0,0">
+                    <TextBlock Text="{Binding Playlist.Title}" 
+                           FontSize="24" 
+                           FontWeight="Bold" 
+                           Foreground="White"/>
+                    <TextBlock Text="User" 
+                           FontSize="18" 
+                           Foreground="LightGray" 
+                           Margin="0,5,0,0"
+                           Cursor="Hand">
+                        <TextBlock.InputBindings>
+                            <MouseBinding MouseAction="LeftClick" 
+                                    Command="{Binding NavigateToArtistCommand}"
+                                    CommandParameter="{Binding Album}"/>
+                        </TextBlock.InputBindings>
+                    </TextBlock>
+                    <TextBlock Text="{Binding Album.ReleaseYear}" 
+                            FontSize="18" 
+                            Foreground="LightGray" 
+                            Margin="0,5,0,0"/>
+                </StackPanel>
+            </Grid>
+
+
+            <ListView Grid.Row="1" 
+          Margin="10"
+          Background="Transparent" 
+          BorderThickness="0"
+          Foreground="White"
+          ScrollViewer.VerticalScrollBarVisibility="Disabled"
+          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+          ScrollViewer.CanContentScroll="False"
+          ItemsSource="{Binding Songs}">
+                <ListView.Template>
+                    <ControlTemplate>
+                        <ItemsPresenter />
+                    </ControlTemplate>
+                </ListView.Template>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="Height" Value="45"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListViewItem">
+                                    <Border Background="{TemplateBinding Background}"
+                                BorderThickness="0"
+                                Padding="5">
+                                        <GridViewRowPresenter />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#33FFFFFF"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListView.ItemContainerStyle>
+
+                <ListView.Resources>
+                    <Style TargetType="GridViewColumnHeader">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Padding" Value="5"/>
+                    </Style>
+                </ListView.Resources>
+
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="#" Width="30">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+
+                                        <Button Background="Transparent"
+                                    BorderThickness="0"
+                                    Padding="0"
+                                    Command="{Binding DataContext.PlaySongCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+                                    CommandParameter="{Binding}">
+                                            <Button.Style>
+                                                <Style TargetType="Button">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="Button">
+                                                                <ContentPresenter/>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListViewItem}}" Value="True">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                            <Image Source="/imgs/play-button.png" 
+                                       Width="12"/>
+                                        </Button>
+                                    </Grid>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+
+
+
+                        <GridViewColumn Header="Название" Width="500">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <!-- Изображение песни -->
+                                        <Image Source="{Binding Photo}" 
+                                        Width="40" Height="40"
+
+                                        Stretch="UniformToFill"  
+                                        Margin="0,0,10,0"/>
+                                        <!-- Название трека -->
+                                        <TextBlock Text="{Binding Title}" FontSize="14"
+                                        VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+
+                        <GridViewColumn Header="Длительность" 
+                          DisplayMemberBinding="{Binding Duration}"  
+                          Width="100"/>
+
+                        <GridViewColumn Width="40">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Background="Transparent"
+                                BorderThickness="0"
+                                Padding="5,0"
+                                Command="{Binding DataContext.RemoveFromFavoritesCommand, 
+                                          RelativeSource={RelativeSource AncestorType=ListView}}"
+                                CommandParameter="{Binding}">
+                                        <TextBlock Text="❤️" Foreground="Gray"
+                                     FontSize="13"/>
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Opacity" Value="0.6"/>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Opacity" Value="1"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Width="70">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="..." 
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Foreground="White"
+                                Padding="5,0"
+                                HorizontalAlignment="Right"
+                                Click="Button_Click">
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListViewItem}}" Value="True">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                        <Button.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Header="Перейти к исполнителю"
+                                              Command="{Binding DataContext.NavigateToArtistCommand,
+                                              RelativeSource={RelativeSource AncestorType=ListView}}"
+                                              CommandParameter="{Binding Artist}"/>
+                                                <MenuItem Header="Добавить в плейлист"
+                                              Command="{Binding DataContext.AddToPlaylistCommand,
+                                              RelativeSource={RelativeSource AncestorType=ListView}}"
+                                              CommandParameter="{Binding}"/>
+                                            </ContextMenu>
+                                        </Button.ContextMenu>
+                                    </Button>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+    </ScrollViewer>
 </Page>

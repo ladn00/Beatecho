@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Beatecho.ViewModels;
 
 namespace Beatecho.Views.Pages
 {
@@ -24,6 +25,15 @@ namespace Beatecho.Views.Pages
         public PlaylistPage(Playlist playlist)
         {
             InitializeComponent();
+            DataContext = new PlaylistPageViewModel(playlist);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button)sender;
+            button.ContextMenu.PlacementTarget = button;
+            button.ContextMenu.IsOpen = true;
+            e.Handled = true;
         }
     }
 }

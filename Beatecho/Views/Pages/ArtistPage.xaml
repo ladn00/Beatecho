@@ -105,7 +105,7 @@
                     <GridViewColumn.CellTemplate>
                         <DataTemplate>
                             <Grid>
-                                <TextBlock Text="{Binding TrackNumber}" 
+                                <TextBlock
                                          VerticalAlignment="Center" 
                                          HorizontalAlignment="Center">
                                     <TextBlock.Style>
@@ -150,7 +150,7 @@
                 </GridViewColumn>
 
                 <GridViewColumn Header="Название" 
-                              DisplayMemberBinding="{Binding Title}" 
+                              DisplayMemberBinding="{Binding Title}"
                               Width="500"/>
 
                 <GridViewColumn Header="Длительность" 

@@ -89,5 +89,12 @@ namespace Beatecho.Views.Wins
         {
             frame.NavigationService.Navigate(new MainPage());
         }
+
+        private void OpenPlaylist(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            var playlist = button.DataContext as Playlist;
+            frame.NavigationService.Navigate(new PlaylistPage(playlist));
+        }
     }
 }

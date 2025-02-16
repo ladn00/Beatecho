@@ -502,9 +502,9 @@
                         <ListView Name="PlaylistListView" SelectionMode="Single" Background="Transparent">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <Button Command="{Binding OpenPlaylistCommand}" Style="{StaticResource PlaylistButtonStyle}">
+                                    <Button Click="OpenPlaylist" Style="{StaticResource PlaylistButtonStyle}">
                                         <StackPanel Orientation="Horizontal">
-                                            <Image Source="{Binding PlaylistPhoto}" Width="50" Height="50" Stretch="UniformToFill" Margin="10"/>
+                                            <Image Source="{Binding PlaylistPhoto}" Stretch="UniformToFill" Width="50" Height="50" Margin="10"/>
                                             <TextBlock Text="{Binding Title}" VerticalAlignment="Center" FontSize="16" Margin="10" Foreground="White"/>
                                         </StackPanel>
                                     </Button>

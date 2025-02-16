@@ -22,7 +22,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Image Source="{Binding Album.Photo}" 
+                <Image Source="{Binding Album.Photo}" Stretch="UniformToFill"
                        Width="200" 
                        Height="200" 
                        VerticalAlignment="Top"
@@ -159,7 +159,7 @@
                         </GridViewColumn>
 
                         <GridViewColumn Header="Название" 
-                                      DisplayMemberBinding="{Binding Title}" 
+                                      DisplayMemberBinding="{Binding Title}"
                                       Width="500"/>
 
                         <GridViewColumn Header="Длительность" 
