@@ -223,7 +223,7 @@
                                                           RelativeSource={RelativeSource AncestorType=ListView}}"
                                                           CommandParameter="{Binding}"/>
                                                 <MenuItem Header="Добавить в плейлист"
-                                                          Command="{Binding DataContext.AddToPlaylistCommand,
+                                                          Command="{Binding DataContext.AddToPlaylistCommand, 
                                                           RelativeSource={RelativeSource AncestorType=ListView}}"
                                                           CommandParameter="{Binding}"/>
                                             </ContextMenu>

@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
+using Beatecho.Views.Wins;
 
 namespace Beatecho.ViewModels
 {
@@ -16,6 +17,7 @@ namespace Beatecho.ViewModels
         public ICommand PlaySongCommand { get; }
         public ICommand NavigateToArtistCommand { get; }
         public ICommand AddToFavoritesCommand { get; }
+        public ICommand AddToPlaylistCommand { get; }
 
         private Player player;
         private ObservableCollection<Song> _songs;
@@ -75,8 +77,18 @@ namespace Beatecho.ViewModels
             PlaySongCommand = new RelayCommand<object>(PlaySong);
             NavigateToArtistCommand = new RelayCommand<Album>(NavigateToArtist);
             AddToFavoritesCommand = new RelayCommand<Song>(AddSongToFavorites);
+            AddToPlaylistCommand = new RelayCommand<Song>(AddSongToPlaylist);
 
             LoadFavoritesState();
+        }
+
+        private void AddSongToPlaylist(Song song)
+        {
+            if (song == null)
+                return;
+
+            var addToPlaylistWindow = new AddToPlaylistWindow(song);
+            addToPlaylistWindow.ShowDialog();
         }
 
         public void AddSongToFavorites(Song song)

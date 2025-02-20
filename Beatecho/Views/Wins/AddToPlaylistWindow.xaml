@@ -1,0 +1,50 @@
+﻿<Window x:Class="Beatecho.Views.Wins.AddToPlaylistWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Beatecho.Views.Wins"
+        mc:Ignorable="d"
+        Title="Добавить в плейлист" Height="300" Width="400"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent">
+    <Border Background="#121212" CornerRadius="10">
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Заголовок -->
+            <TextBlock Text="Выберите плейлист" 
+                       FontSize="18" 
+                       Foreground="White" 
+                       HorizontalAlignment="Center" 
+                       Margin="0,0,0,10"/>
+
+            <!-- Список плейлистов -->
+            <ListView Grid.Row="1" 
+                      ItemsSource="{Binding Playlists}" 
+                      Background="Transparent" 
+                      BorderThickness="0">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Button Content="{Binding Title}" 
+                                Style="{StaticResource NavButtonStyle}" 
+                                Command="{Binding DataContext.SelectPlaylistCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                CommandParameter="{Binding}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <!-- Кнопки -->
+            <StackPanel Grid.Row="2" 
+                        Orientation="Horizontal" 
+                        HorizontalAlignment="Right" 
+                        Margin="0,10,0,0">
+                <Button Content="Отмена" 
+                        Click="CancelButton_Click"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>
