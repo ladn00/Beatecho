@@ -16,6 +16,8 @@
     <None Remove="imgs\play.png" />
     <None Remove="imgs\playbut.png" />
     <None Remove="imgs\Playlists\arca.png" />
+    <None Remove="imgs\Playlists\cat on a watermelon.jpg" />
+    <None Remove="imgs\plus.png" />
     <None Remove="imgs\prev.png" />
     <None Remove="imgs\unliked.png" />
     <None Remove="imgs\volume.png" />
@@ -48,6 +50,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="imgs\Playlists\arca.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="imgs\Playlists\cat on a watermelon.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="imgs\plus.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="imgs\prev.png" />

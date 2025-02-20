@@ -169,7 +169,7 @@
                                     <Button Background="Transparent"
                                 BorderThickness="0"
                                 Padding="5,0"
-                                Command="{Binding DataContext.RemoveFromFavoritesCommand, 
+                                Command="{Binding DataContext.AddOrRemoveFromFavoritesCommand, 
                                           RelativeSource={RelativeSource AncestorType=ListView}}"
                                 CommandParameter="{Binding}">
                                         <TextBlock Text="❤️" Foreground="Gray"

@@ -13,10 +13,10 @@ using System.Windows.Input;
 
 namespace Beatecho.ViewModels
 {
-    class PlaylistPageViewModel : INotifyPropertyChanged
+    public class PlaylistPageViewModel : INotifyPropertyChanged
     {
         public ICommand PlaySongCommand { get; }
-        public ICommand AddToFavoritesCommand { get; }
+        public ICommand AddOrRemoveFromFavoritesCommand { get; }
 
         private Player player;
         private ObservableCollection<Song> _songs;
@@ -85,10 +85,12 @@ namespace Beatecho.ViewModels
             }
             _favoritesState = new Dictionary<int, bool>();
             PlaySongCommand = new RelayCommand<object>(PlaySong);
-            AddToFavoritesCommand = new RelayCommand<Song>(AddSongToFavorites);
+            AddOrRemoveFromFavoritesCommand = new RelayCommand<Song>(AddSongToFavorites);
 
             LoadFavoritesState();
         }
+
+        
 
         public void AddSongToFavorites(Song song)
         {

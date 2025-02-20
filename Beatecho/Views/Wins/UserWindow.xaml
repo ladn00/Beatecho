@@ -498,7 +498,17 @@
                         <Button Style="{StaticResource NavButtonStyle}" Content="Поиск"/>
                         <Button Style="{StaticResource NavButtonStyle}" Content="Моя медиатека" />
                         <!-- Плейлисты -->
-                        <TextBlock Text="ПЛЕЙЛИСТЫ" Foreground="Gray" Margin="0,20,0,10"/>
+                        <Grid DataContext="{Binding PlaylistViewModel}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="ПЛЕЙЛИСТЫ" Foreground="Gray" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <Button Style="{StaticResource ControlButtonStyle}" Command="{Binding AddPlaylistCommand}" Grid.Column="1">
+                                <Image Source="/imgs/plus.png" Width="20"/>
+                            </Button>
+                        </Grid>
+                        
                         <ListView Name="PlaylistListView" SelectionMode="Single" Background="Transparent">
                             <ListView.ItemTemplate>
                                 <DataTemplate>

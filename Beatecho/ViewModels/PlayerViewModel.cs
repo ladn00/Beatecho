@@ -13,9 +13,11 @@ namespace Beatecho.ViewModels
     {
         public static Player player;
         private User user;
+        public PlaylistViewModel PlaylistViewModel { get; set; }
 
         public PlayerViewModel()
         {
+            PlaylistViewModel = new PlaylistViewModel(new Playlist() { Id = 0});
             PlayPauseCommand = new RelayCommand(PlayPause);
             NextCommand = new RelayCommand(PlayNext);
             PreviousCommand = new RelayCommand(PlayPrevious);
