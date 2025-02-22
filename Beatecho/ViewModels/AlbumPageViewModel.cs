@@ -22,7 +22,6 @@ namespace Beatecho.ViewModels
         private Player player;
         private ObservableCollection<Song> _songs;
         private Album _album;
-        private Dictionary<int, bool> _favoritesState;
         private User _currentUser;
 
 
@@ -46,25 +45,9 @@ namespace Beatecho.ViewModels
             }
         }
 
-        private void LoadFavoritesState()
-        {
-            if (_currentUser == null) return;
-
-            using (ApplicationContext db = new ApplicationContext())
-            {
-                var favorites = db.FavoriteTracks
-                    .Where(ft => ft.UserId == _currentUser.Id)
-                    .ToList();
-
-                foreach (var song in Songs)
-                {
-                    _favoritesState[song.Id] = favorites.Any(f => f.SongId == song.Id);
-                }
-            }
-        }
-
         public AlbumPageViewModel(Album album)
         {
+
             Album = album;
             Songs = GetSongsFromAlbum(album);
             player = PlayerViewModel.player;
@@ -73,13 +56,11 @@ namespace Beatecho.ViewModels
             {
                 _currentUser = db.Users.FirstOrDefault(u => u.Id == 1);
             }
-            _favoritesState = new Dictionary<int, bool>();
             PlaySongCommand = new RelayCommand<object>(PlaySong);
             NavigateToArtistCommand = new RelayCommand<Album>(NavigateToArtist);
             AddToFavoritesCommand = new RelayCommand<Song>(AddSongToFavorites);
             AddToPlaylistCommand = new RelayCommand<Song>(AddSongToPlaylist);
 
-            LoadFavoritesState();
         }
 
         private void AddSongToPlaylist(Song song)
@@ -110,12 +91,10 @@ namespace Beatecho.ViewModels
                     };
 
                     db.FavoriteTracks.Add(favoriteTrack);
-                    _favoritesState[song.Id] = true;
                 }
                 else
                 {
                     db.FavoriteTracks.Remove(existingFavorite);
-                    _favoritesState[song.Id] = false;
                 }
                 db.SaveChanges();
             }

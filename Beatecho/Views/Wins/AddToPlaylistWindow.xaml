@@ -6,8 +6,18 @@
         xmlns:local="clr-namespace:Beatecho.Views.Wins"
         mc:Ignorable="d"
         Title="Добавить в плейлист" Height="300" Width="400"
-        WindowStyle="None" AllowsTransparency="True" Background="Transparent">
-    <Border Background="#121212" CornerRadius="10">
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style x:Key="NavButtonStyle" TargetType="Button">
+            <Setter Property="Foreground" Value="{StaticResource MainFontColor}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="10,5"/>
+        </Style>
+    </Window.Resources>
+    <Border Background="#0d0d0d" CornerRadius="10">
         <Grid Margin="20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -15,29 +25,30 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <!-- Заголовок -->
             <TextBlock Text="Выберите плейлист" 
                        FontSize="18" 
                        Foreground="White" 
                        HorizontalAlignment="Center" 
                        Margin="0,0,0,10"/>
 
-            <!-- Список плейлистов -->
             <ListView Grid.Row="1" 
                       ItemsSource="{Binding Playlists}" 
                       Background="Transparent" 
                       BorderThickness="0">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Button Content="{Binding Title}" 
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{Binding PlaylistPhoto}" Width="50" Height="50" Stretch="UniformToFill"/>
+                            <Button Content="{Binding Title}" 
                                 Style="{StaticResource NavButtonStyle}" 
                                 Command="{Binding DataContext.SelectPlaylistCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                 CommandParameter="{Binding}"/>
+                        </StackPanel>
+                        
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
 
-            <!-- Кнопки -->
             <StackPanel Grid.Row="2" 
                         Orientation="Horizontal" 
                         HorizontalAlignment="Right" 

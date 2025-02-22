@@ -46,6 +46,12 @@ namespace Beatecho.Views.Wins
                     SongId = SelectedSong.Id
                 };
 
+                if(db.PlaylistSongs.Contains(playlistSong))
+                {
+                    MessageBox.Show("Эта песня уже есть в выбранном плейлисте");
+                    return;
+                }    
+
                 db.PlaylistSongs.Add(playlistSong);
                 db.SaveChanges();
             }
