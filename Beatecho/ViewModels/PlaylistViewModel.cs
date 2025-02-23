@@ -90,7 +90,7 @@ namespace Beatecho.ViewModels
 
         public void AddNewPlaylist()
         {
-            win = new AddOrEditNewPlaylistWindow();
+            win = new AddOrEditNewPlaylistWindow(new Playlist() { Id = 0});
             win.ShowDialog();
         }
 

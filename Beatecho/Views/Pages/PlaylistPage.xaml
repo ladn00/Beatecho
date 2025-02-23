@@ -42,13 +42,20 @@
                         <TextBlock.InputBindings>
                             <MouseBinding MouseAction="LeftClick" 
                                     Command="{Binding NavigateToArtistCommand}"
-                                    CommandParameter="{Binding Album}"/>
+                                    CommandParameter="{Binding}"/>
                         </TextBlock.InputBindings>
                     </TextBlock>
-                    <TextBlock Text="{Binding Album.ReleaseYear}" 
-                            FontSize="18" 
-                            Foreground="LightGray" 
-                            Margin="0,5,0,0"/>
+
+
+
+
+                    <Button Background="Transparent"
+                                                BorderThickness="0"
+                                                Padding="0" Content="Редактировать" Foreground="LightGray" HorizontalAlignment="Left" Margin="0, 15"
+                                                Command="{Binding EditPlaylistCommand}"
+                                                CommandParameter="{Binding Playlist}">
+                        
+                    </Button>
                 </StackPanel>
             </Grid>
 

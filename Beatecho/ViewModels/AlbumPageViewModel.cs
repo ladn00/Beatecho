@@ -4,16 +4,16 @@ using Beatecho.Views.Pages;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Windows;
+using System.Linq;
 using System.Windows.Input;
-using System.Windows.Navigation;
 using Beatecho.Views.Wins;
+using System.Globalization;
+using System.Windows.Data;
 
 namespace Beatecho.ViewModels
 {
     public class AlbumPageViewModel : INotifyPropertyChanged
     {
-
         public ICommand PlaySongCommand { get; }
         public ICommand NavigateToArtistCommand { get; }
         public ICommand AddToFavoritesCommand { get; }
@@ -23,7 +23,7 @@ namespace Beatecho.ViewModels
         private ObservableCollection<Song> _songs;
         private Album _album;
         private User _currentUser;
-
+        private Dictionary<int, bool> _favoritesState;
 
         public ObservableCollection<Song> Songs
         {
@@ -47,20 +47,22 @@ namespace Beatecho.ViewModels
 
         public AlbumPageViewModel(Album album)
         {
-
             Album = album;
             Songs = GetSongsFromAlbum(album);
             player = PlayerViewModel.player;
+            _favoritesState = new Dictionary<int, bool>();
 
             using (ApplicationContext db = new ApplicationContext())
             {
                 _currentUser = db.Users.FirstOrDefault(u => u.Id == 1);
             }
+
             PlaySongCommand = new RelayCommand<object>(PlaySong);
             NavigateToArtistCommand = new RelayCommand<Album>(NavigateToArtist);
             AddToFavoritesCommand = new RelayCommand<Song>(AddSongToFavorites);
             AddToPlaylistCommand = new RelayCommand<Song>(AddSongToPlaylist);
 
+            LoadFavoritesState();
         }
 
         private void AddSongToPlaylist(Song song)
@@ -91,36 +93,40 @@ namespace Beatecho.ViewModels
                     };
 
                     db.FavoriteTracks.Add(favoriteTrack);
+                    _favoritesState[song.Id] = true;
                 }
                 else
                 {
                     db.FavoriteTracks.Remove(existingFavorite);
+                    _favoritesState[song.Id] = false;
                 }
                 db.SaveChanges();
             }
             OnPropertyChanged(nameof(Songs));
+            OnPropertyChanged(nameof(Album));
+            OnPropertyChanged($"Item[{song.Id}]");
         }
 
-        private void NavigateToArtist(Album album)
+        private void LoadFavoritesState()
         {
+            if (_currentUser == null) return;
+
             using (ApplicationContext db = new ApplicationContext())
             {
-                var artist = db.Albums
-                .Include(a => a.ArtistAlbums)
-                .ThenInclude(aa => aa.Artist)
-                .FirstOrDefault(a => a.Id == album.Id)
-                ?.ArtistAlbums
-                .FirstOrDefault()
-                ?.Artist;
+                var favorites = db.FavoriteTracks
+                    .Where(ft => ft.UserId == _currentUser.Id)
+                    .ToList();
 
-                if (artist != null)
+                foreach (var song in Songs)
                 {
-                    var artistPage = new ArtistPage(artist);
-
-                    Views.Wins.UserWindow.frame.NavigationService.Navigate(artistPage);
+                    _favoritesState[song.Id] = favorites.Any(f => f.SongId == song.Id);
                 }
             }
-            
+        }
+
+        public bool IsSongFavorite(int songId)
+        {
+            return _favoritesState.ContainsKey(songId) && _favoritesState[songId];
         }
 
         private void PlaySong(object parameter)
@@ -145,6 +151,26 @@ namespace Beatecho.ViewModels
             player.Play();
         }
 
+        private void NavigateToArtist(Album album)
+        {
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                var artist = db.Albums
+                .Include(a => a.ArtistAlbums)
+                .ThenInclude(aa => aa.Artist)
+                .FirstOrDefault(a => a.Id == album.Id)
+                ?.ArtistAlbums
+                .FirstOrDefault()
+                ?.Artist;
+
+                if (artist != null)
+                {
+                    var artistPage = new ArtistPage(artist);
+                    Views.Wins.UserWindow.frame.NavigationService.Navigate(artistPage);
+                }
+            }
+        }
+
         public ObservableCollection<Song> GetSongsFromAlbum(Album album)
         {
             List<Song> songs = new List<Song>();
@@ -154,9 +180,9 @@ namespace Beatecho.ViewModels
                 if (album != null)
                 {
                     var albumWithSongs = db.Albums
-                .Include(a => a.AlbumSongs)
-                .ThenInclude(als => als.Song)
-                .FirstOrDefault(a => a.Id == album.Id);
+                        .Include(a => a.AlbumSongs)
+                        .ThenInclude(als => als.Song)
+                        .FirstOrDefault(a => a.Id == album.Id);
 
                     if (albumWithSongs != null)
                     {

@@ -1,6 +1,7 @@
 ﻿using Beatecho.DAL;
 using Beatecho.DAL.Models;
 using Beatecho.Views.Pages;
+using Beatecho.Views.Wins;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace Beatecho.ViewModels
     {
         public ICommand PlaySongCommand { get; }
         public ICommand AddOrRemoveFromFavoritesCommand { get; }
+        public ICommand EditPlaylistCommand { get; }
 
         private Player player;
         private ObservableCollection<Song> _songs;
@@ -86,11 +88,15 @@ namespace Beatecho.ViewModels
             _favoritesState = new Dictionary<int, bool>();
             PlaySongCommand = new RelayCommand<object>(PlaySong);
             AddOrRemoveFromFavoritesCommand = new RelayCommand<Song>(AddSongToFavorites);
-
+            EditPlaylistCommand = new RelayCommand<Playlist>(EditPlaylist);
             LoadFavoritesState();
         }
 
-        
+        public void EditPlaylist(Playlist playlist)
+        {
+            var win = new AddOrEditNewPlaylistWindow(playlist);
+            win.ShowDialog();
+        }
 
         public void AddSongToFavorites(Song song)
         {

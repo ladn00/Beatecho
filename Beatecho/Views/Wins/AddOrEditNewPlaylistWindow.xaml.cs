@@ -21,10 +21,10 @@ namespace Beatecho.Views.Wins
     /// </summary>
     public partial class AddOrEditNewPlaylistWindow : Window
     {
-        public AddOrEditNewPlaylistWindow()
+        public AddOrEditNewPlaylistWindow(Playlist playlist)
         {
             InitializeComponent();
-            DataContext = new PlaylistViewModel(new Playlist() { Id = 0});
+            DataContext = new PlaylistViewModel(playlist);
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)

@@ -3,12 +3,15 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:conv="clr-namespace:Beatecho.Converters"
       xmlns:local="clr-namespace:Beatecho.Views.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ArtistPage"
       Background="#121212">
-    
+    <Page.Resources>
+        <conv:IsFavoriteMultiConverter x:Key="IsFavoriteMultiConverter"/>
+    </Page.Resources>
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto" 
               HorizontalScrollBarVisibility="Disabled"
@@ -157,35 +160,38 @@
                               DisplayMemberBinding="{Binding Duration}" 
                               Width="100"/>
 
-                <GridViewColumn Width="40">
-                    <GridViewColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Content="❤️" 
-                                    Background="Transparent"
-                                    BorderThickness="0"
-                                    Foreground="White"
-                                    Padding="5,0"
-                                    Command="{Binding DataContext.AddToFavoritesCommand, 
-                                              RelativeSource={RelativeSource AncestorType=ListView}}"
-                                    CommandParameter="{Binding}">
-                                <Button.Style>
-                                    <Style TargetType="Button">
-                                        <Setter Property="Opacity" Value="0.6"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsMouseOver, 
-                                                         RelativeSource={RelativeSource AncestorType=ListViewItem}}" 
-                                                         Value="True">
-                                                <Setter Property="Opacity" Value="1"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Button.Style>
-                            </Button>
-                        </DataTemplate>
-                    </GridViewColumn.CellTemplate>
-                </GridViewColumn>
+                                <GridViewColumn Width="40">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Background="Transparent"
+                                                BorderThickness="0"
+                                                Padding="5,0"
+                                                Command="{Binding DataContext.AddToFavoritesCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+                                                CommandParameter="{Binding}">
+                                                <TextBlock Text="❤️" FontSize="14">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Foreground" Value="LightGray"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Value="True">
+                                                                    <DataTrigger.Binding>
+                                                                        <MultiBinding Converter="{StaticResource IsFavoriteMultiConverter}">
+                                                                            <Binding Path="Id"/>
+                                                                            <Binding RelativeSource="{RelativeSource AncestorType=ListView}" Path="DataContext"/>
+                                                                        </MultiBinding>
+                                                                    </DataTrigger.Binding>
+                                                                    <Setter Property="Foreground" Value="Red"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </Button>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
 
-                <GridViewColumn Width="70">
+                                <GridViewColumn Width="70">
                     <GridViewColumn.CellTemplate>
                         <DataTemplate>
                             <Button Content="..." 
