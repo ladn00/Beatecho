@@ -31,8 +31,11 @@ namespace Beatecho.Views.Wins
         {
             InitializeComponent();
             player = new Player(mediaElement, CurrentSongBar, TrackSlider);
+            PlayerViewModel vm = new PlayerViewModel();
             ViewModels.PlayerViewModel.player = player;
+            vm.LoadPlayer();
             frame = ContentFrame;
+            DataContext = vm;
             ContentFrame.NavigationService.Navigate(new MainPage());
 
             using(ApplicationContext db = new ApplicationContext())
@@ -95,6 +98,35 @@ namespace Beatecho.Views.Wins
             var button = sender as Button;
             var playlist = button.DataContext as Playlist;
             frame.NavigationService.Navigate(new PlaylistPage(playlist));
+        }
+
+        private void GoToArtist(object sender, MouseButtonEventArgs e)
+        {
+            var artistTitle = tbArtist.Text;
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                var artistFromDb = db.Artists.FirstOrDefault(a => a.Name == artistTitle);
+
+                if (artistFromDb != null)
+                {
+                    var artistPage = new ArtistPage(artistFromDb);
+                    Views.Wins.UserWindow.frame.NavigationService.Navigate(artistPage);
+                }
+            }
+        }
+
+        private async void GoToAlbum(object sender, MouseButtonEventArgs e)
+        {
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                var albumSongs = await db.AlbumSongs.FirstOrDefaultAsync(a => a.SongId == player.CurrentSong.Id);
+
+                if (albumSongs != null)
+                {
+                    var albumPage = new AlbumPage(albumSongs.Album);
+                    Views.Wins.UserWindow.frame.NavigationService.Navigate(albumPage);
+                }
+            }
         }
     }
 }

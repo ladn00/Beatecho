@@ -458,9 +458,6 @@
         </Style>
 
     </Window.Resources>
-    <Window.DataContext>
-        <vm:PlayerViewModel/>
-    </Window.DataContext>
     <Grid>
         <MediaElement x:Name="mediaElement" LoadedBehavior="Manual" UnloadedBehavior="Stop">
             <i:Interaction.Triggers>
@@ -577,8 +574,28 @@
                         <StackPanel Orientation="Horizontal" Margin="10" Name="CurrentSongBar" Grid.Column="0">
                             <Image Source="{Binding Photo}" Width="50" Height="50"/>
                             <StackPanel Margin="10,0,0,0">
-                                <TextBlock Text="{Binding Title}" Foreground="{StaticResource MainFontColor}" TextTrimming="CharacterEllipsis" MaxWidth="130"/>
-                                <TextBlock Text="{Binding Artist}" Foreground="{StaticResource ScndFontColor}" TextTrimming="CharacterEllipsis" MaxWidth="130"/>
+                                <TextBlock Name="tbSongTitle" FontSize="15" Text="{Binding Title}" Foreground="White" TextTrimming="CharacterEllipsis" MaxWidth="130" MouseLeftButtonUp="GoToAlbum">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="TextDecorations" Value="Underline"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                                <TextBlock Name="tbArtist" Text="{Binding Artist}" Foreground="{StaticResource ScndFontColor}" TextTrimming="CharacterEllipsis" MaxWidth="130" MouseLeftButtonUp="GoToArtist">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="TextDecorations" Value="Underline"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
                             </StackPanel>
                         </StackPanel>
 
@@ -589,7 +606,7 @@
                                     <Image Source="/imgs/prev.png" Width="15"/>
                                 </Button>
                                 <Button Style="{StaticResource ControlButtonStyle}" Command="{Binding PlayPauseCommand}">
-                                    <Image Source="/imgs/playbut.png" Width="30"/>
+                                    <Image Source="{Binding PlayPauseImage}" Width="30"/>
                                 </Button>
                                 <Button Style="{StaticResource ControlButtonStyle}" Command="{Binding NextCommand}">
                                     <Image Source="/imgs/next.png" Width="15"/>

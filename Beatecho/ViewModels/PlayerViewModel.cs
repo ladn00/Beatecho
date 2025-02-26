@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Input;
 using Beatecho.DAL;
 using Beatecho.Views.Pages;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace Beatecho.ViewModels
 {
@@ -14,10 +15,25 @@ namespace Beatecho.ViewModels
         public static Player player;
         private User user;
         public PlaylistViewModel PlaylistViewModel { get; set; }
+        public MainWindowViewModel MainWindowViewModel { get; set; }
+        private string _playPauseImage = "/imgs/playbut.png";
+        public string PlayPauseImage
+        {
+            get => _playPauseImage;
+            set
+            {
+                if (_playPauseImage != value)
+                {
+                    _playPauseImage = value;
+                    OnPropertyChanged(nameof(PlayPauseImage));
+                }
+            }
+        }
 
         public PlayerViewModel()
         {
             PlaylistViewModel = new PlaylistViewModel(new Playlist() { Id = 0});
+            MainWindowViewModel = new MainWindowViewModel();
             PlayPauseCommand = new RelayCommand(PlayPause);
             NextCommand = new RelayCommand(PlayNext);
             PreviousCommand = new RelayCommand(PlayPrevious);
@@ -34,6 +50,14 @@ namespace Beatecho.ViewModels
                 user = db.Users.FirstOrDefault(u => u.Id == 1);
             }
             OpenFavoritesCommand = new RelayCommand(OpenFavorites);
+        }
+        public void LoadPlayer()
+        {
+            player.PlayPauseChanged += OnPlayPauseChanged;
+        }
+        private void OnPlayPauseChanged()
+        {
+            PlayPauseImage = player.IsPlaying ? "/imgs/pause.png" : "/imgs/playbut.png";
         }
 
         public ICommand PlayPauseCommand { get; }

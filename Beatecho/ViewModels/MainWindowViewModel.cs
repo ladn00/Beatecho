@@ -15,28 +15,17 @@ namespace Beatecho.ViewModels
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
-        public ICommand OpenFavoritesCommand;
-        private User user;
-        public ObservableCollection<Playlist> Playlists;
+        public ICommand GoToArtistCommand;
 
         public MainWindowViewModel()
         {
-            using (ApplicationContext db = new ApplicationContext())
-            {
-                user = db.Users.FirstOrDefault(u => u.Id == 1);
-
-                Playlists = new ObservableCollection<Playlist>(db.PlaylistUsers.Where(ft => ft.UserId == 1).Include(ft => ft.Playlist).Select(ft => ft.Playlist));
-            }
-            OpenFavoritesCommand = new RelayCommand(OpenFavorites);
+            GoToArtistCommand = new RelayCommand<string>(GoToArtist);
         }
 
-        private void OpenFavorites()
+        public void GoToArtist(string artist)
         {
-            var favoritePage = new FavoritesPage(user);
-
-            Views.Wins.UserWindow.frame.NavigationService.Navigate(favoritePage);
+            
         }
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(string propertyName)

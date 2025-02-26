@@ -21,13 +21,26 @@ namespace Beatecho
         public MediaElement MediaElement { get; set; }
         public Song CurrentSong { get; set; }
         public int Index { get; set; } = 0;
-        public bool IsPlaying { get; set; } = false;
         public object AlbumPlaylist { get; set; }
         public StackPanel CurrentSongBar { get; set; }
         public Slider TrackSlider { get; set; }
         private bool isDragging = false;
         private DispatcherTimer Timer { get; set; }
         private bool IsCurrentlyPlaying { get; set; }
+        public event Action PlayPauseChanged;
+        private bool _isPlaying = false;
+        public bool IsPlaying
+        {
+            get => _isPlaying;
+            set
+            {
+                if (_isPlaying != value)
+                {
+                    _isPlaying = value;
+                    PlayPauseChanged?.Invoke();
+                }
+            }
+        }
 
         public Player(MediaElement mediaElement, StackPanel currentSongBar, Slider trackSlider)
         {
