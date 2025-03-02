@@ -212,16 +212,9 @@
                                     </Style>
                                 </Button.Style>
                                 <Button.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="Добавить в любимые" 
-                                                  Command="{Binding DataContext.AddToFavoritesCommand, 
-                                                  RelativeSource={RelativeSource AncestorType=ListView}}"
-                                                  CommandParameter="{Binding}"/>
-                                        <MenuItem Header="Добавить в плейлист"
-                                                  Command="{Binding DataContext.AddToPlaylistCommand,
-                                                  RelativeSource={RelativeSource AncestorType=ListView}}"
-                                                  CommandParameter="{Binding}"/>
-                                    </ContextMenu>
+                                        <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+                                                 <MenuItem Header="Добавить в плейлист" Click="AddSongToPlaylist"/>
+                                        </ContextMenu>
                                 </Button.ContextMenu>
                             </Button>
                         </DataTemplate>

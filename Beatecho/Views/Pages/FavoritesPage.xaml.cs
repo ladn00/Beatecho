@@ -1,5 +1,6 @@
 ﻿using Beatecho.DAL.Models;
 using Beatecho.ViewModels;
+using Beatecho.Views.Wins;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,18 @@ namespace Beatecho.Views.Pages
             button.ContextMenu.PlacementTarget = button;
             button.ContextMenu.IsOpen = true;
             e.Handled = true;
+        }
+
+        private void AddSongToPlaylist(object sender, RoutedEventArgs e)
+        {
+            var button = sender as MenuItem;
+            var song = button.DataContext as Song;
+
+            if (song == null)
+                return;
+
+            var addToPlaylistWindow = new AddToPlaylistWindow(song);
+            addToPlaylistWindow.ShowDialog();
         }
     }
 }

@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Beatecho.DAL.Models;
 using Beatecho.ViewModels;
+using Beatecho.Views.Wins;
 
 namespace Beatecho.Views.Pages
 {
@@ -47,6 +48,18 @@ namespace Beatecho.Views.Pages
                 var parent = ((Control)sender).Parent as UIElement;
                 parent?.RaiseEvent(eventArg);
             }
+        }
+
+        private void AddSongToPlaylist(object sender, RoutedEventArgs e)
+        {
+            var button = sender as MenuItem;
+            var song = button.DataContext as Song;
+
+            if (song == null)
+                return;
+
+            var addToPlaylistWindow = new AddToPlaylistWindow(song);
+            addToPlaylistWindow.ShowDialog();
         }
     }
 }

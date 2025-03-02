@@ -19,6 +19,7 @@ namespace Beatecho.ViewModels
         public ICommand PlaySongCommand { get; }
         public ICommand AddOrRemoveFromFavoritesCommand { get; }
         public ICommand EditPlaylistCommand { get; }
+        public ICommand RemoveFromPlaylistCommand { get; }
 
         private Player player;
         private ObservableCollection<Song> _songs;
@@ -89,7 +90,37 @@ namespace Beatecho.ViewModels
             PlaySongCommand = new RelayCommand<object>(PlaySong);
             AddOrRemoveFromFavoritesCommand = new RelayCommand<Song>(AddSongToFavorites);
             EditPlaylistCommand = new RelayCommand<Playlist>(EditPlaylist);
+            RemoveFromPlaylistCommand = new RelayCommand<Song>(RemoveFromPlaylist);
+
             LoadFavoritesState();
+        }
+
+        private void RemoveFromPlaylist(Song song)
+        {
+            if (song == null || Playlist == null)
+                return;
+
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                var playlistWithSongs = db.Playlists
+                    .Include(p => p.PlaylistSongs)
+                    .FirstOrDefault(p => p.Id == Playlist.Id);
+
+                if (playlistWithSongs != null)
+                {
+                    var songToRemove = playlistWithSongs.PlaylistSongs
+                        .FirstOrDefault(ps => ps.SongId == song.Id);
+
+                    if (songToRemove != null)
+                    {
+                        db.PlaylistSongs.Remove(songToRemove);
+                        db.SaveChanges();
+                    }
+                }
+            }
+
+            Songs.Remove(song);
+            OnPropertyChanged(nameof(Songs));
         }
 
         public void EditPlaylist(Playlist playlist)

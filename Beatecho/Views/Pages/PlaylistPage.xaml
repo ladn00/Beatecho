@@ -144,27 +144,20 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-
-
-
                         <GridViewColumn Header="Название" Width="500">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <!-- Изображение песни -->
                                         <Image Source="{Binding Photo}" 
                                         Width="40" Height="40"
-
                                         Stretch="UniformToFill"  
                                         Margin="0,0,10,0"/>
-                                        <!-- Название трека -->
                                         <TextBlock Text="{Binding Title}" FontSize="14"
                                         VerticalAlignment="Center"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-
 
                         <GridViewColumn Header="Длительность" 
                           DisplayMemberBinding="{Binding Duration}"  
@@ -180,6 +173,32 @@
                                           RelativeSource={RelativeSource AncestorType=ListView}}"
                                 CommandParameter="{Binding}">
                                         <TextBlock Text="❤️" Foreground="Gray"
+                                     FontSize="13"/>
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Opacity" Value="0.6"/>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Opacity" Value="1"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Width="40">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Background="Transparent"
+                                BorderThickness="0"
+                                Padding="5,0"
+                                Command="{Binding DataContext.RemoveFromPlaylistCommand, 
+                                          RelativeSource={RelativeSource AncestorType=ListView}}"
+                                CommandParameter="{Binding}">
+                                        <TextBlock Text="✖" Foreground="Red"
                                      FontSize="13"/>
                                         <Button.Style>
                                             <Style TargetType="Button">
@@ -217,15 +236,10 @@
                                             </Style>
                                         </Button.Style>
                                         <Button.ContextMenu>
-                                            <ContextMenu>
-                                                <MenuItem Header="Перейти к исполнителю"
-                                              Command="{Binding DataContext.NavigateToArtistCommand,
-                                              RelativeSource={RelativeSource AncestorType=ListView}}"
-                                              CommandParameter="{Binding Artist}"/>
+                                            <ContextMenu DataContext="{Binding PlacementTarget.DataContext, 
+RelativeSource={RelativeSource Self}}">
                                                 <MenuItem Header="Добавить в плейлист"
-                                              Command="{Binding DataContext.AddToPlaylistCommand,
-                                              RelativeSource={RelativeSource AncestorType=ListView}}"
-                                              CommandParameter="{Binding}"/>
+                         Click="AddSongToPlaylist"/>
                                             </ContextMenu>
                                         </Button.ContextMenu>
                                     </Button>
@@ -235,6 +249,7 @@
                     </GridView>
                 </ListView.View>
             </ListView>
+
         </Grid>
     </ScrollViewer>
 </Page>

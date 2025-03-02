@@ -199,15 +199,10 @@
                                             </Style>
                                         </Button.Style>
                                         <Button.ContextMenu>
-                                            <ContextMenu>
-                                                <MenuItem Header="Перейти к исполнителю"
-                                                          Command="{Binding DataContext.NavigateToArtistCommand,
-                                                          RelativeSource={RelativeSource AncestorType=ListView}}"
-                                                          CommandParameter="{Binding Artist}"/>
+                                            <ContextMenu DataContext="{Binding PlacementTarget.DataContext, 
+RelativeSource={RelativeSource Self}}">
                                                 <MenuItem Header="Добавить в плейлист"
-                                                          Command="{Binding DataContext.AddToPlaylistCommand,
-                                                          RelativeSource={RelativeSource AncestorType=ListView}}"
-                                                          CommandParameter="{Binding}"/>
+                         Click="AddSongToPlaylist"/>
                                             </ContextMenu>
                                         </Button.ContextMenu>
                                     </Button>
