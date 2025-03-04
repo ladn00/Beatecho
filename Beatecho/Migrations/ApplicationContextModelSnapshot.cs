@@ -77,6 +77,9 @@ namespace Beatecho.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
+                    b.Property<string>("Photo")
+                        .HasColumnType("text");
+
                     b.Property<string>("bio")
                         .IsRequired()
                         .HasColumnType("text");
@@ -99,6 +102,21 @@ namespace Beatecho.Migrations
                     b.HasIndex("AlbumId");
 
                     b.ToTable("ArtistAlbums");
+                });
+
+            modelBuilder.Entity("Beatecho.DAL.Models.FavoriteTracks", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SongId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("UserId", "SongId");
+
+                    b.HasIndex("SongId");
+
+                    b.ToTable("FavoriteTracks");
                 });
 
             modelBuilder.Entity("Beatecho.DAL.Models.Genre", b =>
@@ -293,6 +311,25 @@ namespace Beatecho.Migrations
                     b.Navigation("Artist");
                 });
 
+            modelBuilder.Entity("Beatecho.DAL.Models.FavoriteTracks", b =>
+                {
+                    b.HasOne("Beatecho.DAL.Models.Song", "Song")
+                        .WithMany("FavoriteTracks")
+                        .HasForeignKey("SongId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Beatecho.DAL.Models.User", "User")
+                        .WithMany("FavoriteTracks")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Song");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Beatecho.DAL.Models.PlaylistSongs", b =>
                 {
                     b.HasOne("Beatecho.DAL.Models.Playlist", "Playlist")
@@ -387,6 +424,8 @@ namespace Beatecho.Migrations
                 {
                     b.Navigation("AlbumSongs");
 
+                    b.Navigation("FavoriteTracks");
+
                     b.Navigation("PlaylistSongs");
 
                     b.Navigation("SongGenres");
@@ -394,6 +433,8 @@ namespace Beatecho.Migrations
 
             modelBuilder.Entity("Beatecho.DAL.Models.User", b =>
                 {
+                    b.Navigation("FavoriteTracks");
+
                     b.Navigation("PlaylistUsers");
                 });
 

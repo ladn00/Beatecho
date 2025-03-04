@@ -34,7 +34,8 @@ namespace Beatecho.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: true),
-                    bio = table.Column<string>(type: "text", nullable: false)
+                    bio = table.Column<string>(type: "text", nullable: false),
+                    Photo = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -218,6 +219,30 @@ namespace Beatecho.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FavoriteTracks",
+                columns: table => new
+                {
+                    SongId = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FavoriteTracks", x => new { x.UserId, x.SongId });
+                    table.ForeignKey(
+                        name: "FK_FavoriteTracks_Songs_SongId",
+                        column: x => x.SongId,
+                        principalTable: "Songs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FavoriteTracks_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PlaylistUsers",
                 columns: table => new
                 {
@@ -252,6 +277,11 @@ namespace Beatecho.Migrations
                 column: "AlbumId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FavoriteTracks_SongId",
+                table: "FavoriteTracks",
+                column: "SongId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PlaylistSongs_SongId",
                 table: "PlaylistSongs",
                 column: "SongId");
@@ -280,6 +310,9 @@ namespace Beatecho.Migrations
 
             migrationBuilder.DropTable(
                 name: "ArtistAlbums");
+
+            migrationBuilder.DropTable(
+                name: "FavoriteTracks");
 
             migrationBuilder.DropTable(
                 name: "PlaylistSongs");

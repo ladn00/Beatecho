@@ -14,12 +14,13 @@ namespace Beatecho.ViewModels
         private Artist _artist;
         private ObservableCollection<Song> _popularTracks;
         private ObservableCollection<Album> _albums;
-        private bool _isExpandedTracks = false;
+        private bool _isExpandedTracks = true;
         private ICommand _showAllTracksCommand;
         private ICommand _openAlbumCommand;
         private Player player;
         private User _currentUser;
         private Dictionary<int, bool> _favoritesState;
+
 
         public Artist Artist
         {
@@ -78,6 +79,7 @@ namespace Beatecho.ViewModels
         public ICommand OpenAlbumCommand => _openAlbumCommand ??= new RelayCommand<Album>(OpenAlbum);
         public ICommand PlaySongCommand { get; }
         public ICommand AddToFavoritesCommand { get; }
+
 
         private void LoadArtistData()
         {
