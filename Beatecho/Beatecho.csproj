@@ -11,6 +11,11 @@
   <ItemGroup>
     <None Remove="imgs\Artists\arca.png" />
     <None Remove="imgs\Artists\fiona Apple.jpg" />
+    <None Remove="imgs\backgr.jpg" />
+    <None Remove="imgs\backgr2.jpg" />
+    <None Remove="imgs\hearts.jpg" />
+    <None Remove="imgs\liked.png" />
+    <None Remove="imgs\loupe.png" />
     <None Remove="imgs\next.png" />
     <None Remove="imgs\pause.png" />
     <None Remove="imgs\play-button.png" />
@@ -42,6 +47,21 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="imgs\Artists\fiona Apple.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="imgs\backgr.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="imgs\backgr2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="imgs\hearts.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="imgs\liked.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="imgs\loupe.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="imgs\next.png" />

@@ -35,7 +35,7 @@ namespace Beatecho.DAL.Models
                     {
                         return OneAlbumArtist.Artist.Name;
                     }
-                    return @"\Wins\1.jpg";
+                    return @"n/a";
                 }
             }
         }

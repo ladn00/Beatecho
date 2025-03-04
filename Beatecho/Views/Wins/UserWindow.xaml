@@ -5,10 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Beatecho.Views.Wins" xmlns:vm="clr-namespace:Beatecho.ViewModels"
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:conv="clr-namespace:Beatecho.Converters"
         mc:Ignorable="d"
         Title="MainWin" Height="600" Width="1000" Background="Transparent" WindowStyle="None" AllowsTransparency="True" ResizeMode="CanResize">
     <Window.Resources>
-
+        <conv:EmptyToVisibleConverter x:Key="EmptyToVisibleConverter"/>
+        <conv:EmptyToCollapsedConverter x:Key="EmptyToCollapsedConverter"/>
         <Style x:Key="PlaylistButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
@@ -538,7 +540,67 @@
                         </StackPanel>
 
                         <!-- Область для перетаскивания окна -->
-                        <Border Grid.Column="1" Background="Transparent" MouseLeftButtonDown="Border_MouseLeftButtonDown"/>
+                        <Border Grid.Column="1" Background="Transparent" MouseLeftButtonDown="Border_MouseLeftButtonDown">
+                            <Border.DataContext>
+                                <vm:SearchViewModel/>
+                            </Border.DataContext>
+                            <Border Background="#333333" CornerRadius="20" Width="300" Margin="10">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Иконка лупы -->
+                                    <Viewbox Width="20" Height="20" Margin="10,0" VerticalAlignment="Center">
+                                        <Image Source="/imgs/loupe.png"/>
+                                    </Viewbox>
+
+                                    <!-- Поле ввода -->
+                                    <TextBox x:Name="SearchBox" Background="Transparent" Foreground="White" Grid.Column="1"
+                     BorderThickness="0" Padding="5" FontSize="14"
+                     VerticalAlignment="Center" Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}">
+                                        <TextBox.Style>
+                                            <Style TargetType="TextBox">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="TextBox">
+                                                            <Grid>
+                                                                <ScrollViewer x:Name="PART_ContentHost"/>
+                                                                <TextBlock x:Name="PlaceholderText" Text="Введите название..."
+                                                   Foreground="Gray" 
+                                                   VerticalAlignment="Center" 
+                                                   Margin="5,0,0,0"
+                                                   IsHitTestVisible="False"
+                                                   Visibility="{Binding Text.Length, RelativeSource={RelativeSource Self}, Converter={StaticResource EmptyToVisibleConverter}}"/>
+                                                            </Grid>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </TextBox.Style>
+                                    </TextBox>
+
+                                    <StackPanel Grid.Column="1" Grid.RowSpan="10" Visibility="{Binding SearchQuery, Converter={StaticResource EmptyToCollapsedConverter}}">
+                                        <ListView ItemsSource="{Binding CollectionView}" Margin="10" Background="Transparent" BorderBrush="Transparent">
+                                            <ListView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel>
+                                                        <TextBlock Text="{Binding Title}" Foreground="White" FontSize="14" Margin="5"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ListView.ItemTemplate>
+                                        </ListView>
+                                    </StackPanel>
+
+                                </Grid>
+                            </Border>
+                        </Border>
+
+
+
+
+
 
                         <!-- Кнопки управления окном -->
                         <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0">
@@ -557,7 +619,7 @@
 
                 <!-- Область контента -->
                 <Frame x:Name="ContentFrame" Grid.Column="1" Grid.Row="1" Source="ContentPage.xaml" NavigationUIVisibility="Hidden"/>
-
+                
                 <!-- Нижняя панель управления -->
                 <Border Grid.Row="2" Grid.ColumnSpan="2" Height="80" Background="{StaticResource MainBackground}" CornerRadius="0,0,10,10" VerticalAlignment="Bottom">
                     <Grid>

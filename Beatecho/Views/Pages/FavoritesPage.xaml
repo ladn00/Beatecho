@@ -6,11 +6,14 @@
       xmlns:local="clr-namespace:Beatecho.Views.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="FavoritesPage">
-
+      Title="FavoritesPage" Background="{DynamicResource gradient}">
+    <Page.Resources>
+        <SolidColorBrush Color="Black" Opacity="0.6" x:Key="black"/>
+        <ImageBrush Stretch="Fill" ImageSource="/imgs/backgr2.jpg" x:Key="gradient"/>
+    </Page.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto" 
                   HorizontalScrollBarVisibility="Disabled">
-        <Grid Background="#121212">
+        <Grid Background="{StaticResource black}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -22,9 +25,9 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Image Source="../../imgs/unliked.png" 
-                       Width="100" 
-                       Height="100" 
+                <Image Source="/imgs/liked.png" Margin="30, 20"
+                       Width="90" 
+                       Height="90" 
                        VerticalAlignment="Top"
                        Grid.Column="0"/>
 
