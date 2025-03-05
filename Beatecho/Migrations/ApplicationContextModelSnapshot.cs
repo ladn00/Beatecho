@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+using ApplicationContext = Beatecho.DAL.ApplicationContext;
+using MessageBox = System.Windows.MessageBox;
 
 #nullable disable
 

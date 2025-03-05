@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
+using MessageBox = System.Windows.MessageBox;
 
 namespace Beatecho
 {
@@ -178,7 +179,7 @@ namespace Beatecho
         {
             Stop();
 
-            if (Queue[Index + 1] != null)
+            if (Queue.Count >= Index + 1)
                 PlayNext();
         }
 

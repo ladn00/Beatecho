@@ -118,7 +118,7 @@
             <Border Grid.Row="2" Height="60" Background="{StaticResource MainBackground}" CornerRadius="0,0,10,10">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
                     <Button Content="Сохранить" Style="{StaticResource NavButtonStyle}" Command="{Binding SaveCommand}" Margin="0,0,10,0"/>
-                    <Button Content="Отмена" Style="{StaticResource NavButtonStyle}" Command="{Binding CancelCommand}"/>
+                    <Button Content="Отмена" Style="{StaticResource NavButtonStyle}" Click="Cancel"/>
                 </StackPanel>
             </Border>
         </Grid>

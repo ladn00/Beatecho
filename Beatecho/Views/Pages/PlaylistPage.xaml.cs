@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Beatecho.ViewModels;
 using Beatecho.Views.Wins;
+using Button = System.Windows.Controls.Button;
 
 namespace Beatecho.Views.Pages
 {

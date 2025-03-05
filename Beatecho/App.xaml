@@ -2,8 +2,10 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Beatecho"
+             xmlns:vm="clr-namespace:Beatecho.ViewModels"
              StartupUri="Views/Wins/UserWindow.xaml">
     <Application.Resources>
+        <vm:SearchViewModel x:Key="SearchViewModel"/>
         <SolidColorBrush x:Key="MainBackground" Color="#000000"/>
         <SolidColorBrush x:Key="ScndBackground" Color="#121212"/>
         <SolidColorBrush x:Key="CellsBackground" Color="#333333"/>

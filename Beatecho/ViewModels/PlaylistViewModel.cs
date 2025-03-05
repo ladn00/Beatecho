@@ -11,6 +11,9 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using ApplicationContext = Beatecho.DAL.ApplicationContext;
+using MessageBox = System.Windows.MessageBox;
+using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
 namespace Beatecho.ViewModels
 {

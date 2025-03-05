@@ -4,6 +4,8 @@ using Beatecho.ViewModels;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
+using ApplicationContext = Beatecho.DAL.ApplicationContext;
+using MessageBox = System.Windows.MessageBox;
 
 namespace Beatecho.Views.Wins
 {

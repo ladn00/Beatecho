@@ -11,6 +11,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using ApplicationContext = Beatecho.DAL.ApplicationContext;
+using MessageBox = System.Windows.MessageBox;
 
 namespace Beatecho.ViewModels
 {

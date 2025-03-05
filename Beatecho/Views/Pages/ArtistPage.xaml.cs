@@ -15,6 +15,8 @@ using System.Windows.Shapes;
 using Beatecho.DAL.Models;
 using Beatecho.ViewModels;
 using Beatecho.Views.Wins;
+using Button = System.Windows.Controls.Button;
+using Control = System.Windows.Controls.Control;
 
 namespace Beatecho.Views.Pages
 {

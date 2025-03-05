@@ -17,6 +17,10 @@ using Beatecho.DAL.Models;
 using Beatecho.ViewModels;
 using Beatecho.Views.Pages;
 using Microsoft.EntityFrameworkCore;
+using ApplicationContext = Beatecho.DAL.ApplicationContext;
+using MessageBox = System.Windows.MessageBox;
+using Button = System.Windows.Controls.Button;
+
 namespace Beatecho.Views.Wins
 {
     /// <summary>
@@ -126,6 +130,19 @@ namespace Beatecho.Views.Wins
                     var albumPage = new AlbumPage(albumSongs.Album);
                     Views.Wins.UserWindow.frame.NavigationService.Navigate(albumPage);
                 }
+            }
+        }
+
+        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            UpdatePlaceholderVisibility();
+        }
+
+        private void UpdatePlaceholderVisibility()
+        {
+            if (SearchBox != null && PlaceholderText != null)
+            {
+                PlaceholderText.Visibility = string.IsNullOrWhiteSpace(SearchBox.Text) ? Visibility.Visible : Visibility.Collapsed;
             }
         }
     }

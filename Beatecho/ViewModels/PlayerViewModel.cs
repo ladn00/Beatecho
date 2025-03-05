@@ -7,6 +7,8 @@ using System.Windows.Input;
 using Beatecho.DAL;
 using Beatecho.Views.Pages;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+using ApplicationContext = Beatecho.DAL.ApplicationContext;
+using MessageBox = System.Windows.MessageBox;
 
 namespace Beatecho.ViewModels
 {

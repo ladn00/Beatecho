@@ -70,5 +70,10 @@ namespace Beatecho.Views.Wins
             else
                 WindowState = WindowState.Maximized;
         }
+
+        private void Cancel(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

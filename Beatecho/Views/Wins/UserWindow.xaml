@@ -9,6 +9,7 @@
         mc:Ignorable="d"
         Title="MainWin" Height="600" Width="1000" Background="Transparent" WindowStyle="None" AllowsTransparency="True" ResizeMode="CanResize">
     <Window.Resources>
+        
         <conv:EmptyToVisibleConverter x:Key="EmptyToVisibleConverter"/>
         <conv:EmptyToCollapsedConverter x:Key="EmptyToCollapsedConverter"/>
         <Style x:Key="PlaylistButtonStyle" TargetType="Button">
@@ -494,8 +495,14 @@
                         <!-- Навигация -->
                         <Button Style="{StaticResource NavButtonStyle}" Content="Главная" Click="GoToMainPage"/>
                         <Button Style="{StaticResource NavButtonStyle}" Content="Любимые треки" Command="{Binding OpenFavoritesCommand}"/>
-                        <Button Style="{StaticResource NavButtonStyle}" Content="Поиск"/>
-                        <Button Style="{StaticResource NavButtonStyle}" Content="Моя медиатека" />
+                        <Button Style="{StaticResource NavButtonStyle}" Content="Поиск" Command="{Binding OpenSearchPageCommand, Source={StaticResource SearchViewModel}}">
+                        </Button>
+                        <Button Style="{StaticResource NavButtonStyle}" Content="Моя медиатека" Command="{Binding OpenLocalSongsPageCommand}">
+                            
+                                <Button.DataContext>
+                                <vm:LocalSongsViewModel/>
+                            </Button.DataContext>
+                        </Button>
                         <!-- Плейлисты -->
                         <Grid DataContext="{Binding PlaylistViewModel}">
                             <Grid.ColumnDefinitions>
@@ -540,10 +547,7 @@
                         </StackPanel>
 
                         <!-- Область для перетаскивания окна -->
-                        <Border Grid.Column="1" Background="Transparent" MouseLeftButtonDown="Border_MouseLeftButtonDown">
-                            <Border.DataContext>
-                                <vm:SearchViewModel/>
-                            </Border.DataContext>
+                        <Border Grid.Column="1" Background="Transparent" MouseLeftButtonDown="Border_MouseLeftButtonDown" DataContext="{StaticResource SearchViewModel}">
                             <Border Background="#333333" CornerRadius="20" Width="300" Margin="10">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -557,49 +561,25 @@
                                     </Viewbox>
 
                                     <!-- Поле ввода -->
+
                                     <TextBox x:Name="SearchBox" Background="Transparent" Foreground="White" Grid.Column="1"
-                     BorderThickness="0" Padding="5" FontSize="14"
-                     VerticalAlignment="Center" Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}">
-                                        <TextBox.Style>
-                                            <Style TargetType="TextBox">
-                                                <Setter Property="Template">
-                                                    <Setter.Value>
-                                                        <ControlTemplate TargetType="TextBox">
-                                                            <Grid>
-                                                                <ScrollViewer x:Name="PART_ContentHost"/>
-                                                                <TextBlock x:Name="PlaceholderText" Text="Введите название..."
-                                                   Foreground="Gray" 
-                                                   VerticalAlignment="Center" 
-                                                   Margin="5,0,0,0"
-                                                   IsHitTestVisible="False"
-                                                   Visibility="{Binding Text.Length, RelativeSource={RelativeSource Self}, Converter={StaticResource EmptyToVisibleConverter}}"/>
-                                                            </Grid>
-                                                        </ControlTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Style>
-                                        </TextBox.Style>
+         BorderThickness="0" Padding="5" FontSize="14"
+         VerticalAlignment="Center" Text="{Binding SearchQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="SearchBox_TextChanged">
+                                        <!-- Привязка команды -->
+                                        <TextBox.InputBindings>
+                                            <KeyBinding Key="Enter" Command="{Binding OpenSearchPageCommand}"/>
+                                        </TextBox.InputBindings>
                                     </TextBox>
 
-                                    <StackPanel Grid.Column="1" Grid.RowSpan="10" Visibility="{Binding SearchQuery, Converter={StaticResource EmptyToCollapsedConverter}}">
-                                        <ListView ItemsSource="{Binding CollectionView}" Margin="10" Background="Transparent" BorderBrush="Transparent">
-                                            <ListView.ItemTemplate>
-                                                <DataTemplate>
-                                                    <StackPanel>
-                                                        <TextBlock Text="{Binding Title}" Foreground="White" FontSize="14" Margin="5"/>
-                                                    </StackPanel>
-                                                </DataTemplate>
-                                            </ListView.ItemTemplate>
-                                        </ListView>
-                                    </StackPanel>
+                                    <TextBlock x:Name="PlaceholderText" Text="Введите название..." Grid.Column="1"
+                                    Foreground="Gray" 
+                            VerticalAlignment="Center" 
+               Margin="5,0,0,0"
+               IsHitTestVisible="False"/>
 
                                 </Grid>
                             </Border>
                         </Border>
-
-
-
-
 
 
                         <!-- Кнопки управления окном -->
