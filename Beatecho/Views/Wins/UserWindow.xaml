@@ -540,11 +540,6 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <!-- Кнопки навигации -->
-                        <StackPanel Orientation="Horizontal" Margin="10" Grid.Column="0">
-                            <Button Style="{StaticResource NavButtonStyle}" Content="Назад"/>
-                            <Button Style="{StaticResource NavButtonStyle}" Content="Вперед"/>
-                        </StackPanel>
 
                         <!-- Область для перетаскивания окна -->
                         <Border Grid.Column="1" Background="Transparent" MouseLeftButtonDown="Border_MouseLeftButtonDown" DataContext="{StaticResource SearchViewModel}">

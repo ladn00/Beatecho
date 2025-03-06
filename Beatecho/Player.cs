@@ -1,16 +1,5 @@
-﻿using Beatecho.DAL;
-using Beatecho.DAL.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Media;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using Beatecho.DAL.Models;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Threading;
 using MessageBox = System.Windows.MessageBox;
 
@@ -91,7 +80,7 @@ namespace Beatecho
             }
         }
 
-        public void Pause() 
+        public void Pause()
         {
             try
             {
@@ -105,7 +94,7 @@ namespace Beatecho
             }
         }
 
-        public void Stop() 
+        public void Stop()
         {
             try
             {

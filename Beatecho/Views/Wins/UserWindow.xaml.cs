@@ -1,24 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using Beatecho.DAL;
+﻿//***********************************************************************
+//*Название программы: "Beatecho"                                       *
+//*                                                                     *
+//*Назначение программы: прослушивание музыки, ведение музыкальной      *
+// библиотеки                                                           *
+//*                                                                     *
+//*Разработчик: студент группы ПР-430/б Зуев А.А.                       *
+//*                                                                     *
+//* версия: 1.0                                                         *
+//***********************************************************************
+
 using Beatecho.DAL.Models;
 using Beatecho.ViewModels;
 using Beatecho.Views.Pages;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using ApplicationContext = Beatecho.DAL.ApplicationContext;
-using MessageBox = System.Windows.MessageBox;
 using Button = System.Windows.Controls.Button;
 
 namespace Beatecho.Views.Wins
@@ -42,7 +41,7 @@ namespace Beatecho.Views.Wins
             DataContext = vm;
             ContentFrame.NavigationService.Navigate(new MainPage());
 
-            using(ApplicationContext db = new ApplicationContext())
+            using (ApplicationContext db = new ApplicationContext())
             {
                 PlaylistListView.ItemsSource = new ObservableCollection<Playlist>(db.PlaylistUsers.Where(ft => ft.UserId == 1).Include(ft => ft.Playlist).Select(ft => ft.Playlist));
             }
@@ -62,14 +61,14 @@ namespace Beatecho.Views.Wins
                 if (WindowState == WindowState.Maximized)
                 {
                     var point = PointToScreen(e.GetPosition(this));
-                    
+
                     WindowState = WindowState.Normal;
 
                     var ratio = ActualWidth / SystemParameters.WorkArea.Width;
                     Left = point.X - (ActualWidth * (point.X / SystemParameters.WorkArea.Width));
                     Top = point.Y - (e.GetPosition(this).Y * ratio);
                 }
-                
+
                 DragMove();
             }
         }

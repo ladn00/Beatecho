@@ -1,14 +1,10 @@
 ﻿using Beatecho.DAL.Models;
+using Beatecho.Views.Pages;
 using Microsoft.Xaml.Behaviors.Core;
 using System.ComponentModel;
 using System.Windows.Controls;
-using System.Windows;
 using System.Windows.Input;
-using Beatecho.DAL;
-using Beatecho.Views.Pages;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using ApplicationContext = Beatecho.DAL.ApplicationContext;
-using MessageBox = System.Windows.MessageBox;
 
 namespace Beatecho.ViewModels
 {
@@ -34,7 +30,7 @@ namespace Beatecho.ViewModels
 
         public PlayerViewModel()
         {
-            PlaylistViewModel = new PlaylistViewModel(new Playlist() { Id = 0});
+            PlaylistViewModel = new PlaylistViewModel(new Playlist() { Id = 0 });
             MainWindowViewModel = new MainWindowViewModel();
             PlayPauseCommand = new RelayCommand(PlayPause);
             NextCommand = new RelayCommand(PlayNext);
@@ -78,7 +74,7 @@ namespace Beatecho.ViewModels
 
         private void PlayPause()
         {
-            if(player.IsPlaying)
+            if (player.IsPlaying)
             {
                 player.Pause();
             }
