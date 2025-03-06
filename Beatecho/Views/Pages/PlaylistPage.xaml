@@ -163,7 +163,7 @@
                           DisplayMemberBinding="{Binding Duration}"  
                           Width="100"/>
 
-                        <GridViewColumn Width="40">
+                        <!--     <GridViewColumn Width="40">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <Button Background="Transparent"
@@ -187,9 +187,9 @@
                                     </Button>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
+                        </GridViewColumn>  -->
 
-                    <!--    <GridViewColumn Width="40">
+                    <GridViewColumn Width="40">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <Button Background="Transparent"
@@ -213,7 +213,7 @@
                                     </Button>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
-                        </GridViewColumn> -->
+                        </GridViewColumn>
 
                         <GridViewColumn Width="70">
                             <GridViewColumn.CellTemplate>

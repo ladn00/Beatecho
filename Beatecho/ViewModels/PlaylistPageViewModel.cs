@@ -1,18 +1,10 @@
-﻿using Beatecho.DAL;
-using Beatecho.DAL.Models;
-using Beatecho.Views.Pages;
+﻿using Beatecho.DAL.Models;
 using Beatecho.Views.Wins;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using ApplicationContext = Beatecho.DAL.ApplicationContext;
-using MessageBox = System.Windows.MessageBox;
 
 namespace Beatecho.ViewModels
 {

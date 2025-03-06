@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <None Remove="imgs\Artists\arca.png" />
+    <None Remove="imgs\Artists\Failure.jpg" />
     <None Remove="imgs\Artists\fiona Apple.jpg" />
     <None Remove="imgs\backgr.jpg" />
     <None Remove="imgs\backgr2.jpg" />
@@ -58,6 +59,9 @@
 
   <ItemGroup>
     <Resource Include="imgs\Artists\arca.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="imgs\Artists\Failure.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="imgs\Artists\fiona Apple.jpg">
