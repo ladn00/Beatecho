@@ -4,6 +4,7 @@ using Beatecho.Views.Pages;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using ApplicationContext = Beatecho.DAL.ApplicationContext;
@@ -23,6 +24,15 @@ namespace Beatecho.ViewModels
         private User _currentUser;
         private Dictionary<int, bool> _favoritesState;
 
+        public Dictionary<int, bool> FavoritesState
+        {
+            get => _favoritesState;
+            set
+            {
+                _favoritesState = value;
+                OnPropertyChanged(nameof(FavoritesState));
+            }
+        }
 
         public Artist Artist
         {
@@ -42,19 +52,15 @@ namespace Beatecho.ViewModels
             player = PlayerViewModel.player;
             PlaySongCommand = new RelayCommand<object>(PlaySong);
             ExecuteShowAllTracks();
-
-            using (ApplicationContext db = new ApplicationContext())
-            {
-                _currentUser = db.Users.FirstOrDefault(u => u.Id == 1);
-            }
-
+            _currentUser = LoginViewModel.CurrentUser;
             _favoritesState = new Dictionary<int, bool>();
             LoadFavoritesState();
+
             AddToFavoritesCommand = new RelayCommand<Song>(AddSongToFavorites);
         }
 
         public string Name => Artist?.Name;
-        public string Photo => $"pack://application:,,,/imgs/Artists/{Artist?.Photo}";
+        public string Photo => Path.Combine(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory)?.Parent?.Parent?.Parent?.FullName, "imgs", "Artists", Artist.Photo);
         public string MonthlyListeners => "1,234,567 ежемесячных слушателей"; // Заглушка
 
         public ObservableCollection<Song> PopularTracks

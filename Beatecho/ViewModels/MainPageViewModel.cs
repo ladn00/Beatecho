@@ -52,7 +52,7 @@ namespace Beatecho.ViewModels
         {
             using (ApplicationContext db = new ApplicationContext())
             {
-                return db.PlaylistUsers.Where(ft => ft.UserId == 1).Include(ft => ft.Playlist).Select(ft => ft.Playlist).ToList();
+                return db.PlaylistUsers.Where(ft => ft.UserId == LoginViewModel.CurrentUser.Id).Include(ft => ft.Playlist).Select(ft => ft.Playlist).ToList();
             }
         }
 

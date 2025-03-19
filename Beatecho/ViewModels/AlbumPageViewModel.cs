@@ -1,16 +1,11 @@
-﻿using Beatecho.DAL;
-using Beatecho.DAL.Models;
+﻿using Beatecho.DAL.Models;
 using Beatecho.Views.Pages;
+using Beatecho.Views.Wins;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows.Input;
-using Beatecho.Views.Wins;
-using System.Globalization;
-using System.Windows.Data;
 using ApplicationContext = Beatecho.DAL.ApplicationContext;
-using MessageBox = System.Windows.MessageBox;
 
 namespace Beatecho.ViewModels
 {
@@ -53,11 +48,7 @@ namespace Beatecho.ViewModels
             Songs = GetSongsFromAlbum(album);
             player = PlayerViewModel.player;
             _favoritesState = new Dictionary<int, bool>();
-
-            using (ApplicationContext db = new ApplicationContext())
-            {
-                _currentUser = db.Users.FirstOrDefault(u => u.Id == 1);
-            }
+            _currentUser = LoginViewModel.CurrentUser;
 
             PlaySongCommand = new RelayCommand<object>(PlaySong);
             NavigateToArtistCommand = new RelayCommand<Album>(NavigateToArtist);

@@ -17,51 +17,47 @@ using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
 namespace Beatecho.ViewModels
 {
-    public class PlaylistViewModel : INotifyPropertyChanged
+    public class ArtistWindowViewModel : INotifyPropertyChanged
     {
-        public ICommand AddPlaylistCommand { get; }
+        private User _currentUser;
+        private AddArtistWindow win;
+
+        public ArtistWindowViewModel(Artist artist)
+        {
+            player = PlayerViewModel.player;
+            _currentUser = LoginViewModel.CurrentUser;
+            this.Artist = artist;
+            AddArtistCommand = new RelayCommand(AddNewArtist);
+            SelectImageCommand = new RelayCommand(SelectImage);
+            SaveCommand = new RelayCommand(SaveArtist);
+        }
+
+        public ICommand AddArtistCommand { get; }
         public ICommand SelectImageCommand { get; }
         public ICommand SaveCommand { get; }
         private Player player;
 
-        private Playlist _playlist;
-        public Playlist Playlist
+        private Artist _artist;
+        public Artist Artist
         {
-            get => _playlist;
+            get => _artist;
             set
             {
-                _playlist = value;
-                OnPropertyChanged(nameof(Playlist));
+                _artist = value;
+                OnPropertyChanged(nameof(Artist));
             }
         }
 
-        private User _currentUser;
-
-        private AddOrEditNewPlaylistWindow win;
-
-        public PlaylistViewModel(Playlist playlist)
+        public void SaveArtist()
         {
-            player = PlayerViewModel.player;
-            _currentUser = LoginViewModel.CurrentUser;
-            this.Playlist = playlist;
-            AddPlaylistCommand = new RelayCommand(AddNewPlaylist);
-            SelectImageCommand = new RelayCommand(SelectImage);
-            SaveCommand = new RelayCommand(SavePlaylist);
-
-        }
-
-        public void SavePlaylist()
-        {
-            if (Playlist != null)
+            if (Artist != null)
             {
                 using (ApplicationContext db = new ApplicationContext())
                 {
-                    if (Playlist.Id == 0)
+                    if (Artist.Id == 0)
                     {
-                        Playlist.Id = db.Playlists.Max(x => x.Id) + 1;
-                        db.Playlists.Add(Playlist);
-                        PlaylistUsers playlistUsers = new PlaylistUsers() { PlaylistId = Playlist.Id, UserId = _currentUser.Id };
-                        db.PlaylistUsers.Add(playlistUsers);
+                        Artist.Id = db.Artists.Max(x => x.Id) + 1;
+                        db.Artists.Add(Artist);
                     }
                     db.SaveChanges();
                 }
@@ -78,18 +74,18 @@ namespace Beatecho.ViewModels
 
             if (openFileDialog.ShowDialog() == true)
             {
-                Playlist.Photo = System.IO.Path.GetFileName(openFileDialog.FileName);
+                Artist.Photo = System.IO.Path.GetFileName(openFileDialog.FileName);
 
-                var destinationPath = System.IO.Path.Combine("../../../imgs/Playlists", Playlist.Photo);
+                var destinationPath = System.IO.Path.Combine("../../../imgs/Artists", Artist.Photo);
                 System.IO.File.Copy(openFileDialog.FileName, destinationPath, overwrite: true);
             }
 
             OnPropertyChanged(nameof(Playlist.Photo));
         }
 
-        public void AddNewPlaylist()
+        public void AddNewArtist()
         {
-            win = new AddOrEditNewPlaylistWindow(new Playlist() { Id = 0});
+            win = new AddArtistWindow(new Artist() { Id = 0 });
             win.ShowDialog();
         }
 

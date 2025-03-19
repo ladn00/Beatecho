@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Beatecho"
              xmlns:vm="clr-namespace:Beatecho.ViewModels"
-             StartupUri="Views/Wins/UserWindow.xaml">
+             StartupUri="MainWindow.xaml">
     <Application.Resources>
         <vm:SearchViewModel x:Key="SearchViewModel"/>
         <SolidColorBrush x:Key="MainBackground" Color="#000000"/>
@@ -11,6 +11,34 @@
         <SolidColorBrush x:Key="CellsBackground" Color="#333333"/>
         <SolidColorBrush x:Key="MainFontColor" Color="White"/>
         <SolidColorBrush x:Key="ScndFontColor" Color="Gray"/>
+        
+        <Style TargetType="ContextMenu">
+            <Setter Property="Background" Value="#333333"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <Style TargetType="MenuItem">
+            <Setter Property="Background" Value="#333333"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="0,1"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="MenuItem">
+                        <Border Name="Border" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                            <TextBlock Text="{TemplateBinding Header}" Foreground="{TemplateBinding Foreground}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#555555"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
 
         <Style TargetType="ScrollBar">
             <Setter Property="Background" Value="Transparent"/>

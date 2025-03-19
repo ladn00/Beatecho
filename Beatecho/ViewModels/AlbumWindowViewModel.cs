@@ -11,57 +11,55 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using static System.Net.WebRequestMethods;
 using ApplicationContext = Beatecho.DAL.ApplicationContext;
 using MessageBox = System.Windows.MessageBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
 namespace Beatecho.ViewModels
 {
-    public class PlaylistViewModel : INotifyPropertyChanged
+    public class AlbumWindowViewModel : INotifyPropertyChanged
     {
-        public ICommand AddPlaylistCommand { get; }
+
+        private User _currentUser;
+        private AddAlbumWindow win;
+
+        public AlbumWindowViewModel(Album album)
+        {
+            player = PlayerViewModel.player;
+            _currentUser = LoginViewModel.CurrentUser;
+            this.Album = album;
+            AddArtistCommand = new RelayCommand(AddNewAlbum);
+            SelectImageCommand = new RelayCommand(SelectImage);
+            SaveCommand = new RelayCommand(SaveAlbum);
+        }
+
+        public ICommand AddArtistCommand { get; }
         public ICommand SelectImageCommand { get; }
         public ICommand SaveCommand { get; }
         private Player player;
 
-        private Playlist _playlist;
-        public Playlist Playlist
+        private Album _album;
+        public Album Album
         {
-            get => _playlist;
+            get => _album;
             set
             {
-                _playlist = value;
-                OnPropertyChanged(nameof(Playlist));
+                _album = value;
+                OnPropertyChanged(nameof(Artist));
             }
         }
 
-        private User _currentUser;
-
-        private AddOrEditNewPlaylistWindow win;
-
-        public PlaylistViewModel(Playlist playlist)
+        public void SaveAlbum()
         {
-            player = PlayerViewModel.player;
-            _currentUser = LoginViewModel.CurrentUser;
-            this.Playlist = playlist;
-            AddPlaylistCommand = new RelayCommand(AddNewPlaylist);
-            SelectImageCommand = new RelayCommand(SelectImage);
-            SaveCommand = new RelayCommand(SavePlaylist);
-
-        }
-
-        public void SavePlaylist()
-        {
-            if (Playlist != null)
+            if (Album != null)
             {
                 using (ApplicationContext db = new ApplicationContext())
                 {
-                    if (Playlist.Id == 0)
+                    if (Album.Id == 0)
                     {
-                        Playlist.Id = db.Playlists.Max(x => x.Id) + 1;
-                        db.Playlists.Add(Playlist);
-                        PlaylistUsers playlistUsers = new PlaylistUsers() { PlaylistId = Playlist.Id, UserId = _currentUser.Id };
-                        db.PlaylistUsers.Add(playlistUsers);
+                        Album.Id = db.Albums.Max(x => x.Id) + 1;
+                        db.Albums.Add(Album);
                     }
                     db.SaveChanges();
                 }
@@ -78,18 +76,16 @@ namespace Beatecho.ViewModels
 
             if (openFileDialog.ShowDialog() == true)
             {
-                Playlist.Photo = System.IO.Path.GetFileName(openFileDialog.FileName);
-
-                var destinationPath = System.IO.Path.Combine("../../../imgs/Playlists", Playlist.Photo);
-                System.IO.File.Copy(openFileDialog.FileName, destinationPath, overwrite: true);
+                string fileNameAndExt = System.IO.Path.GetFileName(openFileDialog.FileName);
+                
             }
 
             OnPropertyChanged(nameof(Playlist.Photo));
         }
 
-        public void AddNewPlaylist()
+        public void AddNewAlbum()
         {
-            win = new AddOrEditNewPlaylistWindow(new Playlist() { Id = 0});
+            win = new AddAlbumWindow(new Album() { Id = 0 });
             win.ShowDialog();
         }
 

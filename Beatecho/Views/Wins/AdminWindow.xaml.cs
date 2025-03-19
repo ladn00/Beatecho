@@ -1,15 +1,4 @@
-﻿//***********************************************************************
-//*Название программы: "Beatecho"                                       *
-//*                                                                     *
-//*Назначение программы: прослушивание музыки, ведение музыкальной      *
-// библиотеки                                                           *
-//*                                                                     *
-//*Разработчик: студент группы ПР-430/б Зуев А.А.                       *
-//*                                                                     *
-//* версия: 1.0                                                         *
-//***********************************************************************
-
-using Beatecho.DAL.Models;
+﻿using Beatecho.DAL.Models;
 using Beatecho.ViewModels;
 using Beatecho.Views.Pages;
 using Microsoft.EntityFrameworkCore;
@@ -24,15 +13,14 @@ using MessageBox = System.Windows.MessageBox;
 namespace Beatecho.Views.Wins
 {
     /// <summary>
-    /// Логика взаимодействия для MainWin.xaml
+    /// Логика взаимодействия для AdminWindow.xaml
     /// </summary>
-    public partial class UserWindow : Window
+    public partial class AdminWindow : Window
     {
         Player player;
         public static Frame frame;
-        public bool IsAdmin { get; set; }
 
-        public UserWindow()
+        public AdminWindow()
         {
             InitializeComponent();
             player = new Player(mediaElement, CurrentSongBar, TrackSlider);
@@ -42,20 +30,12 @@ namespace Beatecho.Views.Wins
             frame = ContentFrame;
             DataContext = vm;
             ContentFrame.NavigationService.Navigate(new MainPage());
-            IsAdmin = LoginViewModel.CurrentUser.UserTypeId == 3;
-            SetMenuVisibility();
+
             using (ApplicationContext db = new ApplicationContext())
             {
                 PlaylistListView.ItemsSource = new ObservableCollection<Playlist>(db.PlaylistUsers.Where(ft => ft.UserId == 1).Include(ft => ft.Playlist).Select(ft => ft.Playlist));
             }
-
         }
-
-        private void SetMenuVisibility()
-        {
-            AdminMenuItem.Visibility = IsAdmin ? Visibility.Visible : Visibility.Collapsed;
-        }
-
 
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -113,12 +93,12 @@ namespace Beatecho.Views.Wins
             frame.NavigationService.Navigate(new PlaylistPage(playlist));
         }
 
-        private async void GoToArtist(object sender, MouseButtonEventArgs e)
+        private void GoToArtist(object sender, MouseButtonEventArgs e)
         {
             var artistTitle = tbArtist.Text;
             using (ApplicationContext db = new ApplicationContext())
             {
-                var artistFromDb = await db.Artists.FirstOrDefaultAsync(a => a.Name == artistTitle);
+                var artistFromDb = db.Artists.FirstOrDefault(a => a.Name == artistTitle);
 
                 if (artistFromDb != null)
                 {
@@ -165,14 +145,14 @@ namespace Beatecho.Views.Wins
             }
         }
 
+        private void Admin_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
-        }
-
-        private void Admin_Click(object sender, RoutedEventArgs e)
-        {
-            frame.NavigationService.Navigate(new AdminPage());
         }
     }
 }

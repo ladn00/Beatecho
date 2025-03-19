@@ -26,10 +26,10 @@ namespace Beatecho.Views.Pages
     /// </summary>
     public partial class FavoritesPage : Page
     {
-        public FavoritesPage(User user)
+        public FavoritesPage()
         {
             InitializeComponent();
-            DataContext = new FavoriteTracksViewModel(user);
+            DataContext = new FavoriteTracksViewModel();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

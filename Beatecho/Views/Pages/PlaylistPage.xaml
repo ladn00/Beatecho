@@ -11,7 +11,7 @@
               HorizontalScrollBarVisibility="Disabled">
         <Grid Background="#121212">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/> 
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 

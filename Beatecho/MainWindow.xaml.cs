@@ -1,5 +1,6 @@
 ﻿using Beatecho.DAL;
 using Beatecho.DAL.Models;
+using Beatecho.ViewModels;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Text;
 using System.Windows;
@@ -23,16 +24,11 @@ namespace Beatecho
         {
             InitializeComponent();
 
+            DataContext = new LoginViewModel();
             Views.Wins.UserWindow win = new Views.Wins.UserWindow();
-
             
             win.Show();
             this.Close();
-
-            /*using (ApplicationContext db = new ApplicationContext())
-            {
-
-            }*/
         }
     }
 }

@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="imgs\account.png" />
     <None Remove="imgs\Artists\arca.png" />
     <None Remove="imgs\Artists\Failure.jpg" />
     <None Remove="imgs\Artists\fiona Apple.jpg" />
@@ -58,6 +59,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="imgs\account.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="imgs\Artists\arca.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>

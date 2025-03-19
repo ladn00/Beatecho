@@ -11,9 +11,7 @@ namespace Beatecho.ViewModels
     public class PlayerViewModel : INotifyPropertyChanged
     {
         public static Player player;
-        private User user;
         public PlaylistViewModel PlaylistViewModel { get; set; }
-        public MainWindowViewModel MainWindowViewModel { get; set; }
         private string _playPauseImage = "/imgs/playbut.png";
         public string PlayPauseImage
         {
@@ -31,7 +29,6 @@ namespace Beatecho.ViewModels
         public PlayerViewModel()
         {
             PlaylistViewModel = new PlaylistViewModel(new Playlist() { Id = 0 });
-            MainWindowViewModel = new MainWindowViewModel();
             PlayPauseCommand = new RelayCommand(PlayPause);
             NextCommand = new RelayCommand(PlayNext);
             PreviousCommand = new RelayCommand(PlayPrevious);
@@ -43,10 +40,6 @@ namespace Beatecho.ViewModels
             VolumeChangedCommand = new RelayCommand<double>(OnVolumeChanged);
             VolumeMouseDownCommand = new RelayCommand<Slider>(OnVolumeMouseDown);
             TrackPreviewMouseDownCommand = new RelayCommand<Slider>(TrackMouseDown);
-            using (ApplicationContext db = new ApplicationContext())
-            {
-                user = db.Users.FirstOrDefault(u => u.Id == 1);
-            }
             OpenFavoritesCommand = new RelayCommand(OpenFavorites);
         }
         public void LoadPlayer()
@@ -150,7 +143,7 @@ namespace Beatecho.ViewModels
 
         private void OpenFavorites()
         {
-            var favoritePage = new FavoritesPage(user);
+            var favoritePage = new FavoritesPage();
 
             Views.Wins.UserWindow.frame.NavigationService.Navigate(favoritePage);
         }

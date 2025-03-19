@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Windows.Input;
 using System.Windows.Navigation;
 
@@ -26,20 +27,23 @@ public class Playlist
     {
         get
         {
-            return $"pack://application:,,,/imgs/Playlists/{Photo}";
+            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+
+            string projectDir = Directory.GetParent(baseDir)?.Parent?.Parent?.Parent?.FullName;
+
+            if (projectDir != null)
+            {
+                if (Photo != null) 
+                {
+                    string fullPath = Path.Combine(projectDir, "imgs", "Playlists", Photo);
+                    return fullPath;
+                }
+                return null; 
+            }
+            else
+            {
+                return null;
+            }
         }
     }
-    /*public ICommand OpenPlaylistCommand { get; set; }
-
-    public Playlist()
-    {
-        OpenPlaylistCommand = new RelayCommand(OpenPlaylist);
-    }
-
-    private void OpenPlaylist()
-    {
-        // Логика открытия страницы плейлиста
-        var playlistPage = new Views.Pages.PlaylistPage(this);
-        Views.Wins.UserWindow.frame.NavigationService.Navigate(playlistPage);
-    }*/
 }

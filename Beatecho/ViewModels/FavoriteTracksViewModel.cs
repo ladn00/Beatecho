@@ -28,13 +28,13 @@ namespace Beatecho.ViewModels
         public ICommand AddToPlaylistCommand { get; }
         public ICommand RemoveFromFavoritesCommand { get; }
 
-        public FavoriteTracksViewModel(User user)
+        public FavoriteTracksViewModel()
         {
+            user = LoginViewModel.CurrentUser;
             player = PlayerViewModel.player;
             PlaySongCommand = new RelayCommand<object>(PlaySong);
             RemoveFromFavoritesCommand = new RelayCommand<Song>(RemoveFromFavorites);
             LoadFavoriteSongs();
-            this.user = user;
         }
 
         private void LoadFavoriteSongs()
@@ -42,7 +42,7 @@ namespace Beatecho.ViewModels
             using (var context = new ApplicationContext())
             {
                 var songs = context.FavoriteTracks
-                    .Where(ft => ft.UserId == 1)
+                    .Where(ft => ft.UserId == user.Id)
                     .Include(ft => ft.Song)
                     .Select(ft => ft.Song)
                     .ToList();
@@ -78,7 +78,7 @@ namespace Beatecho.ViewModels
             using (var context = new ApplicationContext())
             {
                 var favoriteTrack = context.FavoriteTracks
-                    .FirstOrDefault(ft => ft.UserId == 1 && ft.SongId == song.Id);
+                    .FirstOrDefault(ft => ft.UserId == user.Id && ft.SongId == song.Id);
 
                 if (favoriteTrack != null)
                 {

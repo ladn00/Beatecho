@@ -75,11 +75,8 @@ namespace Beatecho.ViewModels
             Playlist = playlist;
             Songs = GetSongsFromPlaylist(playlist);
             player = PlayerViewModel.player;
+            _currentUser = LoginViewModel.CurrentUser;
 
-            using (ApplicationContext db = new ApplicationContext())
-            {
-                _currentUser = db.Users.FirstOrDefault(u => u.Id == 1);
-            }
             _favoritesState = new Dictionary<int, bool>();
             PlaySongCommand = new RelayCommand<object>(PlaySong);
             AddOrRemoveFromFavoritesCommand = new RelayCommand<Song>(AddSongToFavorites);
