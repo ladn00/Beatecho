@@ -115,7 +115,6 @@ namespace Beatecho.ViewModels
                         Id = 0,
                         Title = Path.GetFileNameWithoutExtension(file),
                         Duration = 0,
-                        CreatedAt = fileInfo.CreationTime.TimeOfDay,
                         Link = file
                     });
                 }

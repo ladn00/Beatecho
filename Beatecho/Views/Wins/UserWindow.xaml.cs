@@ -17,6 +17,8 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
 using ApplicationContext = Beatecho.DAL.ApplicationContext;
 using Button = System.Windows.Controls.Button;
 using MessageBox = System.Windows.MessageBox;
@@ -42,7 +44,7 @@ namespace Beatecho.Views.Wins
             frame = ContentFrame;
             DataContext = vm;
             ContentFrame.NavigationService.Navigate(new MainPage());
-            IsAdmin = LoginViewModel.CurrentUser.UserTypeId == 3;
+            IsAdmin = LoginViewModel.IsAdmin;
             SetMenuVisibility();
             using (ApplicationContext db = new ApplicationContext())
             {
@@ -55,7 +57,6 @@ namespace Beatecho.Views.Wins
         {
             AdminMenuItem.Visibility = IsAdmin ? Visibility.Visible : Visibility.Collapsed;
         }
-
 
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {

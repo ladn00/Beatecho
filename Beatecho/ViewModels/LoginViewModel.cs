@@ -15,12 +15,14 @@ namespace Beatecho.ViewModels
     public class LoginViewModel : INotifyPropertyChanged
     {
         public static User CurrentUser { get; set; }
+        public static bool IsAdmin {  get; set; }
         private readonly ApplicationContext _db;
 
         public LoginViewModel()
         {
             _db = new ApplicationContext();
             CurrentUser = _db.Users.FirstOrDefault(u => u.Id == 1);
+            IsAdmin = CurrentUser.UserTypeId == 3;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

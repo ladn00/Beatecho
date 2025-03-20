@@ -17,7 +17,7 @@ public class Playlist
 
     public string? Photo { get; set; }
 
-    public bool? IsPublic { get; set; } = false;
+    public bool? IsPublic { get; set; }
 
     public virtual ICollection<PlaylistSongs> PlaylistSongs { get; set; } = new List<PlaylistSongs>();
     public virtual ICollection<PlaylistUsers> PlaylistUsers { get; set; } = new List<PlaylistUsers>();

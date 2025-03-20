@@ -4,6 +4,7 @@ using Beatecho.Views.Wins;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Input;
 using ApplicationContext = Beatecho.DAL.ApplicationContext;
 
@@ -15,12 +16,16 @@ namespace Beatecho.ViewModels
         public ICommand NavigateToArtistCommand { get; }
         public ICommand AddToFavoritesCommand { get; }
         public ICommand AddToPlaylistCommand { get; }
+        public ICommand EditAlbumCommand { get; }
+        public ICommand DeleteAlbumCommand { get; }
+        public ICommand AddSongsCommand { get; }
 
         private Player player;
         private ObservableCollection<Song> _songs;
         private Album _album;
         private User _currentUser;
         private Dictionary<int, bool> _favoritesState;
+        public bool IsAdmin => LoginViewModel.IsAdmin;
 
         public ObservableCollection<Song> Songs
         {
@@ -54,7 +59,9 @@ namespace Beatecho.ViewModels
             NavigateToArtistCommand = new RelayCommand<Album>(NavigateToArtist);
             AddToFavoritesCommand = new RelayCommand<Song>(AddSongToFavorites);
             AddToPlaylistCommand = new RelayCommand<Song>(AddSongToPlaylist);
-
+            EditAlbumCommand = new RelayCommand(EditAlbum);
+            DeleteAlbumCommand = new RelayCommand(DeleteAlbum);
+            AddSongsCommand = new RelayCommand(AddSongs);
             LoadFavoritesState();
         }
 
@@ -192,6 +199,37 @@ namespace Beatecho.ViewModels
             }
             var sortedSongs = new ObservableCollection<Song>(songs);
             return sortedSongs;
+        }
+
+        private void EditAlbum()
+        {
+            var win = new AddAlbumWindow(Album);
+            win.ShowDialog();
+        }
+
+        private void DeleteAlbum()
+        {
+            var result = System.Windows.MessageBox.Show("Удалить альбом?", "Подтверждение", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes)
+            {
+                using (var db = new ApplicationContext())
+                {
+                    var album = db.Albums.Find(Album.Id);
+                    if (album != null)
+                    {
+                        db.Albums.Remove(album);
+                        db.SaveChanges();
+                    }
+                }
+                UserWindow.frame.NavigationService.GoBack();
+            }
+        }
+
+        private void AddSongs()
+        {
+            var win = new AddSongWindow(Album);
+            win.ShowDialog();
+
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

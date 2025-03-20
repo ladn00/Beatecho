@@ -1,15 +1,7 @@
-﻿using Beatecho.DAL;
-using Beatecho.DAL.Models;
+﻿using Beatecho.DAL.Models;
 using Beatecho.Views.Wins;
-using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using ApplicationContext = Beatecho.DAL.ApplicationContext;
 using MessageBox = System.Windows.MessageBox;
@@ -58,15 +50,33 @@ namespace Beatecho.ViewModels
                 {
                     if (Playlist.Id == 0)
                     {
-                        Playlist.Id = db.Playlists.Max(x => x.Id) + 1;
+                        Playlist.Id = db.Playlists.Any() ? db.Playlists.Max(x => x.Id) + 1 : 1;
                         db.Playlists.Add(Playlist);
-                        PlaylistUsers playlistUsers = new PlaylistUsers() { PlaylistId = Playlist.Id, UserId = _currentUser.Id };
+
+                        PlaylistUsers playlistUsers = new PlaylistUsers
+                        {
+                            PlaylistId = Playlist.Id,
+                            UserId = _currentUser.Id
+                        };
                         db.PlaylistUsers.Add(playlistUsers);
                     }
+                    else
+                    {
+                        var dbPlaylist = db.Playlists.FirstOrDefault(p => p.Id == Playlist.Id);
+                        if (dbPlaylist != null)
+                        {
+                            dbPlaylist.Title = Playlist.Title;
+                            dbPlaylist.Photo = Playlist.Photo;
+                            dbPlaylist.IsPublic = Playlist.IsPublic;
+                        }
+                    }
+
                     db.SaveChanges();
+                    MessageBox.Show("Плейлист успешно сохранён.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
         }
+
 
         public void SelectImage()
         {
@@ -78,18 +88,29 @@ namespace Beatecho.ViewModels
 
             if (openFileDialog.ShowDialog() == true)
             {
-                Playlist.Photo = System.IO.Path.GetFileName(openFileDialog.FileName);
+                string extension = System.IO.Path.GetExtension(openFileDialog.FileName);
+                string guidFileName = Guid.NewGuid().ToString() + extension;
 
-                var destinationPath = System.IO.Path.Combine("../../../imgs/Playlists", Playlist.Photo);
-                System.IO.File.Copy(openFileDialog.FileName, destinationPath, overwrite: true);
+                var destinationFolder = "../../../imgs/Playlists";
+                var destinationPath = System.IO.Path.Combine(destinationFolder, guidFileName);
+
+                try
+                {
+                    System.IO.File.Copy(openFileDialog.FileName, destinationPath, overwrite: true);
+                    Playlist.Photo = guidFileName;
+                    OnPropertyChanged(nameof(Playlist.Photo));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при копировании файла: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
-
-            OnPropertyChanged(nameof(Playlist.Photo));
         }
+
 
         public void AddNewPlaylist()
         {
-            win = new AddOrEditNewPlaylistWindow(new Playlist() { Id = 0});
+            win = new AddOrEditNewPlaylistWindow(new Playlist() { Id = 0 });
             win.ShowDialog();
         }
 
