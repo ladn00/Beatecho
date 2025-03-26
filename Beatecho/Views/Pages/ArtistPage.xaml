@@ -208,7 +208,7 @@ Margin="0,0,10,0"/>
                                 <GridViewColumn Width="70">
                     <GridViewColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="..." 
+                            <Button Content="..."
                             Background="Transparent"
                             BorderThickness="0"
                             Foreground="White"
@@ -238,7 +238,7 @@ Margin="0,0,10,0"/>
         </ListView.View>
     </ListView>
 
-    <Button Content="Показать все" 
+    <Button Content="Показать все" Style="{StaticResource NavButtonStyle}"
             Background="Transparent" 
             Foreground="#B3B3B3" 
             BorderThickness="0" 

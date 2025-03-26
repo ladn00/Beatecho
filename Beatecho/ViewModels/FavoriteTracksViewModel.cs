@@ -9,9 +9,9 @@ namespace Beatecho.ViewModels
 {
     internal class FavoriteTracksViewModel : INotifyPropertyChanged
     {
-        private ObservableCollection<Song> _favoriteSongs;
-        private readonly Player player;
-        private readonly User user;
+        private ObservableCollection<Song> _favoriteSongs = new();
+        private readonly Player _player;
+        private readonly User _user;
 
         public ObservableCollection<Song> FavoriteSongs
         {
@@ -24,31 +24,30 @@ namespace Beatecho.ViewModels
         }
 
         public ICommand PlaySongCommand { get; }
-        public ICommand GoToArtistCommand { get; }
-        public ICommand AddToPlaylistCommand { get; }
         public ICommand RemoveFromFavoritesCommand { get; }
 
         public FavoriteTracksViewModel()
         {
-            user = LoginViewModel.CurrentUser;
-            player = PlayerViewModel.player;
+            _user = LoginViewModel.CurrentUser;
+            _player = PlayerViewModel.player;
+
             PlaySongCommand = new RelayCommand<object>(PlaySong);
-            RemoveFromFavoritesCommand = new RelayCommand<Song>(RemoveFromFavorites);
-            LoadFavoriteSongs();
+            RemoveFromFavoritesCommand = new RelayCommand<Song>(async song => await RemoveFromFavoritesAsync(song));
+
+            _ = LoadFavoriteSongsAsync();
         }
 
-        private void LoadFavoriteSongs()
+        private async Task LoadFavoriteSongsAsync()
         {
-            using (var context = new ApplicationContext())
-            {
-                var songs = context.FavoriteTracks
-                    .Where(ft => ft.UserId == user.Id)
-                    .Include(ft => ft.Song)
-                    .Select(ft => ft.Song)
-                    .ToList();
+            using var context = new ApplicationContext();
 
-                FavoriteSongs = new ObservableCollection<Song>(songs);
-            }
+            var songs = await context.FavoriteTracks
+                .Where(ft => ft.UserId == _user.Id)
+                .Include(ft => ft.Song)
+                .Select(ft => ft.Song)
+                .ToListAsync();
+
+            FavoriteSongs = new ObservableCollection<Song>(songs);
         }
 
         private void PlaySong(object parameter)
@@ -56,36 +55,38 @@ namespace Beatecho.ViewModels
             if (parameter is not Song song)
                 return;
 
-            if (!player.IsPlaying && player.CurrentSong == parameter)
+            if (_player.CurrentSong == song)
             {
-                player.Play();
-                return;
-            }
-            else if (player.IsPlaying && player.CurrentSong == parameter)
-            {
-                player.Pause();
+                if (_player.IsPlaying)
+                    _player.Pause();
+                else
+                    _player.Play();
+
                 return;
             }
 
-            player.SetQueue(FavoriteSongs.ToList());
-            player.Index = FavoriteSongs.IndexOf(song);
-            player.SetSong();
-            player.Play();
+            _player.SetQueue(FavoriteSongs.ToList());
+            _player.Index = FavoriteSongs.IndexOf(song);
+            _player.SetSong();
+            _player.Play();
         }
 
-        private void RemoveFromFavorites(Song song)
+        private async Task RemoveFromFavoritesAsync(Song song)
         {
-            using (var context = new ApplicationContext())
-            {
-                var favoriteTrack = context.FavoriteTracks
-                    .FirstOrDefault(ft => ft.UserId == user.Id && ft.SongId == song.Id);
+            if (song == null)
+                return;
 
-                if (favoriteTrack != null)
-                {
-                    context.FavoriteTracks.Remove(favoriteTrack);
-                    context.SaveChanges();
-                    FavoriteSongs.Remove(song);
-                }
+            using var context = new ApplicationContext();
+
+            var favoriteTrack = await context.FavoriteTracks
+                .FirstOrDefaultAsync(ft => ft.UserId == _user.Id && ft.SongId == song.Id);
+
+            if (favoriteTrack != null)
+            {
+                context.FavoriteTracks.Remove(favoriteTrack);
+                await context.SaveChangesAsync();
+
+                FavoriteSongs.Remove(song);
             }
         }
 

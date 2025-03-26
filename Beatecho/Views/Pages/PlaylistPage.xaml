@@ -49,7 +49,7 @@
 
 
 
-                    <Button Background="Transparent"
+                    <Button Background="Transparent" Style="{StaticResource NavButtonStyle}"
                                                 BorderThickness="0"
                                                 Padding="0" Content="Редактировать" Foreground="LightGray" HorizontalAlignment="Left" Margin="0, 15"
                                                 Command="{Binding EditPlaylistCommand}"

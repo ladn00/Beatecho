@@ -27,5 +27,25 @@ namespace Beatecho.Views.Pages
         {
             InitializeComponent();
         }
+
+        private void ListView_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            var scrollViewer = FindParent<ScrollViewer>(sender as DependencyObject);
+            if (scrollViewer != null)
+            {
+                scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);
+                e.Handled = true;
+            }
+        }
+
+        private T FindParent<T>(DependencyObject child) where T : DependencyObject
+        {
+            DependencyObject parent = VisualTreeHelper.GetParent(child);
+            while (parent != null && !(parent is T))
+            {
+                parent = VisualTreeHelper.GetParent(parent);
+            }
+            return parent as T;
+        }
     }
 }

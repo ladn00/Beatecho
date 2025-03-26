@@ -30,14 +30,9 @@
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="Cursor" Value="Hand"/>
         </Style>
-        <Style x:Key="NavButtonStyle" TargetType="Button">
-            <Setter Property="Foreground" Value="{StaticResource MainFontColor}"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="HorizontalContentAlignment" Value="Left"/>
-            <Setter Property="Padding" Value="10,5"/>
-        </Style>
+        
+
+
 
         <Style x:Key="ControlButtonStyle" TargetType="Button">
             <Setter Property="Foreground" Value="{StaticResource MainFontColor}"/>
@@ -49,25 +44,24 @@
 
         <!--Control colors.-->
         <Color x:Key="WindowColor">#FFE8EDF9</Color>
-        <Color x:Key="ContentAreaColorLight">#FFC5CBF9</Color>
-        <Color x:Key="ContentAreaColorDark">#FF7381F9</Color>
+        <Color x:Key="ContentAreaColorLight">White</Color>
+        <Color x:Key="ContentAreaColorDark">White</Color>
 
         <Color x:Key="DisabledControlLightColor">#FFE8EDF9</Color>
-        <Color x:Key="DisabledControlDarkColor">#FFC5CBF9</Color>
-        <Color x:Key="DisabledForegroundColor">#FF888888</Color>
+        <Color x:Key="DisabledControlDarkColor">White</Color>
+        <Color x:Key="DisabledForegroundColor">White</Color>
 
-        <Color x:Key="SelectedBackgroundColor">#FFC5CBF9</Color>
-        <Color x:Key="SelectedUnfocusedColor">#FFDDDDDD</Color>
+        <Color x:Key="SelectedBackgroundColor">White</Color>
+        <Color x:Key="SelectedUnfocusedColor">White</Color>
 
         <Color x:Key="ControlLightColor">White</Color>
-        <Color x:Key="ControlMediumColor">#FF7381F9</Color>
-        <Color x:Key="ControlDarkColor">#FF211AA9</Color>
+        <Color x:Key="ControlMediumColor">White</Color>
+        <Color x:Key="ControlDarkColor">White</Color>
 
-        <Color x:Key="ControlMouseOverColor">#FF3843C4</Color>
-        <Color x:Key="ControlPressedColor">#FF211AA9</Color>
+        <Color x:Key="ControlMouseOverColor">White</Color>
+        <Color x:Key="ControlPressedColor">White</Color>
 
-
-        <Color x:Key="GlyphColor">#FF444444</Color>
+        <Color x:Key="GlyphColor">White</Color>
         <Color x:Key="GlyphMouseOver">sc#1, 0.004391443, 0.002428215, 0.242281124</Color>
 
         <!--Border colors-->
@@ -84,11 +78,11 @@
         <Color x:Key="DefaultBorderBrushDarkColor">Black</Color>
 
         <!--Control-specific resources.-->
-        <Color x:Key="HeaderTopColor">#FFC5CBF9</Color>
+        <Color x:Key="HeaderTopColor">White</Color>
         <Color x:Key="DatagridCurrentCellBorderColor">Black</Color>
-        <Color x:Key="SliderTrackDarkColor">#FFC5CBF9</Color>
+        <Color x:Key="SliderTrackDarkColor">White</Color>
 
-        <Color x:Key="NavButtonFrameColor">#FF3843C4</Color>
+        <Color x:Key="NavButtonFrameColor">White</Color>
 
         <LinearGradientBrush x:Key="MenuPopupBrush"
                      EndPoint="0.5,1"
@@ -106,13 +100,13 @@
                      EndPoint="1,0">
             <LinearGradientBrush.GradientStops>
                 <GradientStopCollection>
-                    <GradientStop Color="#000000FF"
+                    <GradientStop Color="White"
                     Offset="0" />
-                    <GradientStop Color="#600000FF"
+                    <GradientStop Color="White"
                     Offset="0.4" />
-                    <GradientStop Color="#600000FF"
+                    <GradientStop Color="White"
                     Offset="0.6" />
-                    <GradientStop Color="#000000FF"
+                    <GradientStop Color="White"
                     Offset="1" />
                 </GradientStopCollection>
             </LinearGradientBrush.GradientStops>
@@ -513,8 +507,8 @@
                                 <ColumnDefinition Width="3*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="ПЛЕЙЛИСТЫ" Foreground="Gray" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <Button Style="{StaticResource ControlButtonStyle}" Command="{Binding AddPlaylistCommand}" Grid.Column="1">
+                            <TextBlock Text="ПЛЕЙЛИСТЫ" Foreground="Gray" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+                            <Button Style="{StaticResource NavButtonStyle}" Command="{Binding AddPlaylistCommand}" Grid.Column="1">
                                 <Image Source="/imgs/plus.png" Width="20"/>
                             </Button>
                         </Grid>
@@ -584,7 +578,7 @@ ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                            IsHitTestVisible="False"/>
                                     </Grid>
 
-                                    <Button Grid.Column="2" Background="Transparent" BorderThickness="0" Margin="5,0" VerticalAlignment="Center" Click="AccountButton_Click">
+                                    <Button Grid.Column="2" Background="Transparent" BorderThickness="0" Margin="5,0" VerticalAlignment="Center" Click="AccountButton_Click" Style="{StaticResource NavButtonStyle}">
                                         <Image Source="/imgs/account.png" Width="24" Height="24"/>
                                         <Button.ContextMenu>
                                             <ContextMenu x:Name="AccountMenu">
@@ -618,7 +612,7 @@ ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <Frame x:Name="ContentFrame" Grid.Column="1" Grid.Row="1" Source="ContentPage.xaml" NavigationUIVisibility="Hidden"/>
                 
                 <!-- Нижняя панель управления -->
-                <Border Grid.Row="2" Grid.ColumnSpan="2" Height="80" Background="{StaticResource MainBackground}" CornerRadius="0,0,10,10" VerticalAlignment="Bottom">
+                <Border Grid.Row="2" Grid.ColumnSpan="2" Height="90" Background="{StaticResource MainBackground}" CornerRadius="0,0,10,10" VerticalAlignment="Bottom">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="200"/>
@@ -657,24 +651,31 @@ ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                                 </TextBlock>
                             </StackPanel>
                         </StackPanel>
-
+                        
                         <!-- Prev, Pause, Next -->
-                        <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <Button Style="{StaticResource ControlButtonStyle}" Command="{Binding PreviousCommand}">
+                        <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80">
+
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-25, 5, 0, 5">
+                                <Button Style="{StaticResource NavButtonStyle}" Command="{Binding ShuffleCommand}" HorizontalAlignment="Left">
+                                    <Image Source="/imgs/shuffle.png" Width="15"/>
+                                </Button>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    
+                                
+                                <Button Style="{StaticResource NavButtonStyle}" Command="{Binding PreviousCommand}">
                                     <Image Source="/imgs/prev.png" Width="15"/>
                                 </Button>
-                                <Button Style="{StaticResource ControlButtonStyle}" Command="{Binding PlayPauseCommand}">
+                                <Button Style="{StaticResource NavButtonStyle}" Command="{Binding PlayPauseCommand}">
                                     <Image Source="{Binding PlayPauseImage}" Width="30"/>
                                 </Button>
-                                <Button Style="{StaticResource ControlButtonStyle}" Command="{Binding NextCommand}">
+                                <Button Style="{StaticResource NavButtonStyle}" Command="{Binding NextCommand}">
                                     <Image Source="/imgs/next.png" Width="15"/>
                                 </Button>
+                                </StackPanel>
                             </StackPanel>
                             <Slider x:Name="TrackSlider"
                     HorizontalAlignment="Stretch"
-                    VerticalAlignment="Top"
-                    Margin="10"
+                    Margin="2"
                     Minimum="0"
                     Maximum="100"
                     Width="400"

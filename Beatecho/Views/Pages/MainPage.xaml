@@ -8,6 +8,37 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="MainPage">
+    <Page.Resources>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+        BorderBrush="{TemplateBinding BorderBrush}" 
+        BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                      Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#444444"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#555555"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Page.Resources>
     <Page.DataContext>
         <vm:MainPageViewModel />
     </Page.DataContext>
@@ -16,7 +47,13 @@
             <TextBlock Text="Альбомы" Foreground="White" FontSize="24" Margin="0,0,0,20"/>
 
             <WrapPanel>
-                <ListView Name="lw1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="Transparent" BorderBrush="Transparent" ItemsSource="{Binding Albums}">
+                <ListView Name="lw1" 
+          ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+          ScrollViewer.VerticalScrollBarVisibility="Disabled"
+          Background="Transparent" 
+          BorderBrush="Transparent" 
+          ItemsSource="{Binding Albums}"
+          PreviewMouseWheel="ListView_PreviewMouseWheel">
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel HorizontalAlignment="Center"></WrapPanel>
@@ -24,11 +61,11 @@
                     </ListView.ItemsPanel>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Border Width="150" Height="200" Background="#333333" CornerRadius="10" Margin="10" Padding="5, 10">
+                            <Border Width="150" Height="200" Background="#333333" CornerRadius="10" Margin="10" Padding="5, 10" Focusable="False">
                                 <Border.InputBindings>
                                     <MouseBinding MouseAction="LeftClick" 
-                                  Command="{Binding DataContext.OpenAlbumCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
-                                  CommandParameter="{Binding}" />
+                                                  Command="{Binding DataContext.OpenAlbumCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
+                                                  CommandParameter="{Binding}" />
                                 </Border.InputBindings>
                                 <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center">
                                     <Image Source="{Binding Photo}" Width="135" Height="135" Stretch="UniformToFill"/>
@@ -38,15 +75,12 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Text="{Binding Title}" Foreground="White" Margin="0,10,0,0"/>
-                                        <Button HorizontalAlignment="Right" Grid.Column="1" Width="30" BorderBrush="Transparent" Background="Transparent" Foreground="White" FontSize="16" Command="{Binding DataContext.PlayPauseAlbumCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
-CommandParameter="{Binding}" >
+                                        <Button Style="{StaticResource ButtonStyle}" HorizontalAlignment="Right" Grid.Column="1" Width="30" BorderBrush="Transparent" Background="Transparent" Foreground="White" FontSize="16" Command="{Binding DataContext.PlayPauseAlbumCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
+                                                CommandParameter="{Binding}" >
                                             <Image Source="/imgs/playQuery.png" Width="20" Margin="0, 5"/>
                                         </Button>
                                     </Grid>
-                                    <StackPanel Orientation="Horizontal">
-
-
-                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal"></StackPanel>
                                 </StackPanel>
 
                             </Border>
@@ -55,48 +89,52 @@ CommandParameter="{Binding}" >
                     </ListView.ItemTemplate>
                 </ListView>
 
-                
             </WrapPanel>
 
             <TextBlock Text="Плейлисты" Foreground="White" FontSize="24" Margin="0,0,0,20"/>
-            
+
             <WrapPanel>
-                <ListView Name="lw2" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="Transparent" BorderBrush="Transparent" ItemsSource="{Binding Playlists}">
-                <ListView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel HorizontalAlignment="Center"></WrapPanel>
-                    </ItemsPanelTemplate>
-                </ListView.ItemsPanel>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Border Width="150" Height="200" Background="#333333" CornerRadius="10" Margin="10" Padding="5, 10">
-                            <Border.InputBindings>
-                                <MouseBinding MouseAction="LeftClick" 
-                                  Command="{Binding DataContext.OpenPlaylistCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
-                                  CommandParameter="{Binding}" />
-                            </Border.InputBindings>
-                            <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center">
-                                <Image Source="{Binding PlaylistPhoto}" Width="135" Height="135" Stretch="UniformToFill"/>
-                                <Grid VerticalAlignment="Center" Margin="10">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="2*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="{Binding Title}" Foreground="White" Margin="0,10,0,0"/>
-                                    <Button HorizontalAlignment="Right" Grid.Column="1" Width="30" BorderBrush="Transparent" Content="▶" Background="Transparent" Foreground="White" FontSize="16" Command="{Binding DataContext.PlayPausePlaylistCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
-CommandParameter="{Binding}" />
-                                </Grid>
-                                <StackPanel Orientation="Horizontal">
-
-
+                <ListView Name="lw2" 
+ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+ScrollViewer.VerticalScrollBarVisibility="Disabled"
+Background="Transparent" 
+BorderBrush="Transparent" 
+ItemsSource="{Binding Playlists}"
+PreviewMouseWheel="ListView_PreviewMouseWheel">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel HorizontalAlignment="Center"></WrapPanel>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Width="150" Height="200" Background="#333333" CornerRadius="10" Margin="10" Padding="5, 10" Focusable="False">
+                                <Border.InputBindings>
+                                    <MouseBinding MouseAction="LeftClick" 
+                                                  Command="{Binding DataContext.OpenPlaylistCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
+                                                  CommandParameter="{Binding}" />
+                                </Border.InputBindings>
+                                <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center">
+                                    <Image Source="{Binding PlaylistPhoto}" Width="135" Height="135" Stretch="UniformToFill"/>
+                                    <Grid VerticalAlignment="Center" Margin="10">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding Title}" Foreground="White" Margin="0,10,0,0"/>
+                                        <Button Style="{StaticResource ButtonStyle}" HorizontalAlignment="Right" Grid.Column="1" Width="30" BorderBrush="Transparent" Background="Transparent" Foreground="White" FontSize="16" Command="{Binding DataContext.PlayPausePlaylistCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
+                                                CommandParameter="{Binding}">
+                                            <Image Source="/imgs/playQuery.png" Width="20" Margin="0, 5"/>
+                                        </Button>
+                                    </Grid>
+                                    <StackPanel Orientation="Horizontal"></StackPanel>
                                 </StackPanel>
-                            </StackPanel>
 
-                        </Border>
+                            </Border>
 
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
 
             </WrapPanel>
         </StackPanel>

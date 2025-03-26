@@ -16,32 +16,33 @@
             <Setter Property="Padding" Value="10"/>
         </Style>
     </Page.Resources>
-    <Grid>
+    <Border Padding="30">
         <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <StackPanel>
-                <TextBlock Text="Альбомы" Foreground="White" FontSize="24" Margin="0,0,0,20"/>
-                <StackPanel Orientation="Horizontal" Height="40">
-                    <TextBlock Text="Добавить" Foreground="White" FontSize="18" Margin="0,0,0,20" />
-                    <Button Style="{StaticResource ControlButtonStyle}" Click="OpenAddAlbum_Click" Grid.Column="1" Width="50">
-                        <Image Source="/imgs/plus.png" Width="20"/>
-                    </Button>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <TextBlock Text="Альбомы" Foreground="White" FontSize="24" Margin="0,0,0,20"/>
+                    <StackPanel Orientation="Horizontal" Height="40">
+                        <TextBlock Text="Добавить" Foreground="White" FontSize="18" Margin="0,0,0,20" />
+                        <Button Style="{StaticResource NavButtonStyle}" Click="OpenAddAlbum_Click" Grid.Column="1" Width="50">
+                            <Image Source="/imgs/plus.png" Width="20"/>
+                        </Button>
+                    </StackPanel>
+
                 </StackPanel>
-                
-            </StackPanel>
-            <StackPanel Grid.Column="1">
-                <TextBlock Text="Исполнители" Foreground="White" FontSize="24" Margin="0,0,0,20"/>
-                <StackPanel Orientation="Horizontal" Height="40">
-                    <TextBlock Text="Добавить" Foreground="White" FontSize="18" Margin="0,0,0,20" />
-                    <Button Style="{StaticResource ControlButtonStyle}" Click="OpenAddArtist_Click" Grid.Column="1" Width="50">
-                        <Image Source="/imgs/plus.png" Width="20"/>
-                    </Button>
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="Исполнители" Foreground="White" FontSize="24" Margin="0,0,0,20"/>
+                    <StackPanel Orientation="Horizontal" Height="40">
+                        <TextBlock Text="Добавить" Foreground="White" FontSize="18" Margin="0,0,0,20" />
+                        <Button Style="{StaticResource NavButtonStyle}" Click="OpenAddArtist_Click" Grid.Column="1" Width="50">
+                            <Image Source="/imgs/plus.png" Width="20"/>
+                        </Button>
+                    </StackPanel>
                 </StackPanel>
-            </StackPanel>
+            </Grid>
         </Grid>
-        
-    </Grid>
+    </Border>
 </Page>

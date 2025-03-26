@@ -8,16 +8,10 @@
         Title="Добавить в плейлист" Height="300" Width="400"
         WindowStyle="None" AllowsTransparency="True" Background="Transparent" WindowStartupLocation="CenterScreen">
     <Window.Resources>
-        <Style x:Key="NavButtonStyle" TargetType="Button">
-            <Setter Property="Foreground" Value="{StaticResource MainFontColor}"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="HorizontalContentAlignment" Value="Left"/>
-            <Setter Property="Padding" Value="10,5"/>
+        <Style TargetType="Button" BasedOn="{StaticResource NavButtonStyle}">
         </Style>
     </Window.Resources>
-    <Border Background="#0d0d0d" CornerRadius="10">
+    <Border Background="#121212" CornerRadius="10" BorderBrush="Black" BorderThickness="5">
         <Grid Margin="20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>

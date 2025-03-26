@@ -41,17 +41,33 @@ namespace Beatecho.ViewModels
             VolumeMouseDownCommand = new RelayCommand<Slider>(OnVolumeMouseDown);
             TrackPreviewMouseDownCommand = new RelayCommand<Slider>(TrackMouseDown);
             OpenFavoritesCommand = new RelayCommand(OpenFavorites);
+            ShuffleCommand = new RelayCommand(ShuffleQueue);
         }
+
+        public void ShuffleQueue()
+        {
+            if (!player.IsShuffled)
+            {
+                player.ShuffleQueue();
+            }
+            else
+            {
+                player.UnshuffleQueue();
+            }
+        }
+
         public void LoadPlayer()
         {
             player.PlayPauseChanged += OnPlayPauseChanged;
         }
+
         private void OnPlayPauseChanged()
         {
             PlayPauseImage = player.IsPlaying ? "/imgs/pause.png" : "/imgs/playbut.png";
         }
 
         public ICommand PlayPauseCommand { get; }
+        public ICommand ShuffleCommand { get; }
         public ICommand StopCommand { get; }
         public ICommand NextCommand { get; }
         public ICommand PreviousCommand { get; }

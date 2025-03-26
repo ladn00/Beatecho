@@ -5,8 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 using ApplicationContext = Beatecho.DAL.ApplicationContext;
+using MessageBox = System.Windows.MessageBox;
 
 namespace Beatecho.ViewModels
 {
@@ -50,39 +52,84 @@ namespace Beatecho.ViewModels
         public AlbumPageViewModel(Album album)
         {
             Album = album;
-            Songs = GetSongsFromAlbum(album);
             player = PlayerViewModel.player;
             _favoritesState = new Dictionary<int, bool>();
             _currentUser = LoginViewModel.CurrentUser;
 
             PlaySongCommand = new RelayCommand<object>(PlaySong);
-            NavigateToArtistCommand = new RelayCommand<Album>(NavigateToArtist);
-            AddToFavoritesCommand = new RelayCommand<Song>(AddSongToFavorites);
+            NavigateToArtistCommand = new RelayCommand<Album>(NavigateToArtistAsync);
+            AddToFavoritesCommand = new RelayCommand<Song>(AddSongToFavoritesAsync);
             AddToPlaylistCommand = new RelayCommand<Song>(AddSongToPlaylist);
             EditAlbumCommand = new RelayCommand(EditAlbum);
-            DeleteAlbumCommand = new RelayCommand(DeleteAlbum);
+            DeleteAlbumCommand = new RelayCommand(DeleteAlbumAsync);
             AddSongsCommand = new RelayCommand(AddSongs);
-            LoadFavoritesState();
+        }
+
+        public async Task InitializeAsync()
+        {
+            await LoadSongsFromAlbumWithFavoritesAsync(Album);
         }
 
         private void AddSongToPlaylist(Song song)
         {
-            if (song == null)
-                return;
-
+            if (song == null) return;
             var addToPlaylistWindow = new AddToPlaylistWindow(song);
             addToPlaylistWindow.ShowDialog();
         }
+        private async Task LoadSongsFromAlbumWithFavoritesAsync(Album album)
+        {
+            if (album == null)
+            {
+                Songs = new ObservableCollection<Song>();
+                return;
+            }
 
-        public void AddSongToFavorites(Song song)
+            await using var db = new ApplicationContext();
+
+            var albumWithSongs = await db.Albums
+                .Include(a => a.AlbumSongs)
+                    .ThenInclude(als => als.Song)
+                .FirstOrDefaultAsync(a => a.Id == album.Id);
+
+            if (albumWithSongs == null)
+            {
+                Songs = new ObservableCollection<Song>();
+                return;
+            }
+
+            var songs = albumWithSongs.AlbumSongs
+                .Select(als => als.Song)
+                .OrderBy(s => s.TrackNumber)
+                .ToList();
+
+            if (_currentUser != null)
+            {
+                var favoriteSongIds = await db.FavoriteTracks
+                    .Where(ft => ft.UserId == _currentUser.Id)
+                    .Select(ft => ft.SongId)
+                    .ToListAsync();
+
+                foreach (var song in songs)
+                {
+                    _favoritesState[song.Id] = favoriteSongIds.Contains(song.Id);
+                }
+            }
+
+            Songs = new ObservableCollection<Song>(songs);
+
+            OnPropertyChanged(nameof(Songs));
+        }
+
+        public async void AddSongToFavoritesAsync(Song song)
         {
             if (_currentUser == null || song == null)
                 return;
 
-            using (ApplicationContext db = new ApplicationContext())
+            await Task.Run(async () =>
             {
-                var existingFavorite = db.FavoriteTracks
-                    .FirstOrDefault(ft => ft.UserId == _currentUser.Id && ft.SongId == song.Id);
+                await using var db = new ApplicationContext();
+                var existingFavorite = await db.FavoriteTracks
+                    .FirstOrDefaultAsync(ft => ft.UserId == _currentUser.Id && ft.SongId == song.Id);
 
                 if (existingFavorite == null)
                 {
@@ -91,8 +138,8 @@ namespace Beatecho.ViewModels
                         UserId = _currentUser.Id,
                         SongId = song.Id
                     };
+                    await db.FavoriteTracks.AddAsync(favoriteTrack);
 
-                    db.FavoriteTracks.Add(favoriteTrack);
                     _favoritesState[song.Id] = true;
                 }
                 else
@@ -100,105 +147,93 @@ namespace Beatecho.ViewModels
                     db.FavoriteTracks.Remove(existingFavorite);
                     _favoritesState[song.Id] = false;
                 }
-                db.SaveChanges();
-            }
-            OnPropertyChanged(nameof(Songs));
-            OnPropertyChanged(nameof(Album));
-            OnPropertyChanged($"Item[{song.Id}]");
+
+                await db.SaveChangesAsync();
+            });
+
+            CollectionViewSource.GetDefaultView(Songs)?.Refresh();
         }
 
-        private void LoadFavoritesState()
+
+
+        private async Task LoadFavoritesStateAsync()
         {
             if (_currentUser == null) return;
 
-            using (ApplicationContext db = new ApplicationContext())
-            {
-                var favorites = db.FavoriteTracks
-                    .Where(ft => ft.UserId == _currentUser.Id)
-                    .ToList();
+            await using var db = new ApplicationContext();
+            var favoriteSongIds = await db.FavoriteTracks
+                .Where(ft => ft.UserId == _currentUser.Id)
+                .Select(ft => ft.SongId)
+                .ToListAsync();
 
-                foreach (var song in Songs)
-                {
-                    _favoritesState[song.Id] = favorites.Any(f => f.SongId == song.Id);
-                }
+            foreach (var song in Songs)
+            {
+                _favoritesState[song.Id] = favoriteSongIds.Contains(song.Id);
             }
         }
 
-        public bool IsSongFavorite(int songId)
-        {
-            return _favoritesState.ContainsKey(songId) && _favoritesState[songId];
-        }
+        public bool IsSongFavorite(int songId) =>
+            _favoritesState.TryGetValue(songId, out bool isFav) && isFav;
 
         private void PlaySong(object parameter)
         {
-            if (parameter is not Song song)
-                return;
+            if (parameter is not Song song) return;
 
             if (!player.IsPlaying && player.CurrentSong == parameter)
             {
                 player.Play();
-                return;
             }
             else if (player.IsPlaying && player.CurrentSong == parameter)
             {
                 player.Pause();
+            }
+            else
+            {
+                player.SetQueue(Songs.ToList());
+                player.Index = song.TrackNumber - 1;
+                player.SetSong();
+                player.Play();
+            }
+        }
+
+        private async void NavigateToArtistAsync(Album album)
+        {
+            await using var db = new ApplicationContext();
+            var artist = await db.Albums
+                .Where(a => a.Id == album.Id)
+                .SelectMany(a => a.ArtistAlbums.Select(aa => aa.Artist))
+                .FirstOrDefaultAsync();
+
+            if (artist != null)
+            {
+                var artistPage = new ArtistPage(artist);
+                Views.Wins.UserWindow.frame.NavigationService.Navigate(artistPage);
+            }
+        }
+
+        public async Task LoadSongsFromAlbumAsync(Album album)
+        {
+            if (album == null)
+            {
+                Songs = new ObservableCollection<Song>();
                 return;
             }
 
-            player.SetQueue(Songs.ToList());
-            player.Index = song.TrackNumber - 1;
-            player.SetSong();
-            player.Play();
-        }
+            await using var db = new ApplicationContext();
+            var albumWithSongs = await db.Albums
+                .Include(a => a.AlbumSongs)
+                    .ThenInclude(als => als.Song)
+                .FirstOrDefaultAsync(a => a.Id == album.Id);
 
-        private void NavigateToArtist(Album album)
-        {
-            using (ApplicationContext db = new ApplicationContext())
+            if (albumWithSongs != null)
             {
-                var artist = db.Albums
-                .Include(a => a.ArtistAlbums)
-                .ThenInclude(aa => aa.Artist)
-                .FirstOrDefault(a => a.Id == album.Id)
-                ?.ArtistAlbums
-                .FirstOrDefault()
-                ?.Artist;
+                var songs = albumWithSongs.AlbumSongs
+                    .Select(als => als.Song)
+                    .OrderBy(s => s.TrackNumber)
+                    .ToList();
 
-                if (artist != null)
-                {
-                    var artistPage = new ArtistPage(artist);
-                    Views.Wins.UserWindow.frame.NavigationService.Navigate(artistPage);
-                }
+                Songs = new ObservableCollection<Song>(songs);
             }
-        }
-
-        public ObservableCollection<Song> GetSongsFromAlbum(Album album)
-        {
-            List<Song> songs = new List<Song>();
-
-            using (ApplicationContext db = new ApplicationContext())
-            {
-                if (album != null)
-                {
-                    var albumWithSongs = db.Albums
-                        .Include(a => a.AlbumSongs)
-                        .ThenInclude(als => als.Song)
-                        .FirstOrDefault(a => a.Id == album.Id);
-
-                    if (albumWithSongs != null)
-                    {
-                        foreach (AlbumSongs s in albumWithSongs.AlbumSongs)
-                        {
-                            if (s.Song != null)
-                            {
-                                songs.Add(s.Song);
-                            }
-                        }
-                    }
-                }
-                songs = songs.OrderBy(x => x.TrackNumber).ToList();
-            }
-            var sortedSongs = new ObservableCollection<Song>(songs);
-            return sortedSongs;
         }
 
         private void EditAlbum()
@@ -207,19 +242,17 @@ namespace Beatecho.ViewModels
             win.ShowDialog();
         }
 
-        private void DeleteAlbum()
+        private async void DeleteAlbumAsync()
         {
-            var result = System.Windows.MessageBox.Show("Удалить альбом?", "Подтверждение", MessageBoxButton.YesNo);
+            var result = MessageBox.Show("Удалить альбом?", "Подтверждение", MessageBoxButton.YesNo);
             if (result == MessageBoxResult.Yes)
             {
-                using (var db = new ApplicationContext())
+                await using var db = new ApplicationContext();
+                var album = await db.Albums.FindAsync(Album.Id);
+                if (album != null)
                 {
-                    var album = db.Albums.Find(Album.Id);
-                    if (album != null)
-                    {
-                        db.Albums.Remove(album);
-                        db.SaveChanges();
-                    }
+                    db.Albums.Remove(album);
+                    await db.SaveChangesAsync();
                 }
                 UserWindow.frame.NavigationService.GoBack();
             }
@@ -229,14 +262,11 @@ namespace Beatecho.ViewModels
         {
             var win = new AddSongWindow(Album);
             win.ShowDialog();
-
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string propertyName)
-        {
+        protected void OnPropertyChanged(string propertyName) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
+
 }

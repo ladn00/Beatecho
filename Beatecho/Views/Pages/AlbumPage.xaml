@@ -68,11 +68,11 @@
 
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0"
                 Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVis}}">
-                        <Button Content="Edit" Margin="0,0,10,0" Padding="5,2"
+                        <Button Content="Edit" Margin="0,0,10,0" Padding="5,2" Style="{StaticResource NavButtonStyle}"
                 Command="{Binding EditAlbumCommand}"/>
-                        <Button Content="Delete" Margin="0,0,10,0" Padding="5,2"
+                        <Button Content="Delete" Margin="0,0,10,0" Padding="5,2" Style="{StaticResource NavButtonStyle}"
                 Command="{Binding DeleteAlbumCommand}"/>
-                        <Button Content="Add Songs" Padding="5,2"
+                        <Button Content="Add Songs" Padding="5,2" Style="{StaticResource NavButtonStyle}"
                 Command="{Binding AddSongsCommand}"/>
                     </StackPanel>
 

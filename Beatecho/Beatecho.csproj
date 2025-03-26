@@ -32,6 +32,7 @@
     <None Remove="imgs\playQuery.png" />
     <None Remove="imgs\plus.png" />
     <None Remove="imgs\prev.png" />
+    <None Remove="imgs\shuffle.png" />
     <None Remove="imgs\unliked.png" />
     <None Remove="imgs\volume.png" />
     <None Remove="Views\Wins\1.jpg" />
@@ -117,6 +118,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="imgs\prev.png" />
+    <Resource Include="imgs\shuffle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="imgs\unliked.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>

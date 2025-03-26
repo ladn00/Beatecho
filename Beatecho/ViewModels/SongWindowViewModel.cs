@@ -72,7 +72,14 @@ namespace Beatecho.ViewModels
                     var existingLinks = db.AlbumSongs.Where(aa => aa.SongId == Song.Id);
                     db.AlbumSongs.RemoveRange(existingLinks);
 
-                    db.AlbumSongs.Add(new AlbumSongs { AlbumId = Album.Id, SongId = Song.Id, TrackNum = db.AlbumSongs.Where(x => x.AlbumId == Album.Id).Max(x => x.TrackNum) + 1 });
+                    int nextTrackNum = db.AlbumSongs
+                        .Where(x => x.AlbumId == Album.Id)
+                        .Select(x => x.TrackNum)
+                        .AsEnumerable()
+                        .DefaultIfEmpty(0)
+                        .Max() + 1;
+
+                    db.AlbumSongs.Add(new AlbumSongs { AlbumId = Album.Id, SongId = Song.Id, TrackNum = nextTrackNum });
                     db.SaveChanges();
                 }
             }

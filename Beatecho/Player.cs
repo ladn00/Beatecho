@@ -2,12 +2,14 @@
 using System.Windows.Controls;
 using System.Windows.Threading;
 using MessageBox = System.Windows.MessageBox;
+using System.Linq;
 
 namespace Beatecho
 {
     public class Player
     {
         public List<Song> Queue { get; set; }
+        public List<Song> UnshuffledQueue { get; set; }
         public MediaElement MediaElement { get; set; }
         public Song CurrentSong { get; set; }
         public int Index { get; set; } = 0;
@@ -45,7 +47,42 @@ namespace Beatecho
         public void SetQueue(List<Song> newQueue)
         {
             Queue = new List<Song>(newQueue);
+            UnshuffledQueue = new List<Song>(newQueue);
+
+            if (IsShuffled)
+            {
+                ShuffleQueue();
+            }
+            
             Index = 0;
+        }
+
+        public bool IsShuffled { get; set; } = false;
+
+        public void ShuffleQueue()
+        {
+            IsShuffled = true;
+            if (Queue == null || Queue.Count <= 1) return;
+
+            Random rng = new Random();
+
+            var playedSongs = Queue.Take(Index+1).ToList();
+            var remainingSongs = Queue.Skip(Index + 1).OrderBy(x => rng.Next()).ToList();
+
+            Queue = playedSongs.Concat(remainingSongs).ToList();
+        }
+
+        public void UnshuffleQueue()
+        {
+            IsShuffled = false;
+            if (Queue == null || UnshuffledQueue == null || Queue.Count <= 1) return;
+
+            var playedSongs = Queue.Take(Index + 1).ToList();
+
+            var remainingSongs = UnshuffledQueue.Where(song => !playedSongs.Contains(song)).ToList();
+
+            Queue = playedSongs.Concat(remainingSongs).ToList();
+
         }
 
         public void SetSong()

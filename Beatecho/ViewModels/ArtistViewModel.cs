@@ -17,12 +17,25 @@ namespace Beatecho.ViewModels
         private Artist _artist;
         private ObservableCollection<Song> _popularTracks;
         private ObservableCollection<Album> _albums;
-        private bool _isExpandedTracks = true;
-        private ICommand _showAllTracksCommand;
-        private ICommand _openAlbumCommand;
-        private Player player;
-        private User _currentUser;
+        private bool _isExpandedTracks = false;
+        private readonly Player _player;
+        private readonly User _currentUser;
         private Dictionary<int, bool> _favoritesState;
+
+        public ArtistViewModel(Artist artist)
+        {
+            _artist = artist;
+            _player = PlayerViewModel.player;
+            _currentUser = LoginViewModel.CurrentUser;
+            _favoritesState = new Dictionary<int, bool>();
+
+            PlaySongCommand = new RelayCommand<object>(PlaySong);
+            AddToFavoritesCommand = new RelayCommand<Song>(async (song) => await AddSongToFavoritesAsync(song));
+            ShowAllTracksCommand = new RelayCommand(ExecuteShowAllTracks);
+            OpenAlbumCommand = new RelayCommand<Album>(OpenAlbum);
+
+            _ = LoadArtistData();
+        }
 
         public Dictionary<int, bool> FavoritesState
         {
@@ -42,21 +55,8 @@ namespace Beatecho.ViewModels
                 _artist = value;
                 OnPropertyChanged(nameof(Artist));
                 OnPropertyChanged(nameof(Name));
-                LoadArtistData();
+                _ = LoadArtistData();
             }
-        }
-
-        public ArtistViewModel(Artist artist)
-        {
-            Artist = artist;
-            player = PlayerViewModel.player;
-            PlaySongCommand = new RelayCommand<object>(PlaySong);
-            ExecuteShowAllTracks();
-            _currentUser = LoginViewModel.CurrentUser;
-            _favoritesState = new Dictionary<int, bool>();
-            LoadFavoritesState();
-
-            AddToFavoritesCommand = new RelayCommand<Song>(AddSongToFavorites);
         }
 
         public string Name => Artist?.Name;
@@ -83,38 +83,91 @@ namespace Beatecho.ViewModels
             }
         }
 
-        public ICommand ShowAllTracksCommand => _showAllTracksCommand ??= new RelayCommand(ExecuteShowAllTracks);
-        public ICommand OpenAlbumCommand => _openAlbumCommand ??= new RelayCommand<Album>(OpenAlbum);
-        public ICommand PlaySongCommand { get; }
-        public ICommand AddToFavoritesCommand { get; }
+        public ICommand ShowAllTracksCommand { get; set; }
+        public ICommand OpenAlbumCommand { get; set; }
+        public ICommand PlaySongCommand { get; set; }
+        public ICommand AddToFavoritesCommand { get; set; }
 
+        private List<Song> _allTracks;
 
-        private void LoadArtistData()
+        private async Task LoadArtistData()
         {
             using (var context = new ApplicationContext())
             {
-                // Загрузка альбомов артиста
-                var albums = context.Artists
-                    .Include(a => a.ArtistAlbums)
-                    .ThenInclude(aa => aa.Album)
-                    .FirstOrDefault(a => a.Id == Artist.Id)
-                    ?.ArtistAlbums
-                    .Select(aa => aa.Album)
+                var albumIds = await context.ArtistAlbums
+                    .Where(aa => aa.ArtistId == Artist.Id)
+                    .Select(aa => aa.AlbumId)
+                    .ToListAsync();
+
+                var albums = await context.Albums
+                    .Where(a => albumIds.Contains(a.Id))
+                    .ToListAsync();
+
+                Albums = new ObservableCollection<Album>(albums);
+
+                var tracks = await context.AlbumSongs
+                    .Where(als => albumIds.Contains(als.AlbumId))
+                    .Include(als => als.Song)
+                    .ToListAsync();
+
+                _allTracks = tracks
+                    .Select(als => als.Song)
+                    .Distinct()
+                    .OrderBy(s => s.TrackNumber)
                     .ToList();
 
-                Albums = new ObservableCollection<Album>(albums ?? new List<Album>());
+                PopularTracks = new ObservableCollection<Song>(_allTracks.Take(_isExpandedTracks ? 10 : 5));
 
-                // Загрузка треков артиста (первые 5 или 10)
-                var tracks = context.Albums
-                    .Where(a => a.ArtistAlbums.Any(aa => aa.ArtistId == Artist.Id))
-                    .SelectMany(a => a.AlbumSongs)
-                    .Select(ass => ass.Song)
-                    .Take(_isExpandedTracks ? 10 : 5)
-                    .ToList();
-
-                PopularTracks = new ObservableCollection<Song>(tracks);
+                await LoadFavoritesStateAsync(); // загружаем избранные треки после песен
             }
         }
+
+        private async Task LoadFavoritesStateAsync()
+        {
+            if (_currentUser == null || PopularTracks == null) return;
+
+            await using var db = new ApplicationContext();
+            var favoriteSongIds = await db.FavoriteTracks
+                .Where(ft => ft.UserId == _currentUser.Id)
+                .Select(ft => ft.SongId)
+                .ToListAsync();
+
+            foreach (var song in PopularTracks)
+            {
+                _favoritesState[song.Id] = favoriteSongIds.Contains(song.Id);
+            }
+
+            OnPropertyChanged(nameof(FavoritesState));
+        }
+
+        private async Task AddSongToFavoritesAsync(Song song)
+        {
+            if (_currentUser == null || song == null) return;
+
+            await using var db = new ApplicationContext();
+            var existingFavorite = await db.FavoriteTracks
+                .FirstOrDefaultAsync(ft => ft.UserId == _currentUser.Id && ft.SongId == song.Id);
+
+            if (existingFavorite == null)
+            {
+                db.FavoriteTracks.Add(new FavoriteTracks { UserId = _currentUser.Id, SongId = song.Id });
+                _favoritesState[song.Id] = true;
+            }
+            else
+            {
+                db.FavoriteTracks.Remove(existingFavorite);
+                _favoritesState[song.Id] = false;
+            }
+
+            await db.SaveChangesAsync();
+            OnPropertyChanged(nameof(FavoritesState)); // Обновляем состояние избранного
+        }
+
+        public bool IsSongFavorite(int songId)
+        {
+            return _favoritesState.TryGetValue(songId, out bool isFav) && isFav;
+        }
+
 
         private void OpenAlbum(Album album)
         {
@@ -128,83 +181,29 @@ namespace Beatecho.ViewModels
         private void ExecuteShowAllTracks()
         {
             _isExpandedTracks = !_isExpandedTracks;
-            LoadArtistData();
-        }
 
-        public void AddSongToFavorites(Song song)
-        {
-            if (_currentUser == null || song == null)
-                return;
-
-            using (ApplicationContext db = new ApplicationContext())
-            {
-                var existingFavorite = db.FavoriteTracks
-                    .FirstOrDefault(ft => ft.UserId == _currentUser.Id && ft.SongId == song.Id);
-
-                if (existingFavorite == null)
-                {
-                    var favoriteTrack = new FavoriteTracks
-                    {
-                        UserId = _currentUser.Id,
-                        SongId = song.Id
-                    };
-
-                    db.FavoriteTracks.Add(favoriteTrack);
-                    _favoritesState[song.Id] = true;
-                }
-                else
-                {
-                    db.FavoriteTracks.Remove(existingFavorite);
-                    _favoritesState[song.Id] = false;
-                }
-                db.SaveChanges();
-            }
-            OnPropertyChanged(nameof(PopularTracks));
-            OnPropertyChanged(nameof(IsSongFavorite));
+            PopularTracks = new ObservableCollection<Song>(_allTracks.Take(_isExpandedTracks ? 10 : 5));
         }
 
         private void PlaySong(object parameter)
         {
-            if (parameter is not Song song)
-                return;
+            if (parameter is not Song song) return;
 
-            if (!player.IsPlaying && player.CurrentSong == parameter)
+            if (!_player.IsPlaying && _player.CurrentSong == parameter)
             {
-                player.Play();
-                return;
-            }
-            else if (player.IsPlaying && player.CurrentSong == parameter)
-            {
-                player.Pause();
+                _player.Play();
                 return;
             }
-
-            player.SetQueue(PopularTracks.ToList());
-            player.Index = PopularTracks.IndexOf(song);
-            player.SetSong();
-            player.Play();
-        }
-
-        private void LoadFavoritesState()
-        {
-            if (_currentUser == null) return;
-
-            using (ApplicationContext db = new ApplicationContext())
+            else if (_player.IsPlaying && _player.CurrentSong == parameter)
             {
-                var favorites = db.FavoriteTracks
-                    .Where(ft => ft.UserId == _currentUser.Id)
-                    .ToList();
-
-                foreach (var song in PopularTracks)
-                {
-                    _favoritesState[song.Id] = favorites.Any(f => f.SongId == song.Id);
-                }
+                _player.Pause();
+                return;
             }
-        }
 
-        public bool IsSongFavorite(int songId)
-        {
-            return _favoritesState.ContainsKey(songId) && _favoritesState[songId];
+            _player.SetQueue(PopularTracks.ToList());
+            _player.Index = PopularTracks.IndexOf(song);
+            _player.SetSong();
+            _player.Play();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

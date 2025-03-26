@@ -11,14 +11,6 @@
     <Page.Resources>
         <SolidColorBrush Color="Black" Opacity="0.8" x:Key="black"/>
         <ImageBrush Stretch="Fill" ImageSource="/imgs/backgr2.jpg" x:Key="gradient"/>
-        <Style x:Key="NavButtonStyle" TargetType="Button">
-            <Setter Property="Foreground" Value="{StaticResource MainFontColor}"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="HorizontalContentAlignment" Value="Left"/>
-            <Setter Property="Padding" Value="10,5"/>
-        </Style>
     </Page.Resources>
     <Page.DataContext>
         <vm:LocalSongsViewModel/>

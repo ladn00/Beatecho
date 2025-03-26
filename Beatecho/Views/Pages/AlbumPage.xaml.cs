@@ -27,7 +27,10 @@ namespace Beatecho.Views.Pages
         public AlbumPage(Album album)
         {
             InitializeComponent();
-            DataContext = new AlbumPageViewModel(album);
+            var vm = new AlbumPageViewModel(album);
+            DataContext = vm;
+
+            Loaded += async (_, __) => await vm.InitializeAsync();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
