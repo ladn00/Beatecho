@@ -2,6 +2,7 @@
 using Beatecho.Views.Pages;
 using Microsoft.Xaml.Behaviors.Core;
 using System.ComponentModel;
+using System.Security.Policy;
 using System.Windows.Controls;
 using System.Windows.Input;
 using ApplicationContext = Beatecho.DAL.ApplicationContext;
@@ -11,8 +12,18 @@ namespace Beatecho.ViewModels
     public class PlayerViewModel : INotifyPropertyChanged
     {
         public static Player player;
+        private Song _currentSong;
         public PlaylistViewModel PlaylistViewModel { get; set; }
         private string _playPauseImage = "/imgs/playbut.png";
+        public Song CurrentSong
+        {
+            get => _currentSong;
+            set
+            {
+                _currentSong = value;
+                OnPropertyChanged(nameof(CurrentSong));
+            }
+        }
         public string PlayPauseImage
         {
             get => _playPauseImage;
@@ -130,12 +141,14 @@ namespace Beatecho.ViewModels
         {
             if (player.MediaElement.NaturalDuration.HasTimeSpan)
             {
-                player.TrackSlider.Maximum = player.MediaElement.NaturalDuration.TimeSpan.TotalSeconds;
+                player.TrackSlider.Maximum = player.MediaElement.NaturalDuration.TimeSpan.TotalSeconds;            
             }
             else
             {
                 player.TrackSlider.Maximum = 100;
             }
+            CurrentSong = player.CurrentSong;
+            OnPropertyChanged(nameof(CurrentSong));
         }
 
         private void OnMediaEnded()

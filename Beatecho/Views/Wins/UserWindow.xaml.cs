@@ -35,12 +35,13 @@ namespace Beatecho.Views.Wins
         Player player;
         public static Frame frame;
         public bool IsAdmin { get; set; }
+        PlayerViewModel vm;
 
         public UserWindow()
         {
             InitializeComponent();
             player = new Player(mediaElement, CurrentSongBar, TrackSlider);
-            PlayerViewModel vm = new PlayerViewModel();
+            vm = new PlayerViewModel();
             ViewModels.PlayerViewModel.player = player;
             vm.LoadPlayer();
             frame = ContentFrame;
@@ -198,6 +199,15 @@ namespace Beatecho.Views.Wins
             }
 
             isDarkTheme = !isDarkTheme;
+        }
+
+        private void GoToVinyl_Click(object sender, RoutedEventArgs e)
+        {
+            if(player.CurrentSong != null)
+            {
+                VinylAnimation win = new(vm);
+                win.Show();
+            }
         }
     }
 }

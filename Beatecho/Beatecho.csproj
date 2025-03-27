@@ -34,7 +34,10 @@
     <None Remove="imgs\prev.png" />
     <None Remove="imgs\shuffle.png" />
     <None Remove="imgs\unliked.png" />
+    <None Remove="imgs\vinyl.png" />
     <None Remove="imgs\volume.png" />
+    <None Remove="imgs\ПроигрывательНиз.png" />
+    <None Remove="imgs\тонарм.png" />
     <None Remove="Views\Wins\1.jpg" />
   </ItemGroup>
 
@@ -124,7 +127,16 @@
     <Resource Include="imgs\unliked.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="imgs\vinyl.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="imgs\volume.png" />
+    <Resource Include="imgs\ПроигрывательНиз.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="imgs\тонарм.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Views\Wins\1.jpg" />
   </ItemGroup>
 
