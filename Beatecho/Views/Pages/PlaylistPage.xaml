@@ -9,7 +9,7 @@
       Title="PlaylistPage">
     <ScrollViewer VerticalScrollBarVisibility="Auto" 
               HorizontalScrollBarVisibility="Disabled">
-        <Grid Background="#121212">
+        <Grid Background="Transparent">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/> 
                 <RowDefinition Height="Auto"/>
@@ -33,10 +33,10 @@
                     <TextBlock Text="{Binding Playlist.Title}" 
                            FontSize="24" 
                            FontWeight="Bold" 
-                           Foreground="White"/>
+                           Foreground="{DynamicResource MainFontColor}"/>
                     <TextBlock Text="User" 
                            FontSize="18" 
-                           Foreground="LightGray" 
+                           Foreground="{DynamicResource MainFontColor}" 
                            Margin="0,5,0,0"
                            Cursor="Hand">
                         <TextBlock.InputBindings>
@@ -51,7 +51,7 @@
 
                     <Button Background="Transparent" Style="{StaticResource NavButtonStyle}"
                                                 BorderThickness="0"
-                                                Padding="0" Content="Редактировать" Foreground="LightGray" HorizontalAlignment="Left" Margin="0, 15"
+                                                Padding="0" Content="Редактировать" Foreground="{DynamicResource MainFontColor}" HorizontalAlignment="Left" Margin="0, 15"
                                                 Command="{Binding EditPlaylistCommand}"
                                                 CommandParameter="{Binding Playlist}">
                         
@@ -64,7 +64,7 @@
           Margin="10"
           Background="Transparent" 
           BorderThickness="0"
-          Foreground="White"
+          Foreground="{DynamicResource MainFontColor}"
           ScrollViewer.VerticalScrollBarVisibility="Disabled"
           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
           ScrollViewer.CanContentScroll="False"
@@ -77,7 +77,7 @@
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="Background" Value="Transparent"/>
-                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="Foreground" Value="{DynamicResource MainFontColor}"/>
                         <Setter Property="Height" Value="45"/>
                         <Setter Property="Template">
                             <Setter.Value>
@@ -221,7 +221,7 @@
                                     <Button Content="..." 
                                 Background="Transparent"
                                 BorderThickness="0"
-                                Foreground="White"
+                                Foreground="{DynamicResource MainFontColor}"
                                 Padding="5,0"
                                 HorizontalAlignment="Right"
                                 Click="Button_Click">

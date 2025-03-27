@@ -6,9 +6,16 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <vm:SearchViewModel x:Key="SearchViewModel"/>
+        <!--
+        <SolidColorBrush x:Key="MainBackground" Color="#7d7d7d"/>
+        <SolidColorBrush x:Key="ScndBackground" Color="White"/>
+        <SolidColorBrush x:Key="CellsBackground" Color="#7d7d7d"/>
+        -->
         <SolidColorBrush x:Key="MainBackground" Color="#000000"/>
         <SolidColorBrush x:Key="ScndBackground" Color="#121212"/>
-        <SolidColorBrush x:Key="CellsBackground" Color="#333333"/>
+        <SolidColorBrush x:Key="CellsBackground" Color="#444444"/>
+        
+        <!--<SolidColorBrush x:Key="MainFontColor" Color="Black"/> -->
         <SolidColorBrush x:Key="MainFontColor" Color="White"/>
         <SolidColorBrush x:Key="ScndFontColor" Color="Gray"/>
         
@@ -46,7 +53,7 @@
             </Style.Triggers>
         </Style>
         <Style x:Key="NavButtonStyle" TargetType="Button">
-            <Setter Property="Foreground" Value="{StaticResource MainFontColor}"/>
+            <Setter Property="Foreground" Value="White"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
             <Setter Property="FontSize" Value="14"/>
@@ -71,7 +78,7 @@
 
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#444444"/>
+                    <Setter Property="Background" Value="{StaticResource CellsBackground}"/>
                 </Trigger>
                 <Trigger Property="IsPressed" Value="True">
                     <Setter Property="Background" Value="#555555"/>

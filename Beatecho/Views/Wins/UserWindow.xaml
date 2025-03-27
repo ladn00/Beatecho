@@ -35,7 +35,7 @@
 
 
         <Style x:Key="ControlButtonStyle" TargetType="Button">
-            <Setter Property="Foreground" Value="{StaticResource MainFontColor}"/>
+            <Setter Property="Foreground" Value="White"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
             <Setter Property="FontSize" Value="16"/>
@@ -467,7 +467,7 @@
             </i:Interaction.Triggers>
         </MediaElement>
         <!-- Основной контейнер -->
-        <Border Background="#121212" CornerRadius="10">
+        <Border Background="{DynamicResource ScndBackground}" CornerRadius="10">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -482,7 +482,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <!-- Боковая панель -->
-                <Grid Width="200" Background="{StaticResource MainBackground}" Grid.RowSpan="2">
+                <Grid Width="200" Background="{DynamicResource MainBackground}" Grid.RowSpan="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
@@ -535,7 +535,7 @@ ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 </Grid>
 
                 <!-- Верхняя панель навигации -->
-                <Border Grid.Column="1" Height="60" Background="{StaticResource ScndBackground}" CornerRadius="0,10,0,0">
+                <Border Grid.Column="1" Height="60" Background="{DynamicResource ScndBackground}" CornerRadius="0,10,0,0">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -546,7 +546,7 @@ ScrollViewer.HorizontalScrollBarVisibility="Disabled">
 
                         <!-- Область для перетаскивания окна -->
                         <Border Grid.Column="1" Background="Transparent" MouseLeftButtonDown="Border_MouseLeftButtonDown" DataContext="{StaticResource SearchViewModel}">
-                            <Border Background="#333333" CornerRadius="20" Width="400" Margin="10">
+                            <Border Background="{DynamicResource CellsBackground}" CornerRadius="20" Width="400" Margin="10">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
@@ -584,6 +584,7 @@ ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                                             <ContextMenu x:Name="AccountMenu">
                                                 <MenuItem  x:Name="AdminMenuItem" Header="Администрирование" Click="Admin_Click"/>
                                                 <MenuItem Header="Выход" Click="Exit_Click"/>
+                                                <MenuItem Header="Сменить тему" Click="ToggleTheme_Click"/>
                                             </ContextMenu>
                                         </Button.ContextMenu>
                                     </Button>
@@ -596,23 +597,23 @@ ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                         <!-- Кнопки управления окном -->
                         <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0">
                             <Button Style="{StaticResource WindowControlButton}" Click="MinimizeButton_Click">
-                                <Path Data="M 0,0 H 8" Stroke="White" StrokeThickness="1"/>
+                                <Path Data="M 0,0 H 8" Stroke="{DynamicResource MainFontColor}" StrokeThickness="1"/>
                             </Button>
                             <Button Style="{StaticResource WindowControlButton}" Click="MaximizeButton_Click" Margin="5,0">
-                                <Path Data="M 0,0 H 8 V 8 H 0 Z" Stroke="White" StrokeThickness="1" Fill="Transparent"/>
+                                <Path Data="M 0,0 H 8 V 8 H 0 Z" Stroke="{DynamicResource MainFontColor}" StrokeThickness="1" Fill="Transparent"/>
                             </Button>
                             <Button Style="{StaticResource WindowControlButton}" Click="CloseButton_Click">
-                                <Path Data="M 0,0 L 8,8 M 0,8 L 8,0" Stroke="White" StrokeThickness="1"/>
+                                <Path Data="M 0,0 L 8,8 M 0,8 L 8,0" Stroke="{DynamicResource MainFontColor}" StrokeThickness="1"/>
                             </Button>
                         </StackPanel>
                     </Grid>
                 </Border>
 
                 <!-- Область контента -->
-                <Frame x:Name="ContentFrame" Grid.Column="1" Grid.Row="1" Source="ContentPage.xaml" NavigationUIVisibility="Hidden"/>
+                <Frame x:Name="ContentFrame" Grid.Column="1" Grid.Row="1" Source="ContentPage.xaml" NavigationUIVisibility="Hidden" Background="Transparent"/>
                 
                 <!-- Нижняя панель управления -->
-                <Border Grid.Row="2" Grid.ColumnSpan="2" Height="90" Background="{StaticResource MainBackground}" CornerRadius="0,0,10,10" VerticalAlignment="Bottom">
+                <Border Grid.Row="2" Grid.ColumnSpan="2" Height="90" Background="{DynamicResource MainBackground}" CornerRadius="0,0,10,10" VerticalAlignment="Bottom">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="200"/>
@@ -638,7 +639,7 @@ ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                                         </Style>
                                     </TextBlock.Style>
                                 </TextBlock>
-                                <TextBlock Name="tbArtist" Text="{Binding Artist}" Foreground="{StaticResource ScndFontColor}" TextTrimming="CharacterEllipsis" MaxWidth="130" MouseLeftButtonUp="GoToArtist">
+                                <TextBlock Name="tbArtist" Text="{Binding Artist}" Foreground="{DynamicResource ScndFontColor}" TextTrimming="CharacterEllipsis" MaxWidth="130" MouseLeftButtonUp="GoToArtist">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Style.Triggers>

@@ -9,7 +9,7 @@
       Title="AdminPage">
     <Page.Resources>
         <Style x:Key="ControlButtonStyle" TargetType="Button">
-            <Setter Property="Foreground" Value="{StaticResource MainFontColor}"/>
+            <Setter Property="Foreground" Value="{DynamicResource MainFontColor}"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
             <Setter Property="FontSize" Value="16"/>
@@ -23,7 +23,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <StackPanel>
+                <StackPanel Background="{DynamicResource CellsBackground}">
                     <TextBlock Text="Альбомы" Foreground="White" FontSize="24" Margin="0,0,0,20"/>
                     <StackPanel Orientation="Horizontal" Height="40">
                         <TextBlock Text="Добавить" Foreground="White" FontSize="18" Margin="0,0,0,20" />
@@ -33,7 +33,7 @@
                     </StackPanel>
 
                 </StackPanel>
-                <StackPanel Grid.Column="1">
+                <StackPanel Grid.Column="1" Background="{DynamicResource CellsBackground}">
                     <TextBlock Text="Исполнители" Foreground="White" FontSize="24" Margin="0,0,0,20"/>
                     <StackPanel Orientation="Horizontal" Height="40">
                         <TextBlock Text="Добавить" Foreground="White" FontSize="18" Margin="0,0,0,20" />

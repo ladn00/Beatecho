@@ -8,7 +8,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ArtistPage"
-      Background="#121212">
+      Background="Transparent">
     <Page.Resources>
         <conv:IsFavoriteMultiConverter x:Key="IsFavoriteMultiConverter"/>
     </Page.Resources>
@@ -48,13 +48,13 @@
     <TextBlock Text="Популярное" 
                FontSize="24" 
                FontWeight="Bold" 
-               Foreground="White" 
+               Foreground="{DynamicResource MainFontColor}" 
                Margin="0,0,0,20"/>
     
     <ListView ItemsSource="{Binding PopularTracks}" 
               Background="Transparent" 
               BorderThickness="0"
-              Foreground="White"
+              Foreground="{DynamicResource MainFontColor}"
               ScrollViewer.VerticalScrollBarVisibility="Disabled"
               ScrollViewer.HorizontalScrollBarVisibility="Disabled"
               ScrollViewer.CanContentScroll="False"
@@ -67,7 +67,7 @@
         <ListView.ItemContainerStyle>
             <Style TargetType="ListViewItem">
                 <Setter Property="Background" Value="Transparent"/>
-                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="Foreground" Value="{DynamicResource MainFontColor}"/>
                 <Setter Property="Height" Value="45"/>
                 <Setter Property="Template">
                     <Setter.Value>
@@ -82,7 +82,7 @@
                 </Setter>
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Background" Value="#33FFFFFF"/>
+                        <Setter Property="Background" Value="LightGray"/>
                     </Trigger>
                     <DataTrigger Binding="{Binding IsCurrentlyPlaying}" Value="True">
                         <Setter Property="Background" Value="#1DB954"/>
@@ -211,7 +211,7 @@ Margin="0,0,10,0"/>
                             <Button Content="..."
                             Background="Transparent"
                             BorderThickness="0"
-                            Foreground="White"
+                            Foreground="{DynamicResource MainFontColor}"
                             Padding="5,0"
                             HorizontalAlignment="Right"
                             Click="Button_Click">
@@ -251,7 +251,7 @@ Margin="0,0,10,0"/>
                     <TextBlock Text="Альбомы" 
                                FontSize="24" 
                                FontWeight="Bold" 
-                               Foreground="White" 
+                               Foreground="{DynamicResource MainFontColor}" 
                                Margin="0,0,0,20"/>
                     <ListView ItemsSource="{Binding Albums}"
                               Background="Transparent"
@@ -267,7 +267,7 @@ Margin="0,0,10,0"/>
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Border Width="200" Height="250" 
-                                        Background="#333333" 
+                                        Background="{DynamicResource CellsBackground}" 
                                         CornerRadius="10"
                                         Margin="0,0,20,20">
                                     <Border.Triggers>

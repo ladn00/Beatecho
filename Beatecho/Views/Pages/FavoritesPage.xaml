@@ -8,7 +8,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="FavoritesPage" Background="{DynamicResource gradient}">
     <Page.Resources>
-        <SolidColorBrush Color="Black" Opacity="0.8" x:Key="black"/>
+        <SolidColorBrush Color="Black" Opacity="0.6" x:Key="black"/>
         <ImageBrush Stretch="Fill" ImageSource="/imgs/backrg3.jpg" x:Key="gradient"/>
     </Page.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto" 

@@ -19,8 +19,10 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using Application = System.Windows.Application;
 using ApplicationContext = Beatecho.DAL.ApplicationContext;
 using Button = System.Windows.Controls.Button;
+using Color = System.Windows.Media.Color;
 using MessageBox = System.Windows.MessageBox;
 
 namespace Beatecho.Views.Wins
@@ -174,6 +176,28 @@ namespace Beatecho.Views.Wins
         private void Admin_Click(object sender, RoutedEventArgs e)
         {
             frame.NavigationService.Navigate(new AdminPage());
+        }
+
+        private bool isDarkTheme = true;
+
+        private void ToggleTheme_Click(object sender, RoutedEventArgs e)
+        {
+            if (isDarkTheme)
+            {
+                Application.Current.Resources["MainBackground"] = new SolidColorBrush(Color.FromRgb(125, 125, 125));
+                Application.Current.Resources["ScndBackground"] = new SolidColorBrush(Colors.White);
+                Application.Current.Resources["MainFontColor"] = new SolidColorBrush(Colors.Black);
+                Application.Current.Resources["CellsBackground"] = new SolidColorBrush(Colors.Gray);
+            }
+            else
+            {
+                Application.Current.Resources["MainBackground"] = new SolidColorBrush(Colors.Black);
+                Application.Current.Resources["ScndBackground"] = new SolidColorBrush(Color.FromRgb(18, 18, 18));
+                Application.Current.Resources["MainFontColor"] = new SolidColorBrush(Colors.White);
+                Application.Current.Resources["CellsBackground"] = new SolidColorBrush(Color.FromRgb(68, 68, 68));
+            }
+
+            isDarkTheme = !isDarkTheme;
         }
     }
 }

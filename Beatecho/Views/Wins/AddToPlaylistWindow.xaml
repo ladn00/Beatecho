@@ -9,9 +9,10 @@
         WindowStyle="None" AllowsTransparency="True" Background="Transparent" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <Style TargetType="Button" BasedOn="{StaticResource NavButtonStyle}">
+            <Setter Property="Foreground" Value="{StaticResource MainFontColor}"/>
         </Style>
     </Window.Resources>
-    <Border Background="#121212" CornerRadius="10" BorderBrush="Black" BorderThickness="5">
+    <Border Background="{DynamicResource ScndBackground}" CornerRadius="10" BorderBrush="Black" BorderThickness="5">
         <Grid Margin="20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -21,7 +22,7 @@
 
             <TextBlock Text="Выберите плейлист" 
                        FontSize="18" 
-                       Foreground="White" 
+                       Foreground="{DynamicResource MainFontColor}" 
                        HorizontalAlignment="Center" 
                        Margin="0,0,0,10"/>
 
@@ -33,8 +34,7 @@
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
                             <Image Source="{Binding PlaylistPhoto}" Width="50" Height="50" Stretch="UniformToFill"/>
-                            <Button Content="{Binding Title}" 
-                                Style="{StaticResource NavButtonStyle}" 
+                            <Button Content="{Binding Title}"
                                 Command="{Binding DataContext.SelectPlaylistCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                 CommandParameter="{Binding}"/>
                         </StackPanel>
