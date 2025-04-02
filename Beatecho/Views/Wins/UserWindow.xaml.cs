@@ -49,10 +49,6 @@ namespace Beatecho.Views.Wins
             ContentFrame.NavigationService.Navigate(new MainPage());
             IsAdmin = LoginViewModel.IsAdmin;
             SetMenuVisibility();
-            using (ApplicationContext db = new ApplicationContext())
-            {
-                PlaylistListView.ItemsSource = new ObservableCollection<Playlist>(db.PlaylistUsers.Where(ft => ft.UserId == 1).Include(ft => ft.Playlist).Select(ft => ft.Playlist));
-            }
 
         }
 
@@ -186,7 +182,7 @@ namespace Beatecho.Views.Wins
             if (isDarkTheme)
             {
                 Application.Current.Resources["MainBackground"] = new SolidColorBrush(Color.FromRgb(125, 125, 125));
-                Application.Current.Resources["ScndBackground"] = new SolidColorBrush(Colors.White);
+                Application.Current.Resources["ScndBackground"] = new SolidColorBrush(Colors.LightGray);
                 Application.Current.Resources["MainFontColor"] = new SolidColorBrush(Colors.Black);
                 Application.Current.Resources["CellsBackground"] = new SolidColorBrush(Colors.Gray);
             }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Beatecho.DAL.Models;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,7 @@ namespace Beatecho.DAL
         public DbSet<PlaylistUsers> PlaylistUsers => Set<PlaylistUsers>();
         public DbSet<ArtistAlbums> ArtistAlbums => Set<ArtistAlbums>();
         public DbSet<FavoriteTracks> FavoriteTracks { get; set; }
+        public DbSet<UserRecommendation> UserRecommendations => Set<UserRecommendation>();
 
         public ApplicationContext() => Database.EnsureCreated();
 
@@ -39,6 +41,17 @@ namespace Beatecho.DAL
 
             modelBuilder.Entity<AlbumSongs>()
        .HasKey(als => new { als.SongId, als.AlbumId });
+
+            modelBuilder.Entity<UserRecommendation>()
+            .HasKey(ur => ur.UserId);
+
+            modelBuilder.Entity<UserRecommendation>()
+    .Property(ur => ur.Recommendations)
+    .HasColumnType("jsonb")
+    .HasConversion(
+        v => JsonSerializer.Serialize(v, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }), // List<int> → JSON
+        v => JsonSerializer.Deserialize<List<int>>(v, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }) ?? new List<int>() // JSON → List<int>
+    );
 
             // Связь между AlbumSongs и Song
             modelBuilder.Entity<AlbumSongs>()

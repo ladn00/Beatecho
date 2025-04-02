@@ -92,8 +92,12 @@
                 </Border>
 
                 <!-- Название плейлиста -->
-                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Playlist.Title}" VerticalAlignment="Center" FontSize="16" Foreground="{DynamicResource MainFontColor}" 
+                <StackPanel Grid.Row="0" Grid.Column="1">
+                    
+                <TextBlock Text="Название" Foreground="{DynamicResource MainFontColor}" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding Playlist.Title}" VerticalAlignment="Center" FontSize="16" Foreground="{DynamicResource MainFontColor}" 
                          BorderBrush="Transparent" Background="Transparent" Padding="10"/>
+                </StackPanel>
 
                 <!-- Публичный/Приватный -->
                 <CheckBox Grid.Row="1" Grid.Column="1" Content="Публичный плейлист" 

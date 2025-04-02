@@ -26,7 +26,6 @@ namespace Beatecho.Views.Wins
         {
             InitializeComponent();
             RotateVinyl();
-          // Photo.ImageSource = new BitmapImage(new Uri(link, UriKind.Absolute));
             DataContext = vm;
         }
 

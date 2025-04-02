@@ -3,8 +3,10 @@ using Beatecho.Views.Wins;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Input;
 using ApplicationContext = Beatecho.DAL.ApplicationContext;
+using MessageBox = System.Windows.MessageBox;
 
 namespace Beatecho.ViewModels
 {
@@ -13,6 +15,7 @@ namespace Beatecho.ViewModels
         public ICommand PlaySongCommand { get; }
         public ICommand AddOrRemoveFromFavoritesCommand { get; }
         public ICommand EditPlaylistCommand { get; }
+        public ICommand DeletePlaylistCommand { get; }
         public ICommand RemoveFromPlaylistCommand { get; }
 
         private Player player;
@@ -20,7 +23,25 @@ namespace Beatecho.ViewModels
         private Playlist _playlist;
         private Dictionary<int, bool> _favoritesState;
         private User _currentUser;
+        public bool IsPlaylistOwner
+        {
+            get
+            {
+                if (_currentUser == null || Playlist == null)
+                    return false;
 
+                using (var db = new ApplicationContext())
+                {
+                    var owner = db.PlaylistUsers
+                        .Where(pu => pu.PlaylistId == Playlist.Id)
+                        .OrderBy(pu => pu.UserId) // Если владелец — это первый добавленный пользователь
+                        .Select(pu => pu.UserId)
+                        .FirstOrDefault();
+
+                    return owner == _currentUser.Id;
+                }
+            }
+        }
 
         public ObservableCollection<Song> Songs
         {
@@ -82,8 +103,35 @@ namespace Beatecho.ViewModels
             AddOrRemoveFromFavoritesCommand = new RelayCommand<Song>(AddSongToFavorites);
             EditPlaylistCommand = new RelayCommand<Playlist>(EditPlaylist);
             RemoveFromPlaylistCommand = new RelayCommand<Song>(RemoveFromPlaylist);
-
+            DeletePlaylistCommand = new RelayCommand(DeletePlaylist);
             LoadFavoritesState();
+
+            OnPropertyChanged(nameof(IsPlaylistOwner));
+        }
+
+        private async void DeletePlaylist()
+        {
+            var result = MessageBox.Show("Удалить плейлист?", "Подтверждение", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes)
+            {
+                await using var db = new ApplicationContext();
+                var playlist = await db.Playlists.FindAsync(Playlist.Id);
+                var playlistUsers = await db.PlaylistUsers.Where(x => x.PlaylistId == Playlist.Id).ToListAsync();
+                if(playlistUsers != null)
+                {
+                    foreach(var el in playlistUsers)
+                    {
+                        db.PlaylistUsers.Remove(el);
+                    }
+                    await db.SaveChangesAsync();
+                }
+                if (playlist != null)
+                {
+                    db.Playlists.Remove(playlist);
+                    await db.SaveChangesAsync();
+                }
+                UserWindow.frame.NavigationService.GoBack();
+            }
         }
 
         private void RemoveFromPlaylist(Song song)

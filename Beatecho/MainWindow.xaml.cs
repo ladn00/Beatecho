@@ -26,7 +26,9 @@ namespace Beatecho
 
             DataContext = new LoginViewModel();
             Views.Wins.UserWindow win = new Views.Wins.UserWindow();
-            
+            /*UserRecommendationsService rec = new UserRecommendationsService();
+            Task.Run(async () => 
+            rec.UpdateRecommendationsAsync(LoginViewModel.CurrentUser.Id));*/
             win.Show();
             this.Close();
         }

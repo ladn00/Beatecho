@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Numerics;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -20,8 +21,39 @@ namespace Beatecho.ViewModels
     public class MainPageViewModel : INotifyPropertyChanged
     {
         private Player player;
-        public ObservableCollection<Album> Albums { get; set; }
-        public ObservableCollection<Playlist> Playlists { get; set; }
+        private ObservableCollection<Album> _albums;
+        private ObservableCollection<Playlist> _playlist;
+
+        public ObservableCollection<Album> Albums
+        {
+            get => _albums;
+            set
+            {
+                _albums = value;
+                OnPropertyChanged(nameof(Albums));
+            }
+        }
+
+        public ObservableCollection<Playlist> Playlists
+        {
+            get => _playlist;
+            set
+            {
+                _playlist = value;
+                OnPropertyChanged(nameof(Playlists));
+            }
+        }
+
+        private ObservableCollection<Recommendation> _recommendations;
+        public ObservableCollection<Recommendation> Recommendations
+        {
+            get => _recommendations;
+            set
+            {
+                _recommendations = value;
+                OnPropertyChanged(nameof(Recommendations));
+            }
+        }
 
         public MainPageViewModel()
         {
@@ -29,9 +61,11 @@ namespace Beatecho.ViewModels
             OpenAlbumCommand = new RelayCommand<object>(OpenAlbum);
             PlayPausePlaylistCommand = new RelayCommand<Playlist>(PlayPausePlaylist);
             OpenPlaylistCommand = new RelayCommand<object>(OpenPlaylist);
+            OpenRecommendationCommand = new RelayCommand<object>(OpenRecommendation);
             player = PlayerViewModel.player;
             Albums = new ObservableCollection<Album>(LoadAlbums());
             Playlists = new ObservableCollection<Playlist>(LoadPlaylists());
+            Recommendations = new() { new Recommendation { Id = 1, Title = "Личная подборка", Photo = "https://ff771a7312a3.hosting.myjino.ru/Covers/recom.jpg" }  };
         }
 
         public ICommand PlayPauseAlbumCommand { get; }
@@ -39,6 +73,17 @@ namespace Beatecho.ViewModels
 
         public ICommand PlayPausePlaylistCommand { get; }
         public ICommand OpenPlaylistCommand { get; }
+        public ICommand OpenRecommendationCommand { get; }
+
+        private void OpenRecommendation(object parameter)
+        {
+            if (parameter is Recommendation selected)
+            {
+                var Page = new RecommendationPage(selected);
+
+                Views.Wins.UserWindow.frame.NavigationService.Navigate(Page);
+            }
+        }
 
         private IEnumerable<Album> LoadAlbums()
         {

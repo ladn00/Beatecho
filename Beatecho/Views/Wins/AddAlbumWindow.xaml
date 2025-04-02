@@ -180,9 +180,11 @@
 
                 <!-- Название плейлиста -->
                 <StackPanel Grid.Row="0" Grid.Column="1">
+                    <TextBlock Text="Название" Foreground="{DynamicResource MainFontColor}"/>
                     <TextBox   Text="{Binding Album.Title}" VerticalAlignment="Center" FontSize="16" Foreground="{DynamicResource MainFontColor}" 
          BorderBrush="Transparent" Background="Transparent" Padding="10"/>
 
+                    <TextBlock Text="Год выпуска" Foreground="{DynamicResource MainFontColor}"/>
                     <TextBox Text="{Binding Album.ReleaseYear}" VerticalAlignment="Center" FontSize="16" Foreground="{DynamicResource MainFontColor}" 
                 BorderBrush="Transparent" Background="Transparent" Padding="10"/>
 

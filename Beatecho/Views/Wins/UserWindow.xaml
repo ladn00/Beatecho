@@ -482,7 +482,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <!-- Боковая панель -->
-                <Grid Width="200" Background="{DynamicResource MainBackground}" Grid.RowSpan="2">
+                <Grid Width="200" Background="{DynamicResource MainBackground}" Grid.RowSpan="2" >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
@@ -514,11 +514,14 @@
                         </Grid>
                     </StackPanel>
                     <ListView Name="PlaylistListView" Grid.Row="1"
-SelectionMode="Single"
-Background="Transparent"
-BorderThickness="0"
-ScrollViewer.VerticalScrollBarVisibility="Visible"
-ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        SelectionMode="Single"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        ScrollViewer.VerticalScrollBarVisibility="Visible"
+                        ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding Playlists}">
+                        <ListView.DataContext>
+                            <vm:MainPageViewModel/>
+                        </ListView.DataContext>
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Button Click="OpenPlaylist"

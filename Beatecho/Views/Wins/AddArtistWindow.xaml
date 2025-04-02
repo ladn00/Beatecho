@@ -92,9 +92,10 @@
 
                 <!-- Название плейлиста -->
                 <StackPanel Grid.Row="0" Grid.Column="1">
+                    <TextBlock Text="Название" Foreground="{DynamicResource MainFontColor}"/>
                     <TextBox   Text="{Binding Artist.Name}" VerticalAlignment="Center" FontSize="16" Foreground="{DynamicResource MainFontColor}" 
          BorderBrush="Transparent" Background="Transparent" Padding="10"/>
-
+                    <TextBlock Text="BIO" Foreground="{DynamicResource MainFontColor}"/>
                     <TextBox Text="{Binding Artist.bio}" VerticalAlignment="Center" FontSize="16" Foreground="{DynamicResource MainFontColor}" 
                 BorderBrush="Transparent" Background="Transparent" Padding="10"/>
                 </StackPanel>
