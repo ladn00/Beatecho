@@ -40,13 +40,32 @@ namespace Beatecho.ViewModels
                 OnPropertyChanged(nameof(Album));
             }
         }
+        public ObservableCollection<Genre> AllGenres { get; set; } = new ObservableCollection<Genre>();
 
+        private ObservableCollection<Genre> _selectedGenres = new ObservableCollection<Genre>();
+        public ObservableCollection<Genre> SelectedGenres
+        {
+            get => _selectedGenres;
+            set
+            {
+                _selectedGenres = value;
+                OnPropertyChanged(nameof(SelectedGenres));
+            }
+        }
         public SongWindowViewModel(Album album, Song song)
         {
             this.Album = album;
             this.Song = song;
-
             SelectSongCommand = new RelayCommand(SelectSong);
+            SaveCommand = new RelayCommand(SaveSong);
+
+            using (var db = new ApplicationContext())
+            {
+                var genres = db.Genres.ToList();
+                foreach (var genre in genres)
+                    AllGenres.Add(genre);
+            }
+
             SaveCommand = new RelayCommand(SaveSong);
         }
 
@@ -60,13 +79,22 @@ namespace Beatecho.ViewModels
         {
             if (Song != null)
             {
-                using (ApplicationContext db = new ApplicationContext())
+                using (var db = new ApplicationContext())
                 {
                     if (Song.Id == 0)
                     {
                         Song.Id = db.Songs.Max(x => x.Id) + 1;
                         db.Songs.Add(Song);
                         db.SaveChanges();
+                    }
+
+                    foreach (var genre in SelectedGenres)
+                    {
+                        db.SongGenres.Add(new SongGenre
+                        {
+                            Song = Song,
+                            GenreId = genre.Id
+                        });
                     }
 
                     var existingLinks = db.AlbumSongs.Where(aa => aa.SongId == Song.Id);
