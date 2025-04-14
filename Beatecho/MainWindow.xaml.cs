@@ -19,18 +19,49 @@ namespace Beatecho
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    { 
+    {
+        LoginViewModel vm;
         public MainWindow()
         {
             InitializeComponent();
 
-            DataContext = new LoginViewModel();
-            Views.Wins.UserWindow win = new Views.Wins.UserWindow();
+            vm = new LoginViewModel();
+            vm.LoginSucceeded += CloseWindow;
+            DataContext = vm;
             /*UserRecommendationsService rec = new UserRecommendationsService();
             Task.Run(async () => 
             rec.UpdateRecommendationsAsync(LoginViewModel.CurrentUser.Id));*/
-            win.Show();
+        }
+
+        private void CloseWindow()
+        {
             this.Close();
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            vm.Password = ((PasswordBox)sender).Password;
+        }
+
+        private void CreateAccount_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (DataContext is LoginViewModel vm && vm.CreateAccountCommand.CanExecute(null))
+            {
+                vm.CreateAccountCommand.Execute(null);
+            }
+        }
+
+        private void ForgotPassword_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (DataContext is LoginViewModel vm && vm.ForgotPasswordCommand.CanExecute(null))
+            {
+                vm.ForgotPasswordCommand.Execute(null);
+            }
         }
     }
 }

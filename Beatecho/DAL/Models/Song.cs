@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.DirectoryServices.ActiveDirectory;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,7 +34,7 @@ namespace Beatecho.DAL.Models
                     {
                         return songImgFromAlb.Album.Photo;
                     }
-                    return "D:\\проекты вс\\Beatecho\\Beatecho\\Wins\\1.jpg";
+                    return AppDomain.CurrentDomain.BaseDirectory + "../../../imgs/recom.jpg";
                 }
             }
         }

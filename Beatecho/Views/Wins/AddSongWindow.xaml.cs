@@ -24,7 +24,14 @@ namespace Beatecho.Views.Wins
         public AddSongWindow(Album album)
         {
             InitializeComponent();
-            DataContext = new SongWindowViewModel(album, new Song { Id = 0});
+            var vm = new SongWindowViewModel(album, new Song { Id = 0 });
+            vm.Added += CloseWindow;
+            DataContext = vm;
+        }
+
+        private void CloseWindow()
+        {
+            this.Close();
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)

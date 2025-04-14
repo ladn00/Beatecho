@@ -4,6 +4,7 @@ using Beatecho.Views.Wins;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -21,6 +22,7 @@ namespace Beatecho.ViewModels
         public ICommand EditAlbumCommand { get; }
         public ICommand DeleteAlbumCommand { get; }
         public ICommand AddSongsCommand { get; }
+        public ICommand DownloadAlbumCommand { get; }
 
         private Player player;
         private ObservableCollection<Song> _songs;
@@ -63,7 +65,50 @@ namespace Beatecho.ViewModels
             EditAlbumCommand = new RelayCommand(EditAlbum);
             DeleteAlbumCommand = new RelayCommand(DeleteAlbumAsync);
             AddSongsCommand = new RelayCommand(AddSongs);
+            DownloadAlbumCommand = new RelayCommand(DownloadAlbumAsync);
         }
+
+        private void DownloadAlbumAsync()
+        {
+            var dialog = new System.Windows.Forms.FolderBrowserDialog();
+            var result = dialog.ShowDialog();
+            if (result != System.Windows.Forms.DialogResult.OK || string.IsNullOrWhiteSpace(dialog.SelectedPath))
+                return;
+
+            string savePath = dialog.SelectedPath;
+
+            var ftpClient = new FTPClient("195.161.41.36", "j78877840", "178982az");
+
+            foreach (var song in Songs)
+            {
+                try
+                {
+                    var extension = Path.GetExtension(song.Link);
+                    if (string.IsNullOrWhiteSpace(extension))
+                    {
+                        MessageBox.Show($"Не удалось определить расширение для {song.Title}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                        continue;
+                    }
+
+                    var fileName = $"{song.Title}{extension}";
+                    var localPath = Path.Combine(savePath, fileName);
+                    bool success = ftpClient.DownloadFile(song.Link, localPath);
+
+                    if (!success)
+                    {
+                        MessageBox.Show($"Ошибка при загрузке: {song.Title}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
+            MessageBox.Show("Загрузка завершена!", "Готово", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+
 
         public async Task InitializeAsync()
         {
@@ -258,10 +303,12 @@ namespace Beatecho.ViewModels
             }
         }
 
-        private void AddSongs()
+        private async void AddSongs()
         {
             var win = new AddSongWindow(Album);
-            win.ShowDialog();
+            bool? result = win.ShowDialog();
+            
+            await LoadSongsFromAlbumWithFavoritesAsync(Album);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

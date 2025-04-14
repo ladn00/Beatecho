@@ -20,6 +20,7 @@ namespace Beatecho.ViewModels
 {
     public class SongWindowViewModel : INotifyPropertyChanged
     {
+        public event Action Added;
         private Song _song;
         public Song Song
         {
@@ -110,6 +111,8 @@ namespace Beatecho.ViewModels
                     db.AlbumSongs.Add(new AlbumSongs { AlbumId = Album.Id, SongId = Song.Id, TrackNum = nextTrackNum });
                     db.SaveChanges();
                 }
+
+                Added?.Invoke();
             }
         }
 

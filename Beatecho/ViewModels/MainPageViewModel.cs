@@ -58,6 +58,7 @@ namespace Beatecho.ViewModels
         public MainPageViewModel()
         {
             PlayPauseAlbumCommand = new RelayCommand<Album>(PlayPauseAlbum);
+            PlayPauseRecommendationCommand = new RelayCommand<Recommendation>(PlayPauseRecommendation);
             OpenAlbumCommand = new RelayCommand<object>(OpenAlbum);
             PlayPausePlaylistCommand = new RelayCommand<Playlist>(PlayPausePlaylist);
             OpenPlaylistCommand = new RelayCommand<object>(OpenPlaylist);
@@ -74,6 +75,7 @@ namespace Beatecho.ViewModels
         public ICommand PlayPausePlaylistCommand { get; }
         public ICommand OpenPlaylistCommand { get; }
         public ICommand OpenRecommendationCommand { get; }
+        public ICommand PlayPauseRecommendationCommand { get; }
 
         private void OpenRecommendation(object parameter)
         {
@@ -149,6 +151,34 @@ namespace Beatecho.ViewModels
             player.Play();
         }
 
+        private void PlayPauseRecommendation(Recommendation recom)
+        {
+            if (player == null || recom == null)
+            {
+                return;
+            }
+
+            List<Song> songs = new List<Song>();
+
+            if (player.IsPlaying && player.AlbumPlaylist == recom)
+            {
+                player.Pause();
+                return;
+            }
+            else if (!player.IsPlaying && player.AlbumPlaylist == recom)
+            {
+                player.Play();
+                return;
+            }
+
+            songs = GetSongsFromRecom(recom);
+
+            player.AlbumPlaylist = recom;
+            player.SetQueue(songs);
+            player.SetSong();
+            player.Play();
+        }
+
         private void PlayPausePlaylist(Playlist playlist)
         {
             if (player == null || playlist == null)
@@ -175,6 +205,27 @@ namespace Beatecho.ViewModels
             player.SetQueue(songs);
             player.SetSong();
             player.Play();
+        }
+
+        public List<Song> GetSongsFromRecom(Recommendation recom)
+        {
+            var result = new List<Song>();
+            using (var db = new ApplicationContext())
+            {
+                var recommendation = db.UserRecommendations
+                    .FirstOrDefault(r => r.UserId == LoginViewModel.CurrentUser.Id);
+
+                if (recommendation?.Recommendations != null && recommendation.Recommendations.Any())
+                {
+                    var songs = db.Songs
+                        .Where(s => recommendation.Recommendations.Contains(s.Id))
+                    .ToList();
+
+                    result = new List<Song>(songs);
+                }
+            }
+
+            return result;
         }
 
         public List<Song> GetSongsFromPlaylist(Playlist playlist)
