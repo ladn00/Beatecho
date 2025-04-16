@@ -28,9 +28,6 @@ namespace Beatecho
             vm = new LoginViewModel();
             vm.LoginSucceeded += CloseWindow;
             DataContext = vm;
-            /*UserRecommendationsService rec = new UserRecommendationsService();
-            Task.Run(async () => 
-            rec.UpdateRecommendationsAsync(LoginViewModel.CurrentUser.Id));*/
         }
 
         private void CloseWindow()

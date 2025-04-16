@@ -81,7 +81,7 @@ namespace Beatecho.ViewModels
                 }
 
                 CurrentUser = user;
-                IsAdmin = CurrentUser.UserTypeId == 3;
+                IsAdmin = CurrentUser.UserTypeId == 1;
 
                 var win = new Views.Wins.UserWindow();
                 win.Show();

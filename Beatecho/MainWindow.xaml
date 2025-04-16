@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Beatecho.Views.Wins"
-        xmlns:vm="clr-namespace:Beatecho.ViewModels"
+        xmlns:vm="clr-namespace:Beatecho.ViewModels" Icon="/imgs/BEATECHO.png"
 
         mc:Ignorable="d"
         Title="LoginWindow" Height="450" Width="800"
@@ -71,8 +71,17 @@
             </Setter>
         </Style>
     </Window.Resources>
-
     <Grid>
+        <Button Content="X"
+                Width="20" Height="20"
+                FontWeight="Bold"
+                FontSize="16"
+                HorizontalAlignment="Right" VerticalAlignment="Top"
+                Background="Transparent" Foreground="White"
+                BorderThickness="0"
+                Cursor="Hand"
+                Click="CloseButton_Click"/>
+        <Grid>
         <!-- Кнопка Закрытия -->
 
 
@@ -81,27 +90,13 @@
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
 
-        <Button Content="X" Grid.Column="1"
-        Width="30" Height="30"
-        FontWeight="Bold"
-        HorizontalAlignment="Right" VerticalAlignment="Top"
-        Margin="0,10,10,0"
-        Background="Transparent" Foreground="White"
-        BorderThickness="0"
-        Cursor="Hand"
-        Click="CloseButton_Click"/>
+        
 
         <!-- Left Panel (Illustration) -->
         <Border Background="{DynamicResource ScndBackground}" Grid.Column="0" CornerRadius="20,0,0,20" Margin="10">
             <Grid>
-                <Ellipse Width="200" Height="200" Fill="#4B2FD5" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Ellipse.Effect>
-                        <DropShadowEffect Color="Black" ShadowDepth="5" BlurRadius="20" Opacity="0.3"/>
-                    </Ellipse.Effect>
-                </Ellipse>
-                <TextBlock Text="🌕" FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-40,0,0"/>
-                <TextBlock Text="★     ★     ✦" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-100,0,0" Foreground="White" />
-                <TextBlock Text="FEEL THE BEAT." 
+                    <Image Source="imgs/BEATECHO.png" HorizontalAlignment="Center"/>
+                    <TextBlock Text="FEEL THE BEAT." 
                            Foreground="White" FontSize="12" 
                            VerticalAlignment="Top" HorizontalAlignment="Center"
                            Margin="0,379,0,0" TextWrapping="Wrap" TextAlignment="Center"/>
@@ -111,7 +106,7 @@
            Margin="0,400,0,0" TextWrapping="Wrap" TextAlignment="Center"/>
             </Grid>
         </Border>
-        <Border Grid.Column="1" Background="{DynamicResource MainFontColor}" CornerRadius="0,20,20,0" Margin="10">
+        <Border Grid.Column="1" Background="{DynamicResource MainFontColor}" CornerRadius="0,20,20,0" Margin="15">
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="280">
 
                 <TextBlock Text="Beatecho" FontSize="24" FontWeight="Bold" Foreground="#7A5DF5" Margin="0,0,0,20"/>
@@ -129,5 +124,6 @@
         </Border>
 
         <!-- Right Panel (Login Form) -->
+    </Grid>
     </Grid>
 </Window>

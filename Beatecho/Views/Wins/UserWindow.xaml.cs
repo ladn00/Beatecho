@@ -49,6 +49,9 @@ namespace Beatecho.Views.Wins
             ContentFrame.NavigationService.Navigate(new MainPage());
             IsAdmin = LoginViewModel.IsAdmin;
             SetMenuVisibility();
+            UserRecommendationsService rec = new UserRecommendationsService();
+            Task.Run(async () =>
+            rec.UpdateRecommendationsAsync(LoginViewModel.CurrentUser.Id));
 
         }
 

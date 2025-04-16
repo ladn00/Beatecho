@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Beatecho.Views.Wins" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-        mc:Ignorable="d" Height="550" Width="600" Background="Transparent"
+        mc:Ignorable="d" Height="550" Width="600" Background="Transparent" Icon="/imgs/BEATECHO.png"
          WindowStartupLocation="CenterScreen">
    
     <Border Background="{DynamicResource ScndBackground}" CornerRadius="10" BorderBrush="Black" BorderThickness="5" Padding="50">

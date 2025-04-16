@@ -17,6 +17,7 @@
     <None Remove="imgs\backgr.jpg" />
     <None Remove="imgs\backgr2.jpg" />
     <None Remove="imgs\backrg3.jpg" />
+    <None Remove="imgs\BEATECHO.png" />
     <None Remove="imgs\downloads.png" />
     <None Remove="imgs\folder.png" />
     <None Remove="imgs\hearts.jpg" />
@@ -83,6 +84,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="imgs\backrg3.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="imgs\BEATECHO.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="imgs\downloads.png">
