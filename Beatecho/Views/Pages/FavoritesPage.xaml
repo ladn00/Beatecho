@@ -148,10 +148,6 @@
                         </GridViewColumn>
                         
 
-                        <GridViewColumn Header="Длительность" 
-                                      DisplayMemberBinding="{Binding Duration}" 
-                                      Width="100"/>
-
                         <GridViewColumn Width="40">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>

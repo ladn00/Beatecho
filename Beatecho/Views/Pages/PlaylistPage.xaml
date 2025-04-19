@@ -167,37 +167,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Header="Длительность" 
-                          DisplayMemberBinding="{Binding Duration}"  
-                          Width="100"/>
-
-                        <!--     <GridViewColumn Width="40">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Button Background="Transparent"
-                                BorderThickness="0"
-                                Padding="5,0"
-                                Command="{Binding DataContext.AddOrRemoveFromFavoritesCommand, 
-                                          RelativeSource={RelativeSource AncestorType=ListView}}"
-                                CommandParameter="{Binding}">
-                                        <TextBlock Text="❤️" Foreground="Gray"
-                                     FontSize="13"/>
-                                        <Button.Style>
-                                            <Style TargetType="Button">
-                                                <Setter Property="Opacity" Value="0.6"/>
-                                                <Style.Triggers>
-                                                    <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter Property="Opacity" Value="1"/>
-                                                    </Trigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Button.Style>
-                                    </Button>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>  -->
-
-                    <GridViewColumn Width="40">
+                        <GridViewColumn Width="40">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <Button Background="Transparent"

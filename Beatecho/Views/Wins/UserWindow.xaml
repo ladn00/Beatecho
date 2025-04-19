@@ -491,11 +491,9 @@
                         <Image Source="/imgs/BEATECHO.png" Height="60" Margin="0,10,0,20"/>
 
                         <!-- Навигация -->
-                        <Button Style="{StaticResource NavButtonStyle}" Content="Главная" Click="GoToMainPage"/>
-                        <Button Style="{StaticResource NavButtonStyle}" Content="Любимые треки" Command="{Binding OpenFavoritesCommand}"/>
-                        <Button Style="{StaticResource NavButtonStyle}" Content="Поиск" Command="{Binding OpenSearchPageCommand, Source={StaticResource SearchViewModel}}">
-                        </Button>
-                        <Button Style="{StaticResource NavButtonStyle}" Content="Моя медиатека" Command="{Binding OpenLocalSongsPageCommand}">
+                        <Button Style="{StaticResource NavButtonStyle}" Margin="2" Content="Главная" Click="GoToMainPage"/>
+                        <Button Style="{StaticResource NavButtonStyle}" Margin="2"  Content="Любимые треки" Command="{Binding OpenFavoritesCommand}"/>
+                        <Button Style="{StaticResource NavButtonStyle}" Margin="2" Content="Моя медиатека" Command="{Binding OpenLocalSongsPageCommand}">
 
                             <Button.DataContext>
                                 <vm:LocalSongsViewModel/>

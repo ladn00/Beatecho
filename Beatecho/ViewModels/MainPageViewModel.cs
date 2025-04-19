@@ -91,7 +91,7 @@ namespace Beatecho.ViewModels
         {
             using (ApplicationContext db = new ApplicationContext())
             {
-                return db.Albums.ToList();
+                return db.Albums.Take(8).ToList();
             }
         }
 

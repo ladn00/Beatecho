@@ -30,6 +30,27 @@ namespace Beatecho.ViewModels
         private User _currentUser;
         private Dictionary<int, bool> _favoritesState;
         public bool IsAdmin => LoginViewModel.IsAdmin;
+        public bool IsOwnerOrAdmin
+        {
+            get
+            {
+                if (LoginViewModel.IsAdmin)
+                    return true;
+
+                if (_currentUser?.UserTypeId == 2) // 2 — исполнитель
+                {
+                    using var db = new ApplicationContext();
+                    var artistName = db.Albums
+                        .Where(a => a.Id == Album.Id)
+                        .SelectMany(a => a.ArtistAlbums.Select(aa => aa.Artist.Name))
+                        .FirstOrDefault();
+
+                    return _currentUser.UserName == artistName;
+                }
+
+                return false;
+            }
+        }
 
         public ObservableCollection<Song> Songs
         {
@@ -48,6 +69,7 @@ namespace Beatecho.ViewModels
             {
                 _album = value;
                 OnPropertyChanged(nameof(Album));
+                OnPropertyChanged(nameof(IsOwnerOrAdmin));
             }
         }
 

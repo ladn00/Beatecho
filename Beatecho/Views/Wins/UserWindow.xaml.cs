@@ -170,6 +170,8 @@ namespace Beatecho.Views.Wins
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
+            MainWindow login = new MainWindow();
+            login.Show();
             this.Close();
         }
 

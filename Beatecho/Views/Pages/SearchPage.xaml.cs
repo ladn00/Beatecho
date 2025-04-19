@@ -1,4 +1,5 @@
 ﻿using Beatecho.DAL.Models;
+using Beatecho.ViewModels;
 using Beatecho.Views.Wins;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,10 @@ namespace Beatecho.Views.Pages
         public SearchPage()
         {
             InitializeComponent();
-            DataContext = Application.Current.Resources["SearchViewModel"];
+            var searchVM = (SearchViewModel)Application.Current.Resources["SearchViewModel"];
+            searchVM.LoadData();
+            DataContext = searchVM;
+
         }
 
         private void AddSongToPlaylist(object sender, RoutedEventArgs e)

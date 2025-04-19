@@ -18,6 +18,7 @@ namespace Beatecho.ViewModels
         public event Action LoginSucceeded;
         public static User CurrentUser { get; set; }
         public static bool IsAdmin {  get; set; }
+
         private readonly ApplicationContext _db;
         private string _username;
         private string _password;

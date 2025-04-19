@@ -65,22 +65,31 @@
                                 FontSize="18" 
                                 Foreground="{DynamicResource MainFontColor}" 
                                 Margin="0,5,0,0"/>
-                    
 
-                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0"
-                Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVis}}">
-                        <Button Margin="0,0,10,0" Padding="5,2" Style="{StaticResource NavButtonStyle}" Foreground="{DynamicResource MainFontColor}"
-                                Command="{Binding DownloadAlbumCommand}">
-                            <Image Source="/imgs/downloads.png" Width="20"/>
-                        </Button>
-                        <Button Content="Edit" Margin="0,0,10,0" Padding="5,2" Style="{StaticResource NavButtonStyle}" Foreground="{DynamicResource MainFontColor}"
-                Command="{Binding EditAlbumCommand}"/>
-                        <Button Content="Delete" Margin="0,0,10,0" Padding="5,2" Style="{StaticResource NavButtonStyle}" Foreground="{DynamicResource MainFontColor}"
-                Command="{Binding DeleteAlbumCommand}"/>
-                        <Button Content="Add Songs" Padding="5,2" Style="{StaticResource NavButtonStyle}" Foreground="{DynamicResource MainFontColor}"
-                Command="{Binding AddSongsCommand}"/>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <StackPanel Orientation="Horizontal">
+                            <Button Margin="0,0,10,0" Padding="5,2" Style="{StaticResource NavButtonStyle}" Foreground="{DynamicResource MainFontColor}"
+Command="{Binding DownloadAlbumCommand}">
+                                <Image Source="/imgs/downloads.png" Width="20"/>
+                            </Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" 
+            Visibility="{Binding IsOwnerOrAdmin, Converter={StaticResource BoolToVis}}">
+                            <Button Content="Edit" Margin="0,0,10,0" Padding="5,2" 
+            Style="{StaticResource NavButtonStyle}" 
+            Foreground="{DynamicResource MainFontColor}"
+            Command="{Binding EditAlbumCommand}" />
+                            <Button Content="Delete" Margin="0,0,10,0" Padding="5,2" 
+            Style="{StaticResource NavButtonStyle}" 
+            Foreground="{DynamicResource MainFontColor}"
+            Command="{Binding DeleteAlbumCommand}" />
+                            <Button Content="Add Songs" Padding="5,2" 
+            Style="{StaticResource NavButtonStyle}" 
+            Foreground="{DynamicResource MainFontColor}"
+            Command="{Binding AddSongsCommand}" />
+                        </StackPanel>
                     </StackPanel>
-
                 </StackPanel>
             </Grid>
 
@@ -184,10 +193,6 @@
                         <GridViewColumn Header="Название" 
                                       DisplayMemberBinding="{Binding Title}"
                                       Width="500"/>
-
-                        <GridViewColumn Header="Длительность" 
-                                      DisplayMemberBinding="{Binding Duration}" 
-                                      Width="100"/>
 
                         <GridViewColumn Width="40">
                             <GridViewColumn.CellTemplate>

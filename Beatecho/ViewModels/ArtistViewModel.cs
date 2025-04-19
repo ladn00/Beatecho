@@ -61,7 +61,6 @@ namespace Beatecho.ViewModels
 
         public string Name => Artist?.Name;
         public string Photo => Path.Combine(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory)?.Parent?.Parent?.Parent?.FullName, "imgs", "Artists", Artist.Photo);
-        public string MonthlyListeners => "1,234,567 ежемесячных слушателей"; // Заглушка
 
         public ObservableCollection<Song> PopularTracks
         {

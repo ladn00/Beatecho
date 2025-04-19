@@ -40,7 +40,6 @@
     <None Remove="imgs\volume.png" />
     <None Remove="imgs\ПроигрывательНиз.png" />
     <None Remove="imgs\тонарм.png" />
-    <None Remove="Views\Wins\1.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -145,7 +144,6 @@
     <Resource Include="imgs\тонарм.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Views\Wins\1.jpg" />
   </ItemGroup>
 
 

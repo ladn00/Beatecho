@@ -35,10 +35,6 @@
                                        FontSize="72" 
                                        FontWeight="Bold" 
                                        Foreground="White"/>
-                            <TextBlock Text="{Binding MonthlyListeners}" 
-                                       FontSize="16" 
-                                       Foreground="#B3B3B3"
-                                       Margin="0,10,0,0"/>
                         </StackPanel>
                     </Grid>
                 </Grid>
@@ -169,10 +165,6 @@ Margin="0,0,10,0"/>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-
-                                <GridViewColumn Header="Длительность" 
-                              DisplayMemberBinding="{Binding Duration}" 
-                              Width="100"/>
 
                                 <GridViewColumn Width="40">
                                     <GridViewColumn.CellTemplate>

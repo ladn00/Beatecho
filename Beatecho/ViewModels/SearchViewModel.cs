@@ -88,7 +88,7 @@ namespace Beatecho.ViewModels
             player.Play();
         }
 
-        private async void LoadData()
+        public async void LoadData()
         {
             await Task.Run(() =>
             {
